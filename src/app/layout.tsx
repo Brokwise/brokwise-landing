@@ -10,8 +10,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Elyse Residence",
-  description: "Holistic luxury in perfect harmony",
+  title: "Brokwise",
+  description: "Connect. Transact. Grow.",
 };
 
 export default function RootLayout({
