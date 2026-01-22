@@ -166,9 +166,8 @@ export default function Home() {
               ].map((item, index) => (
                 <li
                   key={item.id}
-                  className={`flex items-center justify-between group cursor-pointer border-t border-neutral-800 py-8 hover:bg-white/5 transition-colors px-4 -mx-4 rounded-sm ${
-                    index === 2 ? "border-b" : ""
-                  }`}
+                  className={`flex items-center justify-between group cursor-pointer border-t border-neutral-800 py-8 hover:bg-white/5 transition-colors px-4 -mx-4 rounded-sm ${index === 2 ? "border-b" : ""
+                    }`}
                 >
                   <div className="flex items-center gap-4">
                     <span className="text-neutral-600 font-serif italic text-xl">
@@ -332,7 +331,7 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-black text-neutral-400 pt-24 pb-12 px-6 md:px-12 border-t border-neutral-900">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8 mb-20">
             {/* Brand */}
             <div className="md:col-span-1 animate-on-scroll">
               <div className="text-2xl text-white tracking-tight font-serif italic mb-6">
@@ -343,8 +342,11 @@ export default function Home() {
                 seamless ecosystem.
               </p>
               <div className="flex gap-4 text-white">
-                <Instagram className="w-5 h-5 hover:text-neutral-300 cursor-pointer" />
-                <Linkedin className="w-5 h-5 hover:text-neutral-300 cursor-pointer" />
+                <a href="https://www.instagram.com/brokwise/">
+
+                  <Instagram className="w-5 h-5 hover:text-neutral-300 cursor-pointer" />
+                </a>
+                {/* <Linkedin className="w-5 h-5 hover:text-neutral-300 cursor-pointer" /> */}
               </div>
             </div>
 
@@ -355,25 +357,16 @@ export default function Home() {
               </h4>
               <ul className="space-y-4 text-sm">
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    For Brokers
+                  <a href="https://app.brokwise.com" className="hover:text-white transition-colors">
+                    For Brokers, Brokerage firms and Channel Partners
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    For Companies
-                  </a>
+                  {/* <a href="https://developers.brokwise.com" className="hover:text-white transition-colors">
+                    For Developers
+                  </a> */}
                 </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Listings
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-white transition-colors">
-                    Enquiries
-                  </a>
-                </li>
+
               </ul>
             </div>
 
@@ -384,16 +377,15 @@ export default function Home() {
               </h4>
               <address className="not-italic text-sm space-y-4">
                 <p>
-                  Business Bay,
-                  <br />
-                  Pune, MH 411001
+                  P NO. A-27, BAHUBALI NAGAR, JAIPUR <br />
+                  Mansarovar, Jaipur - 302020, Rajasthan, India
                 </p>
                 <p>
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+919571850046"
                     className="hover:text-white transition-colors"
                   >
-                    +91 98765 43210
+                    +91 95718 50046
                   </a>
                 </p>
                 <p>
@@ -408,41 +400,19 @@ export default function Home() {
             </div>
 
             {/* Newsletter */}
-            <div className="md:col-span-1 animate-on-scroll delay-300">
-              <h4 className="text-white text-sm font-medium uppercase tracking-widest mb-6">
-                Stay Updated
-              </h4>
-              <form className="flex flex-col gap-4">
-                <div className="relative">
-                  <input
-                    type="email"
-                    placeholder="Email address"
-                    className="w-full bg-neutral-900 border border-neutral-800 text-white px-4 py-3 text-sm focus:outline-none focus:border-neutral-600 transition-colors rounded-sm placeholder:text-neutral-600"
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white transition-colors"
-                  >
-                    <Send className="w-4 h-4" />
-                  </button>
-                </div>
-                <p className="text-xs text-neutral-600">
-                  Subscribe for the latest property alerts and platform updates.
-                </p>
-              </form>
-            </div>
+
           </div>
 
           {/* Bottom Bar */}
           <div className="border-t border-neutral-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-600 animate-on-scroll">
-            <p>© 2024 Brokwise. All rights reserved.</p>
+            <p>© 2026 Brokwise. All rights reserved.</p>
             <div className="flex gap-6">
-              <a href="#" className="hover:text-neutral-400 transition-colors">
+              <Link href={"/privacy-policy"} className="hover:text-neutral-400 transition-colors">
                 Privacy Policy
-              </a>
-              <a href="#" className="hover:text-neutral-400 transition-colors">
+              </Link>
+              <Link href={"/terms-and-conditions"} className="hover:text-neutral-400 transition-colors">
                 Terms of Service
-              </a>
+              </Link>
             </div>
           </div>
         </div>
