@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Public_Sans } from "next/font/google";
 import "./globals.css";
+import NavBar from "@/components/navbar";
 import Script from "next/script";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({
+const publicSans = Public_Sans({
   subsets: ["latin"],
-  variable: "--font-playfair",
+  variable: "--font-public-sans",
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -22,12 +22,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased bg-neutral-950 text-neutral-200 overflow-x-hidden selection:bg-white/20`}
+        className={`${publicSans.variable} antialiased bg-background text-foreground overflow-x-hidden selection:bg-primary/10 font-sans`}
       >
         <Script
           src="https://www.aura.build/FxFilter.js"
           strategy="afterInteractive"
         />
+        <NavBar />
         {children}
       </body>
     </html>
