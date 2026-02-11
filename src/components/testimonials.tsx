@@ -69,7 +69,7 @@ const Testimonials = () => {
 
                             {/* Content */}
                             <p className="text-muted-foreground font-light leading-relaxed mb-8 min-h-[100px]">
-                                "{testimonial.content}"
+                                &apos;{testimonial.content}&apos;
                             </p>
 
                             {/* User Info */}
