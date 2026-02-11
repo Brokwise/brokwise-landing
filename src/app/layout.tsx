@@ -1,3 +1,4 @@
+import SmoothScrolling from "@/components/smooth-scrolling";
 import { Public_Sans } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/navbar";
@@ -9,7 +10,7 @@ const publicSans = Public_Sans({
   weight: ["300", "400", "500"],
 });
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "Brokwise",
   description: "Connect. Transact. Grow.",
 };
@@ -20,16 +21,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en">
       <body
         className={`${publicSans.variable} antialiased bg-background text-foreground overflow-x-hidden selection:bg-primary/10 font-sans`}
       >
-        <Script
-          src="https://www.aura.build/FxFilter.js"
-          strategy="afterInteractive"
-        />
-        <NavBar />
-        {children}
+        <SmoothScrolling>
+          <Script
+            src="https://www.aura.build/FxFilter.js"
+            strategy="afterInteractive"
+          />
+          <NavBar />
+          {children}
+        </SmoothScrolling>
       </body>
     </html>
   );
