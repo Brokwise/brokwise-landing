@@ -33,7 +33,7 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row gap-4 mt-4">
           <Link
-            href="https://app.brokwise.com"
+            href="https://brokwise.com"
             className="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
           >
             Get started

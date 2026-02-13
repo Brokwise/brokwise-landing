@@ -25,7 +25,7 @@ const CTA = () => {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                        <button onClick={() => { router.push("https://app.brokwise.com") }} className="group inline-flex h-12 min-w-[160px] items-center justify-center rounded-full bg-primary px-8 text-base font-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                        <button onClick={() => { router.push("https://brokwise.com") }} className="group inline-flex h-12 min-w-[160px] items-center justify-center rounded-full bg-primary px-8 text-base font-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
                             Get Started
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </button>
@@ -39,11 +39,11 @@ const CTA = () => {
                         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4 text-sm text-white font-light">
                             <div className="flex items-center gap-2">
                                 <CheckCircle2 className="w-4 h-4 " />
-                                <span>No credit card required</span>
+                                <span>Easy payment options</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <CheckCircle2 className="w-4 h-4 " />
-                                <span>14-day free trial</span>
+                                <span>No hidden fees</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <CheckCircle2 className="w-4 h-4 " />

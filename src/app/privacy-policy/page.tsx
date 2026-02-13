@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+        <div className="min-h-screen pt-32 bg-gradient-to-b from-slate-50 to-white">
             <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200">
                 <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
                     <Link href="/">

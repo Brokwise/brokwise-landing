@@ -41,7 +41,7 @@ const Footer = () => {
                             <ul className="space-y-4 text-sm font-light">
                                 <li>
                                     <a
-                                        href="https://app.brokwise.com"
+                                        href="https://brokwise.com"
                                         className="hover:text-white transition-colors flex items-center gap-2 group"
                                     >
                                         For Brokers & Firms

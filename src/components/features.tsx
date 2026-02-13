@@ -93,7 +93,7 @@ const featuresData: BentoCardProps[] = [
 
 const Features = () => {
     return (
-        <section className="py-24 px-4 bg-background relative overflow-hidden">
+        <section id="features" className="py-24 px-4 bg-background relative overflow-hidden">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-16 max-w-3xl mx-auto">
                     <h2 className="text-4xl md:text-5xl font-light mb-6 tracking-tight text-foreground">
