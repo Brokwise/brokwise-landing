@@ -21,10 +21,11 @@ const NavBar = () => {
     }, []);
 
     const navLinks = [
-        { name: "Features", href: "#features" },
-        { name: "Testimonials", href: "#testimonials" },
-        { name: "Pricing", href: "#pricing" },
-        { name: "FAQ", href: "#faq" },
+        { name: "Features", href: "/#features" },
+        { name: "Testimonials", href: "/#testimonials" },
+        { name: "Pricing", href: "/#pricing" },
+        { name: "FAQ", href: "/#faq" },
+        { name: "Support", href: "/support" },
     ];
 
     return (
