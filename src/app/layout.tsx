@@ -27,6 +27,7 @@ export default function RootLayout({
       <body
         className={`${publicSans.variable} antialiased bg-background text-foreground overflow-x-hidden selection:bg-primary/10 font-sans`}
       >
+        <Analytics />
         <Script
           id="gtm-script"
           strategy="afterInteractive"

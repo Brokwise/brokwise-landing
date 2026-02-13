@@ -65,7 +65,7 @@ const Support = () => {
                                 Get in touch
                             </h1>
                             <p className="text-lg font-light text-muted-foreground leading-relaxed max-w-md">
-                                We're here to help. Whether you have a question about our platform, need technical assistance, or just want to say hello.
+                                We&apos;re here to help. Whether you have a question about our platform, need technical assistance, or just want to say hello.
                             </p>
                         </div>
 
