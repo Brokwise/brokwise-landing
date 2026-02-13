@@ -207,12 +207,15 @@ const Pricing = () => {
 
                             <div className="mb-8">
                                 <h3 className="text-xl font-normal text-foreground mb-2">{plan.name}</h3>
-                                <div className="flex items-baseline gap-1 mb-4">
+                                <div className="flex items-baseline gap-1 mb-1">
                                     <span className="text-4xl font-normal text-foreground">₹{plan.price.toLocaleString()}</span>
                                     <span className="text-muted-foreground font-light text-sm">
                                         {planType === 'monthly' ? '/month' : planType === 'quarterly' ? '/3 months' : '/pack'}
                                     </span>
                                 </div>
+                                <p className="text-xs text-muted-foreground font-light mb-4">
+                                    + 18% GST
+                                </p>
                                 <p className="text-muted-foreground font-light text-sm leading-relaxed">
                                     {plan.description}
                                 </p>
