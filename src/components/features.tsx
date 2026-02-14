@@ -1,50 +1,56 @@
 "use client";
 import React from 'react';
-import { Search, Bell, BarChart3, Zap, ShieldCheck, MessageCircle } from 'lucide-react';
+import MagicBento, { BentoCardProps } from './MagicBento';
+import { Search, Bell, BarChart3, Zap, ShieldCheck, MessageSquare } from 'lucide-react';
 
-interface FeatureProps {
-    title: string;
-    description: string;
-    icon: React.ReactNode;
-    color: string;
-}
-
-const featuresData: FeatureProps[] = [
+const featuresData: BentoCardProps[] = [
     {
         title: 'Smart Property Search',
-        description: 'Find exactly what your clients need with advanced filters for location, budget, property type, and more.',
-        icon: <Search className="w-6 h-6" />,
-        color: 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-600 dark:bg-purple-900/20  dark:text-purple-400 border border-purple-200 dark:border-purple-800'
+        description: 'Find exactly what your clients need with advanced filters for location, budget, property type, and amenities. Our search engine is optimized for speed and precision.',
+        label: 'Search',
+        className: 'md:col-span-1',
+        illustration: <Search className="w-24 h-24 text-blue-500" strokeWidth={1} />,
+        color: '0, 0, 0' // Blue
     },
     {
         title: 'Instant Alerts',
-        description: 'Get notified the moment a matching property is listed. Never miss an opportunity again.',
-        icon: <Bell className="w-6 h-6" />,
-        color: 'bg-gradient-to-r from-red-100 to-red-200 text-red-600 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800'
+        description: 'Get notified the moment a matching property is listed. Never miss an opportunity again with real-time push notifications and email alerts tailored to your preferences.',
+        label: 'Alerts',
+        className: 'md:col-span-1',
+        illustration: <Bell className="w-24 h-24 text-amber-500" strokeWidth={1} />,
+        color: '0, 0, 0'
     },
     {
         title: 'Performance Analytics',
-        description: 'Track your deals, conversions, and growth with detailed insights.',
-        icon: <BarChart3 className="w-6 h-6" />,
-        color: 'bg-gradient-to-r from-green-100 to-green-200 text-green-600 dark:bg-green-900/20 dark:text-green-400 border border-green-200 dark:border-green-800'
+        description: 'Track your deals, conversions, and growth with detailed insights. Visualize your success with interactive charts and reports that help you make data-driven decisions.',
+        label: 'Analytics',
+        className: 'md:col-span-2 md:row-span-2',
+        illustration: <BarChart3 className="w-48 h-48 text-purple-500" strokeWidth={0.5} />,
+        color: '0, 0, 0'
     },
     {
         title: 'Lightning Fast Matching',
-        description: 'Our AI matches your requirements with available listings instantly.',
-        icon: <Zap className="w-6 h-6" />,
-        color: 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
+        description: 'Our AI matches your requirements with available listings instantly. Save hours of manual searching and let our intelligent algorithms do the heavy lifting for you.',
+        label: 'AI Matching',
+        className: 'md:col-span-2 md:row-span-2',
+        illustration: <Zap className="w-48 h-48 text-rose-500" strokeWidth={0.5} />,
+        color: '0, 0, 0'
     },
     {
         title: 'Verified Brokers Only',
-        description: 'Every broker on the platform is verified. Deal with confidence and trust.',
-        icon: <ShieldCheck className="w-6 h-6" />,
-        color: 'bg-gradient-to-r from-orange-100 to-orange-200 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400 border border-orange-200 dark:border-orange-800'
+        description: 'Every broker on the platform is verified. Deal with confidence and trust, knowing that you are connecting with legitimate professionals in the industry.',
+        label: 'Trust',
+        className: 'md:col-span-1',
+        illustration: <ShieldCheck className="w-24 h-24 text-emerald-500" strokeWidth={1} />,
+        color: '0, 0, 0'
     },
     {
         title: 'In-App Chat',
-        description: 'Negotiate and communicate with other brokers without leaving the platform.',
-        icon: <MessageCircle className="w-6 h-6" />,
-        color: 'bg-gradient-to-r from-teal-100 to-teal-200 text-teal-600 dark:bg-teal-900/20 dark:text-teal-400 border border-teal-200 dark:border-teal-800'
+        description: 'Negotiate and communicate with other brokers without leaving the platform. Keep all your conversations organized and secure in one place.',
+        label: 'Communication',
+        className: 'md:col-span-1',
+        illustration: <MessageSquare className="w-24 h-24 text-sky-500" strokeWidth={1} />,
+        color: '0, 0, 0'
     }
 ];
 
@@ -61,23 +67,15 @@ const Features = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {featuresData.map((feature, index) => (
-                        <div
-                            key={index}
-                            className="group p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
-                        >
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 ${feature.color} transition-colors`}>
-                                {feature.icon}
-                            </div>
-                            <h3 className="text-xl font-semibold mb-3 text-foreground">
-                                {feature.title}
-                            </h3>
-                            <p className="text-muted-foreground leading-relaxed">
-                                {feature.description}
-                            </p>
-                        </div>
-                    ))}
+                <div className="flex justify-center">
+                    <MagicBento
+                        cards={featuresData}
+                        enableStars={true}
+                        enableSpotlight={true}
+                        enableBorderGlow={true}
+                        // enableTilt={true}
+                        glowColor="120, 119, 198" // Default glow color
+                    />
                 </div>
             </div>
         </section>
