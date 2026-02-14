@@ -69,7 +69,7 @@ const Main = () => {
                         </div>
 
                         <Link
-                            href={"https://brokwise.com"}
+                            href={"https://app.brokwise.com"}
                             className="hidden md:block bg-white text-black px-6 py-2.5 rounded-full text-xs md:text-sm font-medium hover:bg-neutral-200 transition-colors tracking-wide"
                         >
                             GET STARTED
@@ -356,7 +356,7 @@ const Main = () => {
                             </h4>
                             <ul className="space-y-4 text-sm">
                                 <li>
-                                    <a href="https://brokwise.com" className="hover:text-white transition-colors">
+                                    <a href="https://app.brokwise.com" className="hover:text-white transition-colors">
                                         For Brokers, Brokerage firms and Channel Partners
                                     </a>
                                 </li>

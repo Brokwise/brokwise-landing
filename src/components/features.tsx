@@ -1,93 +1,50 @@
 "use client";
 import React from 'react';
-import MagicBento, { BentoCardProps } from './MagicBento';
+import { Search, Bell, BarChart3, Zap, ShieldCheck, MessageCircle } from 'lucide-react';
 
-// const SearchIcon = () => (
-//     <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-10 translate-y-10">
-//         <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//         <path d="M7 10H13" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeOpacity="0.5" />
-//         <path d="M10 7V13" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeOpacity="0.5" />
-//     </svg>
-// );
+interface FeatureProps {
+    title: string;
+    description: string;
+    icon: React.ReactNode;
+    color: string;
+}
 
-// const AlertIcon = () => (
-//     <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-10 translate-y-10">
-//         <path d="M18 8A6 6 0 0 0 6 8C6 15 3 17 3 17H21C21 17 18 15 18 8Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//         <path d="M13.73 21C13.5542 21.3031 13.3019 21.5547 12.9982 21.7295C12.6946 21.9044 12.3504 21.9965 12 21.9965C11.6496 21.9965 11.3054 21.9044 11.0018 21.7295C10.6982 21.5547 10.4458 21.3031 10.27 21" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//     </svg>
-// );
-
-// const AnalyticsIcon = () => (
-//     <svg width="300" height="300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-10 translate-y-10">
-//         <path d="M18 20V10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//         <path d="M12 20V4" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//         <path d="M6 20V14" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//         <path d="M4 20H20" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//     </svg>
-// );
-
-// const AIIcon = () => (
-//     <svg width="300" height="300" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-10 translate-y-10">
-//         <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//         <path d="M12 17.77V2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeOpacity="0.3" />
-//     </svg>
-// );
-
-// const TrustIcon = () => (
-//     <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-10 translate-y-10">
-//         <path d="M12 22S20 18 20 12V5L12 2L4 5V12C4 18 12 22 12 22Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//         <path d="M9 12L11 14L15 10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//     </svg>
-// );
-
-// const ChatIcon = () => (
-//     <svg width="200" height="200" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="translate-x-10 translate-y-10">
-//         <path d="M21 11.5C21.0039 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87621 19.712 8.69 19.16L4 20L4.92 15.62C4.29112 14.3757 3.9829 13.0029 4.02 11.62C4.11233 9.93833 4.70686 8.33436 5.72295 7.02641C6.73903 5.71846 8.1281 4.77011 9.70265 4.30873C11.2772 3.84735 12.961 3.89531 14.524 4.44613C16.087 4.99695 17.4547 6.02429 18.44 7.39C19.2636 8.52932 19.8267 9.8474 20.07 11.23C20.09 11.32 21 11.5 21 11.5Z" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-//     </svg>
-// );
-
-const featuresData: BentoCardProps[] = [
+const featuresData: FeatureProps[] = [
     {
         title: 'Smart Property Search',
         description: 'Find exactly what your clients need with advanced filters for location, budget, property type, and more.',
-        label: 'Search',
-        className: 'md:col-span-1',
-        // illustration: <SearchIcon />
+        icon: <Search className="w-6 h-6" />,
+        color: 'bg-gradient-to-r from-purple-100 to-purple-200 text-purple-600 dark:bg-purple-900/20  dark:text-purple-400 border border-purple-200 dark:border-purple-800'
     },
     {
         title: 'Instant Alerts',
         description: 'Get notified the moment a matching property is listed. Never miss an opportunity again.',
-        label: 'Alerts',
-        className: 'md:col-span-1',
-        // illustration: <AlertIcon />
+        icon: <Bell className="w-6 h-6" />,
+        color: 'bg-gradient-to-r from-red-100 to-red-200 text-red-600 dark:bg-red-900/20 dark:text-red-400 border border-red-200 dark:border-red-800'
     },
     {
         title: 'Performance Analytics',
         description: 'Track your deals, conversions, and growth with detailed insights.',
-        label: 'Analytics',
-        className: 'md:col-span-2 md:row-span-2',
-        // illustration: <AnalyticsIcon />
+        icon: <BarChart3 className="w-6 h-6" />,
+        color: 'bg-gradient-to-r from-green-100 to-green-200 text-green-600 dark:bg-green-900/20 dark:text-green-400 border border-green-200 dark:border-green-800'
     },
     {
         title: 'Lightning Fast Matching',
         description: 'Our AI matches your requirements with available listings instantly.',
-        label: 'AI Matching',
-        className: 'md:col-span-2 md:row-span-2',
-        // illustration: <AIIcon />
+        icon: <Zap className="w-6 h-6" />,
+        color: 'bg-gradient-to-r from-blue-100 to-blue-200 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400 border border-blue-200 dark:border-blue-800'
     },
     {
         title: 'Verified Brokers Only',
         description: 'Every broker on the platform is verified. Deal with confidence and trust.',
-        label: 'Trust',
-        className: 'md:col-span-1',
-        // illustration: <TrustIcon />
+        icon: <ShieldCheck className="w-6 h-6" />,
+        color: 'bg-gradient-to-r from-orange-100 to-orange-200 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400 border border-orange-200 dark:border-orange-800'
     },
     {
         title: 'In-App Chat',
         description: 'Negotiate and communicate with other brokers without leaving the platform.',
-        label: 'Communication',
-        className: 'md:col-span-1',
-        // illustration: <ChatIcon />
+        icon: <MessageCircle className="w-6 h-6" />,
+        color: 'bg-gradient-to-r from-teal-100 to-teal-200 text-teal-600 dark:bg-teal-900/20 dark:text-teal-400 border border-teal-200 dark:border-teal-800'
     }
 ];
 
@@ -104,15 +61,23 @@ const Features = () => {
                     </p>
                 </div>
 
-                <div className="flex justify-center">
-                    <MagicBento
-                        cards={featuresData}
-                        enableStars={true}
-                        enableSpotlight={true}
-                        enableBorderGlow={true}
-                        // enableTilt={true}
-                        glowColor="0, 0, 0"
-                    />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {featuresData.map((feature, index) => (
+                        <div
+                            key={index}
+                            className="group p-8 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+                        >
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-6 ${feature.color} transition-colors`}>
+                                {feature.icon}
+                            </div>
+                            <h3 className="text-xl font-semibold mb-3 text-foreground">
+                                {feature.title}
+                            </h3>
+                            <p className="text-muted-foreground leading-relaxed">
+                                {feature.description}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>

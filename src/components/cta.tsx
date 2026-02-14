@@ -25,7 +25,7 @@ const CTA = () => {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                        <button onClick={() => { router.push("https://brokwise.com") }} className="group inline-flex h-12 min-w-[160px] items-center justify-center rounded-full bg-primary px-8 text-base font-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                        <button onClick={() => { router.push("https://app.brokwise.com") }} className="group inline-flex h-12 min-w-[160px] items-center justify-center rounded-full bg-primary px-8 text-base font-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
                             Get Started
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </button>
