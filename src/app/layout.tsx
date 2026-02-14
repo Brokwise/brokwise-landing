@@ -5,6 +5,7 @@ import NavBar from "@/components/navbar";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next"
 import LayoutFooter from "@/components/layout-footer";
+import FacebookPixel from "@/components/facebook-pixel";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        <FacebookPixel />
         <SmoothScrolling>
           <Script
             src="https://www.aura.build/FxFilter.js"

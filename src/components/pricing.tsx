@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import * as fpixel from '@/lib/fpixel'
 
 const pricingData = {
     activation: [
@@ -234,12 +235,22 @@ const Pricing = () => {
                                 </ul>
                             </div>
 
-                            <button className={cn(
-                                "w-full py-3 px-6 rounded-xl text-sm font-normal transition-colors duration-300",
-                                plan.popular
-                                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                            )}>
+                            <button
+                                onClick={() => {
+                                    fpixel.event("InitiateCheckout", {
+                                        content_name: plan.name,
+                                        content_category: planType,
+                                        value: plan.price,
+                                        currency: "INR",
+                                    });
+                                    window.location.href = "https://app.brokwise.com";
+                                }}
+                                className={cn(
+                                    "w-full py-3 px-6 rounded-xl text-sm font-normal transition-colors duration-300",
+                                    plan.popular
+                                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                                )}>
                                 {plan.buttonText}
                             </button>
                         </div>

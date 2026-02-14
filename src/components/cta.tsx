@@ -3,6 +3,8 @@
 import React from 'react'
 import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import * as fpixel from '@/lib/fpixel'
+
 const CTA = () => {
     const router = useRouter()
     return (
@@ -25,11 +27,24 @@ const CTA = () => {
 
                     {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
-                        <button onClick={() => { router.push("https://app.brokwise.com") }} className="group inline-flex h-12 min-w-[160px] items-center justify-center rounded-full bg-primary px-8 text-base font-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                        <button onClick={() => {
+                            fpixel.event("Lead", {
+                                content_name: "CTA Get Started",
+                            });
+                            router.push("https://app.brokwise.com")
+                        }} className="group inline-flex h-12 min-w-[160px] items-center justify-center rounded-full bg-primary px-8 text-base font-normal text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:bg-primary/90 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/30 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
                             Get Started
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </button>
-                        <button className="inline-flex h-12 min-w-[160px] items-center justify-center rounded-full border border-input bg-background/50 backdrop-blur-sm px-8 text-base font-normal shadow-sm transition-all hover:bg-accent hover:text-accent-foreground hover:border-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
+                        <button onClick={() => {
+                            fpixel.event("ViewContent", {
+                                content_name: "CTA View Pricing",
+                            });
+                            const pricingSection = document.getElementById('pricing');
+                            if (pricingSection) {
+                                pricingSection.scrollIntoView({ behavior: 'smooth' });
+                            }
+                        }} className="inline-flex h-12 min-w-[160px] items-center justify-center rounded-full border border-input bg-background/50 backdrop-blur-sm px-8 text-base font-normal shadow-sm transition-all hover:bg-accent hover:text-accent-foreground hover:border-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50">
                             View Pricing
                         </button>
                     </div>
