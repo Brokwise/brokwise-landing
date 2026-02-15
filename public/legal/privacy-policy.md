@@ -6,23 +6,6 @@
 
 ---
 
-## Table of Contents
-
-1. Kind of Data Collected
-2. Reasons & Manner in Which We Use Your Collected Information?
-3. How Do We Share Your Information with Third Parties?
-4. International Data Transfer
-5. What Are Your Rights Related to Your Data?
-6. How Secure Is Your Information?
-7. Data Breach Notification
-8. Data Retention
-9. Children's Privacy
-10. Consent Mechanism
-11. Grievance Redressal
-12. Updates to This Policy
-
----
-
 ## Privacy Policy
 
 Please read this policy carefully before using our services. Brokwise Private Limited, a company incorporated under the Companies Act, 2013, having its registered office at Plot no. 27 A, Bahubali Nagar, Mansarovar, Jaipur - 302020 ("Brokwise", "Company", "we", "us", "our"), acts as the Data Fiduciary in respect of the personal data collected and processed through the Platform.

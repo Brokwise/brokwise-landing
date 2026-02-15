@@ -6,36 +6,6 @@
 
 ---
 
-## Table of Contents
-
-1. Applicability of Broker Terms
-2. Disclaimer
-3. Usage of the Platform
-4. Eligibility of Broker
-5. Privacy of Brokers on Our Platform
-6. Registration of Brokers
-7. Permitted Activities
-8. Regulatory & Property Verification
-9. Subscription and Credit Usage
-10. Obligation of the Brokers
-11. No Warranty of Business, Activity, or Outcomes
-12. Dealings, Transactions & Payments
-13. No Solicitation
-14. Assignment of Rights
-15. Representation and Warranties
-16. Technical Disclaimer
-17. Non-Circumvention & Misuse of Platform
-18. Takedown of the Content
-19. Term & Termination
-20. Limitation of Liability
-21. Indemnification
-22. Applicable Law and Jurisdiction
-23. Grievance Officer
-24. Changes to These Terms
-25. Severability
-
----
-
 ## Welcome to Brokwise
 
 Brokwise is a technology-driven B2B intermediary platform created with the purpose of enabling professional networking and opportunity facilitation within the real estate ecosystem. The Platform is designed to connect brokers with brokers, and developers with brokers, across geographical boundaries, thereby creating a unified digital space for professional networking and opportunity discovery.

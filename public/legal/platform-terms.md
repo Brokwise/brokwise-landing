@@ -6,34 +6,6 @@
 
 ---
 
-## Table of Contents
-
-1. Definition
-2. Nature of Platform & Express Intermediary Status
-3. No Agency, Partnership, Employment or Fiduciary Relationship
-4. Eligibility to Use the Platform
-5. User Accounts & Security
-6. Acceptable Use Policy
-7. Intellectual Property Rights
-8. User-Generated Content
-9. Third-Party Services
-10. No Verification/No Due Diligence
-11. Platform Not a Party to Transactions
-12. Exclusion of Liability for Deal Failure/Dispute
-13. Limitation of Liability
-14. Indemnification
-15. Disclaimer of Warranties
-16. Assignment
-17. Termination
-18. Force Majeure
-19. Applicable Law and Jurisdiction
-20. Contact Us
-21. Grievance Redressal
-22. Changes to These Terms
-23. Severability
-
----
-
 ## Welcome to Brokwise
 
 Brokwise is a technology-driven B2B intermediary platform created with the purpose of enabling professional networking and opportunity facilitation within the real estate ecosystem. The Platform is designed to connect brokers with brokers, and developers with brokers, across geographical boundaries, thereby creating a unified digital space for professional networking and opportunity discovery.
