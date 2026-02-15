@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+
 import { Instagram } from "lucide-react";
 
 const Footer = () => {
@@ -93,19 +93,31 @@ const Footer = () => {
                     {/* Bottom Bar */}
                     <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-neutral-500 font-light">
                         <p>© 2026 Brokwise. All rights reserved.</p>
-                        <div className="flex gap-8">
-                            <Link
-                                href={"/privacy-policy"}
+                        <div className="flex flex-wrap gap-x-8 gap-y-2">
+                            <a
+                                href="/legal/master-platform-terms-of-use-v1.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-white transition-colors"
+                            >
+                                Master Platform Terms
+                            </a>
+                            <a
+                                href="/legal/terms-of-use-for-brokers-v1.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="hover:text-white transition-colors"
+                            >
+                                Terms of Use for Brokers
+                            </a>
+                            <a
+                                href="/legal/privacy-policy-v2026-02-11.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 className="hover:text-white transition-colors"
                             >
                                 Privacy Policy
-                            </Link>
-                            <Link
-                                href={"/terms-and-conditions"}
-                                className="hover:text-white transition-colors"
-                            >
-                                Terms of Service
-                            </Link>
+                            </a>
                         </div>
                     </div>
                 </div>
