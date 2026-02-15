@@ -406,15 +406,15 @@ const Main = () => {
                     <div className="border-t border-neutral-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-600 animate-on-scroll">
                         <p>© 2026 Brokwise. All rights reserved.</p>
                         <div className="flex flex-wrap gap-x-6 gap-y-2">
-                            <a href="/legal/master-platform-terms-of-use-v1.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-400 transition-colors">
+                            <Link href="/platform-terms" className="hover:text-neutral-400 transition-colors">
                                 Platform Terms
-                            </a>
-                            <a href="/legal/terms-of-use-for-brokers-v1.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-400 transition-colors">
+                            </Link>
+                            <Link href="/terms-and-conditions" className="hover:text-neutral-400 transition-colors">
                                 Terms of Use for Brokers
-                            </a>
-                            <a href="/legal/privacy-policy-v2026-02-11.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-400 transition-colors">
+                            </Link>
+                            <Link href="/privacy-policy" className="hover:text-neutral-400 transition-colors">
                                 Privacy Policy
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

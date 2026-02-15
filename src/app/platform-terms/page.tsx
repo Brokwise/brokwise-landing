@@ -5,13 +5,12 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 
-
-export default function TermsAndConditionsPage() {
+export default function PlatformTermsPage() {
     const [content, setContent] = useState<string>("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("/legal/terms-and-conditions.md")
+        fetch("/legal/platform-terms.md")
             .then((res) => res.text())
             .then((text) => {
                 setContent(text);
@@ -21,14 +20,14 @@ export default function TermsAndConditionsPage() {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white pt-10">
+        <div className="min-h-screen pt-10 bg-gradient-to-b from-slate-50 to-white">
             <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200">
                 <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
                     <Link href="/">
                         <ArrowLeft className="h-5 w-5" />
                     </Link>
                     <div>
-                        <h1 className="text-xl font-semibold text-slate-900">Terms of Use for Brokers</h1>
+                        <h1 className="text-xl font-semibold text-slate-900">Platform Terms of Use</h1>
                         <p className="text-sm text-slate-500">Brokwise Private Limited</p>
                     </div>
                 </div>
@@ -80,8 +79,6 @@ export default function TermsAndConditionsPage() {
                     </article>
                 )}
             </main>
-
-
         </div>
     );
 }
