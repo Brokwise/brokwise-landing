@@ -49,7 +49,7 @@ Similarly, Brokwise enables developers to showcase their approved and upcoming r
 
 These Platform Terms of Use ("Terms") govern the access to and use of the Brokwise Platform by all users, including brokers and developers, and set out the general rules, responsibilities, disclaimers, and limitations applicable to all interactions facilitated through the Platform.
 
-This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and any person or entity accessing, registering on, or using the Platform ("User", "you", or "your"). By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our Privacy Policy and other applicable platform policies. If you do not agree with these Terms, you must not access or use the Platform.
+This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and any person or entity accessing, registering on, or using the Platform ("User", "you", or "your"). By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our [Privacy Policy](/privacy-policy) and other applicable platform policies. If you do not agree with these Terms, you must not access or use the Platform.
 
 Brokers and developers may be subject to separate category-specific Terms of Use. In the event of any inconsistency or conflict between these Platform Terms and any broker-specific or developer-specific terms, these Platform Terms shall prevail and supersede to the extent of such conflict.
 
@@ -266,13 +266,13 @@ These Terms shall be governed by and construed in accordance with the laws appli
 
 ## 20. Contact Us
 
-If you have any questions, concerns, or require assistance regarding the Platform or these Terms, you may contact us at: Email: Support@Brokwise.com Brokwise will make reasonable efforts to respond to legitimate queries within a reasonable time.
+If you have any questions, concerns, or require assistance regarding the Platform or these Terms, you may contact us at: Email: [Support@Brokwise.com](mailto:Support@Brokwise.com) Brokwise will make reasonable efforts to respond to legitimate queries within a reasonable time.
 
 ---
 
 ## 21. Grievance Redressal
 
-In accordance with the DPDP Act, we have appointed a Grievance Officer to address any concerns relating to processing of personal data. Contact details: Name of Grievance Officer: Mr. Anshul Sharma E-mail: Grievance@Brokwise.com
+In accordance with the DPDP Act, we have appointed a Grievance Officer to address any concerns relating to processing of personal data. Contact details: Name of Grievance Officer: Mr. Anshul Sharma E-mail: [Grievance@Brokwise.com](mailto:Grievance@Brokwise.com)
 
 Registered address: Plot no. 27 A, Bahubali Nagar, Mansarovar, Jaipur - 302020
 

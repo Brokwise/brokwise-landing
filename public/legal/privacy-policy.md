@@ -31,7 +31,7 @@ To offer our users access to our platform, we collect various information from y
 
 BY ACCESSING OR USING ANY PART OF OUR PLATFORM, YOU ACKNOWLEDGE AND AGREE TO BE BOUND BY THIS PRIVACY POLICY. IF YOU DO NOT AGREE TO ANY PART OF THIS PRIVACY POLICY, YOU MAY NOT ACCESS OUR PLATFORM.
 
-It is important to read this policy in conjunction with the Terms of Use applicable on you along with our Platform Terms of Use as it collectively governs your use of our Platform.
+It is important to read this policy in conjunction with the [Terms of Use](/terms-and-conditions) applicable on you along with our [Platform Terms of Use](/platform-terms) as it collectively governs your use of our Platform.
 
 ---
 
@@ -144,7 +144,7 @@ Your personal data may be stored, processed or transferred to servers located ou
 
 ## 5. What Are Your Rights Related to Your Data?
 
-It is important for us to prioritise your data control. If you wish to exercise any of your rights mentioned under this policy, please contact us at (email address). You shall have the following rights:
+It is important for us to prioritise your data control. If you wish to exercise any of your rights mentioned under this policy, please contact us at [Support@Brokwise.com](mailto:Support@Brokwise.com). You shall have the following rights:
 
 1. **Right to Rectification:** If any personal data provided by you is found to be inaccurate or incomplete, you have the right to provide us with accurate, complete, and up-to-date data. We encourage you to always provide us with true and accurate information to ensure uninterrupted access to the Brokwise. Further, when you update any information with us, we may retain a copy of your previous information for record-keeping purposes.
 
@@ -194,7 +194,7 @@ Consent for collection and processing of personal data is obtained at the time o
 
 ## 11. Grievance Redressal
 
-In accordance with the DPDP Act, we have appointed a Grievance Officer to address any concerns relating to processing of personal data. Contact details: Name of Grievance Officer: Mr. Anshul Sharma E-mail: Grievance@Brokwise.com
+In accordance with the DPDP Act, we have appointed a Grievance Officer to address any concerns relating to processing of personal data. Contact details: Name of Grievance Officer: Mr. Anshul Sharma E-mail: [Grievance@Brokwise.com](mailto:Grievance@Brokwise.com)
 
 Registered address: Plot no. 27 A, Bahubali Nagar, Mansarovar, Jaipur - 302020
 

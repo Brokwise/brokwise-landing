@@ -49,7 +49,7 @@ Through Brokwise, brokers are empowered to:
 
 Similarly, Brokwise enables developers to showcase their approved and upcoming real estate projects to a network of brokers, facilitating professional engagement and potential business opportunities between developers and brokers.
 
-These Terms of Use govern the access to and use of the Brokwise platform by brokers and outline the rules, responsibilities, and limitations applicable to broker-to-broker and developer-to-broker interactions facilitated through the Platform. This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and you, being a broker using the Platform ("you", "your", or "Broker"). By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our Platform Terms of Use, Privacy Policy and our other policies of our platform. If you do not agree with these Terms, you must not access or use the Platform.
+These Terms of Use govern the access to and use of the Brokwise platform by brokers and outline the rules, responsibilities, and limitations applicable to broker-to-broker and developer-to-broker interactions facilitated through the Platform. This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and you, being a broker using the Platform ("you", "your", or "Broker"). By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our [Platform Terms of Use](/platform-terms), [Privacy Policy](/privacy-policy) and our other policies of our platform. If you do not agree with these Terms, you must not access or use the Platform.
 
 Brokwise solely acts as a technology intermediary and does not act as a real estate broker, agent, consultant, or advisor. Any engagement, transaction, or arrangement arising between brokers or between developers and brokers through the Platform is undertaken independently by the concerned parties, without Brokwise being a party to or responsible for such arrangements.
 
@@ -253,7 +253,7 @@ These terms shall be governed by and construed in accordance with the laws appli
 
 ## 23. Grievance Officer
 
-If any grievance remains unresolved for a period of 15 days after contacting our customer support at Support@Brokwise.com you may contact our Grievance Team at the following details: Email: Grievance@Brokwise.com Please provide all relevant details regarding your grievance to ensure a swift and effective resolution.
+If any grievance remains unresolved for a period of 15 days after contacting our customer support at [Support@Brokwise.com](mailto:Support@Brokwise.com) you may contact our Grievance Team at the following details: Email: [Grievance@Brokwise.com](mailto:Grievance@Brokwise.com) Please provide all relevant details regarding your grievance to ensure a swift and effective resolution.
 
 ---
 
