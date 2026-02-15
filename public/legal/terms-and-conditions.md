@@ -1,5 +1,7 @@
 # Terms of Use for Brokers
 
+*Last Updated: 11.02.2026*
+
 **Brokwise Private Limited**
 
 ---
@@ -79,7 +81,7 @@ Any individual who is engaged in the regular business of facilitating the sale o
 
 ## 5. Privacy of Brokers on Our Platform
 
-Please review our Privacy Notice, which also governs your use of our services to fully understand our practices at (insert hyperlink of privacy page).
+Please review our [Privacy Policy](/privacy-policy), which also governs your use of our services to fully understand our practices.
 
 ---
 

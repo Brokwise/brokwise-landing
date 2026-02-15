@@ -1,5 +1,7 @@
 # Platform Terms of Use
 
+*Last Updated: 11.02.2026*
+
 **Brokwise Private Limited**
 
 ---

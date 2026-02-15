@@ -55,7 +55,7 @@ export default function PlatformTermsPage() {
                                     <p className="text-slate-600 leading-relaxed mb-4">{children}</p>
                                 ),
                                 ul: ({ children }) => (
-                                    <ul className="list-disc list-inside text-slate-600 space-y-2 mb-4 ml-2">{children}</ul>
+                                    <ul className="list-disc list-outside text-slate-600 space-y-2 mb-4 pl-6">{children}</ul>
                                 ),
                                 li: ({ children }) => (
                                     <li className="text-slate-600 leading-relaxed">{children}</li>

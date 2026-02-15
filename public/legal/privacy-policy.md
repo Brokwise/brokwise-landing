@@ -1,5 +1,7 @@
 # Privacy Policy
 
+*Last Updated: 11.02.2026*
+
 **Brokwise Private Limited**
 
 ---
@@ -20,8 +22,6 @@
 12. Updates to This Policy
 
 ---
-
-*Last Updated: 11.02.2026*
 
 ## Privacy Policy
 
