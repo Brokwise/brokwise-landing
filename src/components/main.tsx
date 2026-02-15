@@ -407,7 +407,7 @@ const Main = () => {
                         <p>© 2026 Brokwise. All rights reserved.</p>
                         <div className="flex flex-wrap gap-x-6 gap-y-2">
                             <a href="/legal/master-platform-terms-of-use-v1.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-400 transition-colors">
-                                Master Platform Terms
+                                Platform Terms
                             </a>
                             <a href="/legal/terms-of-use-for-brokers-v1.pdf" target="_blank" rel="noopener noreferrer" className="hover:text-neutral-400 transition-colors">
                                 Terms of Use for Brokers

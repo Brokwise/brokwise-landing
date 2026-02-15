@@ -100,7 +100,7 @@ const Footer = () => {
                                 rel="noopener noreferrer"
                                 className="hover:text-white transition-colors"
                             >
-                                Master Platform Terms
+                                Platform Terms
                             </a>
                             <a
                                 href="/legal/terms-of-use-for-brokers-v1.pdf"
