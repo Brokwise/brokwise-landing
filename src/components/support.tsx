@@ -90,8 +90,8 @@ const Support = () => {
                                 </div>
                                 <div className="space-y-1">
                                     <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Phone</h3>
-                                    <a href="tel:+919571850046" className="font-light text-foreground/80 hover:text-primary transition-colors block">
-                                        +91 95718 50046
+                                    <a href="tel:+919929750046" className="font-light text-foreground/80 hover:text-primary transition-colors block">
+                                        +91 99297 50046
                                     </a>
                                 </div>
                             </div>

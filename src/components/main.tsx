@@ -381,10 +381,10 @@ const Main = () => {
                                 </p>
                                 <p>
                                     <a
-                                        href="tel:+919571850046"
+                                        href="tel:+919929750046"
                                         className="hover:text-white transition-colors"
                                     >
-                                        +91 95718 50046
+                                        +91 99297 50046
                                     </a>
                                 </p>
                                 <p>
