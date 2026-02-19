@@ -6,6 +6,7 @@ import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next"
 import LayoutFooter from "@/components/layout-footer";
 import FacebookPixel from "@/components/facebook-pixel";
+import { PostHogProvider } from "@/components/posthog-provider";
 
 const publicSans = Public_Sans({
   subsets: ["latin"],
@@ -49,15 +50,17 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           />
         </noscript>
         <FacebookPixel />
-        <SmoothScrolling>
-          <Script
-            src="https://www.aura.build/FxFilter.js"
-            strategy="afterInteractive"
-          />
-          <NavBar />
-          {children}
-          <LayoutFooter />
-        </SmoothScrolling>
+        <PostHogProvider>
+          <SmoothScrolling>
+            <Script
+              src="https://www.aura.build/FxFilter.js"
+              strategy="afterInteractive"
+            />
+            <NavBar />
+            {children}
+            <LayoutFooter />
+          </SmoothScrolling>
+        </PostHogProvider>
       </body>
     </html>
   );
