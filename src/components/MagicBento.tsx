@@ -669,23 +669,23 @@ const MagicBento: React.FC<BentoProps> = ({
                                     enableMagnetism={enableMagnetism}
                                 >
                                     <div className="card__header flex justify-between gap-3 relative z-10">
-                                        <span className="card__label text-base">{card.label}</span>
+                                        <span className="card__label text-[11px] uppercase tracking-widest text-white/40 font-medium">{card.label}</span>
                                     </div>
+                                    {card.illustration && (
+                                        <div className="flex-1 flex items-center justify-center relative z-[1] pointer-events-none my-1 min-h-0">
+                                            {card.illustration}
+                                        </div>
+                                    )}
                                     <div className="card__content flex flex-col relative z-10">
                                         <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
                                             {card.title}
                                         </h3>
                                         <p
-                                            className={`card__description text-xs leading-5 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}
+                                            className={`card__description text-xs leading-5 opacity-70 ${textAutoHide ? 'text-clamp-2' : ''}`}
                                         >
                                             {card.description}
                                         </p>
                                     </div>
-                                    {card.illustration && (
-                                        <div className="absolute -right-10 -top-10 opacity-10 pointer-events-none z-0 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-                                            {card.illustration}
-                                        </div>
-                                    )}
                                 </ParticleCard>
                             );
                         }
@@ -806,21 +806,21 @@ const MagicBento: React.FC<BentoProps> = ({
                                 }}
                             >
                                 <div className="card__header flex justify-between gap-3 relative z-10">
-                                    <span className="card__label text-base">{card.label}</span>
+                                    <span className="card__label text-[11px] uppercase tracking-widest text-white/40 font-medium">{card.label}</span>
                                 </div>
+                                {card.illustration && (
+                                    <div className="flex-1 flex items-center justify-center relative z-[1] pointer-events-none my-1 min-h-0">
+                                        {card.illustration}
+                                    </div>
+                                )}
                                 <div className="card__content flex flex-col relative z-10">
                                     <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
                                         {card.title}
                                     </h3>
-                                    <p className={`card__description text-xs leading-5 opacity-90 ${textAutoHide ? 'text-clamp-2' : ''}`}>
+                                    <p className={`card__description text-xs leading-5 opacity-70 ${textAutoHide ? 'text-clamp-2' : ''}`}>
                                         {card.description}
                                     </p>
                                 </div>
-                                {card.illustration && (
-                                    <div className="absolute -right-10 -top-10 opacity-10 pointer-events-none z-0 group-hover:scale-110 group-hover:rotate-12 transition-all duration-500">
-                                        {card.illustration}
-                                    </div>
-                                )}
                             </div>
                         );
                     })}

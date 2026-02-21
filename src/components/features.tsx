@@ -1,56 +1,63 @@
 "use client";
 import React from 'react';
 import MagicBento, { BentoCardProps } from './MagicBento';
-import { Search, Bell, BarChart3, Zap, ShieldCheck, MessageSquare } from 'lucide-react';
+import {
+    SearchIllustration,
+    AlertIllustration,
+    AnalyticsIllustration,
+    MatchingIllustration,
+    ShieldIllustration,
+    ChatIllustration,
+} from './FeatureIllustrations';
 
 const featuresData: BentoCardProps[] = [
     {
         title: 'Smart Property Search',
-        description: 'Find exactly what your clients need with advanced filters for location, budget, property type, and amenities. Our search engine is optimized for speed and precision.',
+        description: 'Find exactly what your clients need with advanced filters for location, budget, property type, and amenities.',
         label: 'Search',
         className: 'md:col-span-1',
-        illustration: <Search className="w-24 h-24 text-blue-500" strokeWidth={1} />,
-        color: '0, 0, 0' // Blue
+        illustration: <SearchIllustration />,
+        color: '59, 130, 246'
     },
     {
         title: 'Instant Alerts',
-        description: 'Get notified the moment a matching property is listed. Never miss an opportunity again with real-time push notifications and email alerts tailored to your preferences.',
+        description: 'Get notified the moment a matching property is listed. Never miss an opportunity with real-time alerts.',
         label: 'Alerts',
         className: 'md:col-span-1',
-        illustration: <Bell className="w-24 h-24 text-amber-500" strokeWidth={1} />,
-        color: '0, 0, 0'
+        illustration: <AlertIllustration />,
+        color: '245, 158, 11'
     },
     {
         title: 'Performance Analytics',
-        description: 'Track your deals, conversions, and growth with detailed insights. Visualize your success with interactive charts and reports that help you make data-driven decisions.',
+        description: 'Track your deals, conversions, and growth with detailed insights. Interactive charts and reports for data-driven decisions.',
         label: 'Analytics',
         className: 'md:col-span-2 md:row-span-2',
-        illustration: <BarChart3 className="w-48 h-48 text-purple-500" strokeWidth={0.5} />,
-        color: '0, 0, 0'
+        illustration: <AnalyticsIllustration />,
+        color: '168, 85, 247'
     },
     {
         title: 'Lightning Fast Matching',
-        description: 'Our AI matches your requirements with available listings instantly. Save hours of manual searching and let our intelligent algorithms do the heavy lifting for you.',
+        description: 'Our AI matches your requirements with available listings instantly. Let intelligent algorithms do the heavy lifting.',
         label: 'AI Matching',
         className: 'md:col-span-2 md:row-span-2',
-        illustration: <Zap className="w-48 h-48 text-rose-500" strokeWidth={0.5} />,
-        color: '0, 0, 0'
+        illustration: <MatchingIllustration />,
+        color: '244, 63, 94'
     },
     {
         title: 'Verified Brokers Only',
-        description: 'Every broker on the platform is verified. Deal with confidence and trust, knowing that you are connecting with legitimate professionals in the industry.',
+        description: 'Every broker on the platform is verified. Deal with confidence knowing you connect with legitimate professionals.',
         label: 'Trust',
         className: 'md:col-span-1',
-        illustration: <ShieldCheck className="w-24 h-24 text-emerald-500" strokeWidth={1} />,
-        color: '0, 0, 0'
+        illustration: <ShieldIllustration />,
+        color: '52, 211, 153'
     },
     {
         title: 'In-App Chat',
-        description: 'Negotiate and communicate with other brokers without leaving the platform. Keep all your conversations organized and secure in one place.',
+        description: 'Negotiate and communicate with other brokers without leaving the platform. All conversations in one place.',
         label: 'Communication',
         className: 'md:col-span-1',
-        illustration: <MessageSquare className="w-24 h-24 text-sky-500" strokeWidth={1} />,
-        color: '0, 0, 0'
+        illustration: <ChatIllustration />,
+        color: '56, 189, 248'
     }
 ];
 
