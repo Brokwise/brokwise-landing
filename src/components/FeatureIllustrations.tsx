@@ -360,14 +360,14 @@ export const ShieldIllustration = () => (
 );
 
 export const ChatIllustration = () => (
-  <div className="relative w-full flex items-center justify-center">
+  <div className="relative w-full flex items-center justify-center pb-8 ">
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
       <div className="w-28 h-28 rounded-full bg-sky-500/10 blur-[48px] animate-feature-pulse" />
     </div>
 
-    <div className="relative w-[70%] max-w-[200px]">
+    <div className="relative w-[58%] max-w-[170px]">
       <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl relative z-10">
-        <div className="px-3 py-2 border-b border-white/5 bg-white/5 flex items-center gap-2">
+        <div className="px-3 py-1 border-b border-white/5 bg-white/5 flex items-center gap-2 ">
           <div className="w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/30 shrink-0" />
           <div>
             <div className="text-[9px] font-medium text-neutral-500">Rahul M.</div>
@@ -389,19 +389,11 @@ export const ChatIllustration = () => (
           <div className="flex justify-end animate-feature-msg-2">
             <div className="bg-sky-500/20 border border-sky-500/20 rounded-xl rounded-tr-sm px-2.5 py-1.5 max-w-[85%]">
               <p className="text-[8px] leading-relaxed text-neutral-500">Yes! Share the details.</p>
-              <span className="text-[7px] text-sky-200/50 mt-0.5 block text-right">2:31 PM</span>
+              {/* <span className="text-[7px] text-sky-200/50 mt-0.5 block text-right">2:31 PM</span> */}
             </div>
           </div>
 
-          <div className="animate-feature-msg-3">
-            <div className="bg-white/10 border border-white/5 rounded-xl rounded-tl-sm px-3 py-2 w-fit">
-              <div className="flex items-center gap-1">
-                <div className="w-1 h-1 rounded-full bg-neutral-400 animate-feature-typing-1" />
-                <div className="w-1 h-1 rounded-full bg-neutral-400 animate-feature-typing-2" />
-                <div className="w-1 h-1 rounded-full bg-neutral-400 animate-feature-typing-3" />
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
