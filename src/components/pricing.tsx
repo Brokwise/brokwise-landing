@@ -117,16 +117,12 @@ const Pricing = () => {
                                     const eventId = uuidv4();
                                     sendGTMEvent({
                                         event: "InitiateCheckout",
-                                        plan: plan.buttonText,
+                                        plan: plan.buttonId,
                                         eventId: eventId,
-                                    })
-                                    // fpixel.event("InitiateCheckout", {
-                                    //     content_name: plan.name,
-                                    //     content_category: planType,
-                                    //     value: plan.price,
-                                    //     currency: "INR",
-                                    // });
-                                    window.location.href = "https://app.brokwise.com";
+                                    });
+                                    setTimeout(() => {
+                                        window.location.href = "https://app.brokwise.com";
+                                    }, 300);
                                 }}
                                 className={cn(
                                     "w-full py-3 px-6 rounded-xl text-sm font-normal transition-colors duration-300",
