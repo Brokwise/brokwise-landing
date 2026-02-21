@@ -116,7 +116,7 @@ const Pricing = () => {
                                 onClick={() => {
                                     const eventId = uuidv4();
                                     sendGTMEvent({
-                                        event: "InitiateCheckout",
+                                        event: "InitiateCheckout - Landing",
                                         plan: plan.buttonId,
                                         eventId: eventId,
                                     });
