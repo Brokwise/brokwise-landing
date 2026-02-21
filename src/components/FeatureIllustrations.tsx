@@ -84,14 +84,14 @@ export const AlertIllustration = () => (
 );
 
 export const AnalyticsIllustration = () => (
-  <div className="relative w-full h-full flex items-center justify-center p-4">
+  <div className="relative w-full h-full flex items-center justify-center p-1 sm:p-4 -translate-y-1 sm:translate-y-0">
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div className="w-56 h-56 rounded-full bg-purple-500/10 blur-[80px] animate-feature-pulse" />
+      <div className="w-36 h-36 sm:w-56 sm:h-56 rounded-full bg-purple-500/10 blur-[80px] animate-feature-pulse" />
     </div>
 
-    <div className="relative w-full max-w-[360px]">
-      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 shadow-2xl relative z-10">
-        <div className="flex items-center justify-between mb-6">
+    <div className="relative w-full max-w-[205px] sm:max-w-[360px] scale-[0.72] sm:scale-100 origin-center">
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4 sm:p-6 shadow-2xl relative z-10">
+        <div className="flex items-center justify-between mb-3 sm:mb-6">
           <div>
             <div className="text-[11px] font-medium text-neutral-400 mb-1">Total Revenue</div>
             <div className="text-xl font-semibold text-neutral-400 tracking-tight">₹24.8L</div>
@@ -104,7 +104,7 @@ export const AnalyticsIllustration = () => (
           </div>
         </div>
 
-        <div className="flex items-end gap-2.5 h-[110px] mb-4">
+        <div className="flex items-end gap-1 sm:gap-2.5 h-[72px] sm:h-[110px] mb-2 sm:mb-4">
           {[
             { h: 40, color: "from-purple-500/30 to-transparent" },
             { h: 65, color: "from-purple-500/40 to-transparent" },
@@ -129,20 +129,20 @@ export const AnalyticsIllustration = () => (
 
         <div className="flex justify-between px-1">
           {["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"].map((m) => (
-            <span key={m} className="text-[9px] font-medium text-neutral-500">{m}</span>
+            <span key={m} className="hidden sm:inline text-[9px] font-medium text-neutral-500">{m}</span>
           ))}
         </div>
       </div>
 
       {/* Floating stats cards */}
-      <div className="absolute -top-10 -right-4  z-20">
+      <div className="hidden sm:block absolute -top-10 -right-4 z-20">
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl px-4 py-3 shadow-2xl">
           <div className="text-[9px] font-medium text-neutral-400 mb-0.5">Deals Closed</div>
           <div className="text-base font-semibold text-neutral-400">47</div>
         </div>
       </div>
 
-      <div className="absolute -bottom-4 -left-4  z-20">
+      <div className="hidden sm:block absolute -bottom-4 -left-4 z-20">
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl px-4 py-3 shadow-2xl">
           <div className="text-[9px] font-medium text-neutral-400 mb-0.5">Conversion</div>
           <div className="text-base font-semibold text-emerald-400">68%</div>
@@ -150,7 +150,7 @@ export const AnalyticsIllustration = () => (
       </div>
 
       {/* Smoother Trend line */}
-      <svg className="absolute top-14 left-8 w-[75%] h-[70px] pointer-events-none z-20" viewBox="0 0 200 50" fill="none">
+      <svg className="hidden sm:block absolute top-14 left-8 w-[75%] h-[70px] pointer-events-none z-20" viewBox="0 0 200 50" fill="none">
         <path
           d="M0 45 C30 40, 50 20, 80 25 S130 5, 160 10 S190 2, 200 -5"
           stroke="url(#trendGrad)"
@@ -174,14 +174,14 @@ export const AnalyticsIllustration = () => (
 );
 
 export const MatchingIllustration = () => (
-  <div className="relative w-full h-full flex items-center justify-center p-4">
+  <div className="relative w-full h-full flex items-center justify-center p-1 sm:p-4 -translate-y-1 sm:translate-y-0">
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div className="w-48 h-48 rounded-full bg-rose-500/10 blur-[80px] animate-feature-pulse" />
+      <div className="w-32 h-32 sm:w-48 sm:h-48 rounded-full bg-rose-500/10 blur-[80px] animate-feature-pulse" />
     </div>
 
-    <div className="relative w-full max-w-[340px] h-[220px]">
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[130px] animate-feature-slide-in-left z-10">
-        <div className="bg-white backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl">
+    <div className="relative w-full max-w-[230px] sm:max-w-[340px] h-[138px] sm:h-[220px] scale-[0.78] sm:scale-100 origin-center">
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[96px] sm:w-[130px] animate-feature-slide-in-left z-10">
+        <div className="bg-white backdrop-blur-md border border-white/10 rounded-2xl p-2.5 sm:p-4 shadow-xl">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-full bg-rose-500/10 border border-rose-500/20 flex items-center justify-center">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgb(251,113,133)" strokeWidth="2">
@@ -207,8 +207,8 @@ export const MatchingIllustration = () => (
         </div>
       </div>
 
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[130px] animate-feature-slide-in-right z-10">
-        <div className="bg-white backdrop-blur-md border border-white/10 rounded-2xl p-4 shadow-xl">
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[96px] sm:w-[130px] animate-feature-slide-in-right z-10">
+        <div className="bg-white backdrop-blur-md border border-white/10 rounded-2xl p-2.5 sm:p-4 shadow-xl">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-8 h-8 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgb(251,191,36)" strokeWidth="2">
@@ -236,8 +236,8 @@ export const MatchingIllustration = () => (
 
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
         <div className="relative">
-          <div className="absolute inset-0 -m-6 rounded-full bg-rose-500/20 blur-xl animate-feature-pulse" />
-          <div className="w-14 h-14 rounded-full bg-gradient-to-br from-rose-500/20 to-pink-600/10 border border-rose-500/30 flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(244,63,94,0.3)] animate-feature-glow-pulse">
+          <div className="absolute inset-0 -m-4 sm:-m-6 rounded-full bg-rose-500/20 blur-xl animate-feature-pulse" />
+          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-rose-500/20 to-pink-600/10 border border-rose-500/30 flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(244,63,94,0.3)] animate-feature-glow-pulse">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(251,113,133)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
             </svg>
@@ -276,8 +276,8 @@ export const MatchingIllustration = () => (
         </defs>
       </svg>
 
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-2 animate-feature-fade-in-2 z-20">
-        <div className="bg-emerald-500/10 backdrop-blur-md border border-emerald-500/20 rounded-full px-4 py-1.5 flex items-center gap-2 shadow-lg">
+      <div className="hidden sm:block absolute left-1/2 -translate-x-1/2 bottom-0 sm:bottom-2 animate-feature-fade-in-2 z-20">
+        <div className="bg-emerald-500/10 backdrop-blur-md border border-emerald-500/20 rounded-full px-3 sm:px-4 py-1 sm:py-1.5 flex items-center gap-1.5 sm:gap-2 shadow-lg">
           <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)] animate-pulse" />
           <span className="text-[10px] text-neutral-400 font-semibold tracking-wide">96% MATCH</span>
         </div>
