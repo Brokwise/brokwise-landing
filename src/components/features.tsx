@@ -7,7 +7,7 @@ import {
     AnalyticsIllustration,
     MatchingIllustration,
     ShieldIllustration,
-    ChatIllustration,
+    BiddingIllustration,
 } from './FeatureIllustrations';
 
 const featuresData: BentoCardProps[] = [
@@ -52,12 +52,12 @@ const featuresData: BentoCardProps[] = [
         color: '52, 211, 153'
     },
     {
-        title: 'In-App Chat',
-        description: 'Negotiate and communicate with other brokers without leaving the platform. All conversations in one place.',
-        label: 'Communication',
+        title: 'Boosted Proposals',
+        description: 'Bid credits to get top listing positions and attract buyers.',
+        label: 'Bidding',
         className: 'md:col-span-1',
-        illustration: <ChatIllustration />,
-        color: '56, 189, 248'
+        illustration: <BiddingIllustration />,
+        color: '139, 92, 246'
     }
 ];
 

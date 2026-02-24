@@ -359,43 +359,71 @@ export const ShieldIllustration = () => (
   </div>
 );
 
-export const ChatIllustration = () => (
-  <div className="relative w-full flex items-center justify-center pb-8 ">
+export const BiddingIllustration = () => (
+  <div className="relative w-full h-full flex items-center justify-center p-2 pb-10">
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div className="w-28 h-28 rounded-full bg-sky-500/10 blur-[48px] animate-feature-pulse" />
+      <div className="w-32 h-32 rounded-full bg-violet-500/15 blur-[64px] animate-feature-pulse" />
     </div>
 
-    <div className="relative w-[58%] max-w-[170px]">
-      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden shadow-2xl relative z-10">
-        <div className="px-3 py-1 border-b border-white/5 bg-white/5 flex items-center gap-2 ">
-          <div className="w-5 h-5 rounded-full bg-blue-500/20 border border-blue-500/30 shrink-0" />
-          <div>
-            <div className="text-[9px] font-medium text-neutral-500">Rahul M.</div>
-            <div className="flex items-center gap-1 mt-0.5">
-              <div className="w-1 h-1 rounded-full bg-emerald-400 shadow-[0_0_4px_rgba(52,211,153,0.6)]" />
-              <span className="text-[7px] font-medium text-emerald-400/80 tracking-wide uppercase">Online</span>
+    <div className="relative w-full max-w-[200px] scale-[0.85] sm:scale-100 origin-center">
+      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-xl p-1 shadow-2xl relative z-10">
+        <div className="flex items-center justify-between mb-1 border-b border-white/5 pb-1">
+          <div className="flex items-center gap-1.5">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgb(139,92,246)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+            </svg>
+            <span className="text-[10px] font-semibold text-neutral-500 tracking-wide">Boost Proposal</span>
+          </div>
+          <span className="text-[8px] bg-white/10 px-1.5 py-0.5 rounded text-neutral-400">4 spots</span>
+        </div>
+
+        <div className="space-y-1 mb-1">
+          {/* Rank 1 */}
+          <div className="flex items-center justify-between bg-violet-500/10 border border-violet-500/20 rounded-lg px-1.5 py-1 relative overflow-hidden">
+            <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-violet-400" />
+            <div className="flex items-center gap-2 pl-1">
+              <span className="text-[10px] font-bold text-violet-400">#1</span>
+              <div>
+
+                <div className="text-[9px] font-bold text-violet-300">24 Credits</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Rank 2 */}
+          <div className="flex items-center justify-between bg-white/5 border border-white/5 rounded-lg px-1.5 py-1 ">
+            <div className="flex items-center gap-2 pl-1.5">
+              <span className="text-[10px] font-bold text-neutral-400">#2</span>
+              <div>
+                <div className="text-[9px] font-bold text-neutral-400">20 Credits</div>
+
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="p-1 space-y-0">
-          <div className="animate-feature-msg-1">
-            <div className="bg-white border border-white/5 rounded-xl rounded-tl-sm px-2.5 py-1.5 max-w-[85%]">
-              <p className="text-[8px] leading-relaxed text-neutral-500">I have a 3BHK in Andheri. Interested?</p>
-              <span className="text-[7px] text-neutral-400 mt-0.5 block">2:30 PM</span>
+        {/* Action area */}
+        <div className="bg-gradient-to-r from-violet-500/20 to-fuchsia-500/20 border border-violet-500/30 rounded-lg px-1.5 py-1 ">
+          {/* <div className="flex justify-between items-center mb-1">
+            <span className="text-[8px] text-neutral-500">Your Bid</span>
+            <span className="text-[8px] font-medium text-neutral-400">Need 25+ for #1</span>
+          </div> */}
+          <div className="flex items-center gap-1">
+            <div className="flex-1 bg-white-500/20 border border-white/10 rounded flex items-center justify-between px-2 py-1">
+              <span className="text-[9px] text-neutral-500">25</span>
+              <span className="text-[7px] text-neutral-500">Credits</span>
+            </div>
+            <div className="w-5 h-5 rounded bg-violet-500 flex items-center justify-center shadow-[0_0_8px_rgba(139,92,246,0.6)]">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
             </div>
           </div>
-
-          <div className="flex justify-end animate-feature-msg-2">
-            <div className="bg-sky-500/20 border border-sky-500/20 rounded-xl rounded-tr-sm px-2.5 py-1.5 max-w-[85%]">
-              <p className="text-[8px] leading-relaxed text-neutral-500">Yes! Share the details.</p>
-              {/* <span className="text-[7px] text-sky-200/50 mt-0.5 block text-right">2:31 PM</span> */}
-            </div>
-          </div>
-
-
         </div>
       </div>
+
+      {/* Floating badge */}
+
     </div>
   </div>
 );
