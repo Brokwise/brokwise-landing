@@ -27,7 +27,7 @@ export default function Hero() {
           Collaborate & Close Deals.
         </h1>
 
-        <p className="text-lg md:text-xl text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed">
+        <p className="text-lg md:text-xl text-foreground font-light max-w-2xl mx-auto leading-relaxed">
           The all-in-one platform that helps real estate brokers list properties, find matching buyers, and scale their business effortlessly.
         </p>
 

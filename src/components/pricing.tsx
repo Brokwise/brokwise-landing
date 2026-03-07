@@ -1,17 +1,34 @@
 "use client"
 import { sendGTMEvent } from '@next/third-parties/google';
-import React, { useState } from 'react'
-import { Check } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { Check, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid';
-import { pricingData } from '@/lib/config';
-
-
+import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConfig } from '@/lib/config';
 
 type PlanType = 'activation' | 'monthly' | 'quarterly'
 
 const Pricing = () => {
     const [planType, setPlanType] = useState<PlanType>('activation')
+    const [pricing, setPricing] = useState<PricingData>(pricingDataFallback)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchTierConfig = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/tier-config`)
+                const json: TierConfigResponse = await res.json()
+                if (json.success) {
+                    setPricing(transformTierConfig(json.data))
+                }
+            } catch {
+                // fallback already set
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchTierConfig()
+    }, [])
 
     const getPlanLabel = (type: PlanType) => {
         switch (type) {
@@ -66,75 +83,81 @@ const Pricing = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    {pricingData[planType].map((plan, index) => (
-                        <div
-                            key={index}
-                            className={cn(
-                                "relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-lg flex flex-col bg-card",
-                                plan.popular
-                                    ? "border-primary/50 shadow-md scale-105 z-10"
-                                    : "border-border hover:border-primary/20"
-                            )}
-                        >
-                            {plan.popular && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-normal tracking-wide">
-                                    MOST POPULAR
-                                </div>
-                            )}
-
-                            <div className="mb-8">
-                                <h3 className="text-xl font-normal text-foreground mb-2">{plan.name}</h3>
-                                <div className="flex items-baseline gap-1 mb-1">
-                                    <span className="text-4xl font-normal text-foreground">₹{plan.price.toLocaleString()}</span>
-                                    <span className="text-muted-foreground font-light text-sm">
-                                        {planType === 'monthly' ? '/month' : planType === 'quarterly' ? '/3 months' : '/pack'}
-                                    </span>
-                                </div>
-                                <p className="text-xs text-muted-foreground font-light mb-4">
-                                    + 18% GST
-                                </p>
-                                <p className="text-muted-foreground font-light text-sm leading-relaxed">
-                                    {plan.description}
-                                </p>
-                            </div>
-
-                            <div className="flex-1 mb-8">
-                                <ul className="space-y-4">
-                                    {plan.features.map((feature, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-sm text-foreground/80 font-light">
-                                            <div className="mt-0.5 p-0.5 rounded-full bg-primary/10 text-primary shrink-0">
-                                                <Check className="w-3 h-3" />
-                                            </div>
-                                            {feature}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <button
-                                onClick={() => {
-                                    const eventId = uuidv4();
-                                    sendGTMEvent({
-                                        event: "InitiateCheckout - Landing",
-                                        plan: plan.buttonId,
-                                        eventId: eventId,
-                                    });
-                                    setTimeout(() => {
-                                        window.location.href = "https://app.brokwise.com";
-                                    }, 300);
-                                }}
+                {loading ? (
+                    <div className="flex justify-center items-center py-20">
+                        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                        {pricing[planType].map((plan, index) => (
+                            <div
+                                key={index}
                                 className={cn(
-                                    "w-full py-3 px-6 rounded-xl text-sm font-normal transition-colors duration-300",
+                                    "relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-lg flex flex-col bg-card",
                                     plan.popular
-                                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                                )}>
-                                {plan.buttonText}
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                        ? "border-primary/50 shadow-md scale-105 z-10"
+                                        : "border-border hover:border-primary/20"
+                                )}
+                            >
+                                {plan.popular && (
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-normal tracking-wide">
+                                        MOST POPULAR
+                                    </div>
+                                )}
+
+                                <div className="mb-8">
+                                    <h3 className="text-xl font-normal text-foreground mb-2">{plan.name}</h3>
+                                    <div className="flex items-baseline gap-1 mb-1">
+                                        <span className="text-4xl font-normal text-foreground">₹{plan.price.toLocaleString()}</span>
+                                        <span className="text-muted-foreground font-light text-sm">
+                                            {planType === 'monthly' ? '/month' : planType === 'quarterly' ? '/3 months' : '/pack'}
+                                        </span>
+                                    </div>
+                                    <p className="text-xs text-muted-foreground font-light mb-4">
+                                        + 18% GST
+                                    </p>
+                                    <p className="text-muted-foreground font-light text-sm leading-relaxed">
+                                        {plan.description}
+                                    </p>
+                                </div>
+
+                                <div className="flex-1 mb-8">
+                                    <ul className="space-y-4">
+                                        {plan.features.map((feature, i) => (
+                                            <li key={i} className="flex items-start gap-3 text-sm text-foreground/80 font-light">
+                                                <div className="mt-0.5 p-0.5 rounded-full bg-primary/10 text-primary shrink-0">
+                                                    <Check className="w-3 h-3" />
+                                                </div>
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                                <button
+                                    onClick={() => {
+                                        const eventId = uuidv4();
+                                        sendGTMEvent({
+                                            event: "InitiateCheckout - Landing",
+                                            plan: plan.buttonId,
+                                            eventId: eventId,
+                                        });
+                                        setTimeout(() => {
+                                            window.location.href = "https://app.brokwise.com";
+                                        }, 300);
+                                    }}
+                                    className={cn(
+                                        "w-full py-3 px-6 rounded-xl text-sm font-normal transition-colors duration-300",
+                                        plan.popular
+                                            ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                                            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                                    )}>
+                                    {plan.buttonText}
+                                </button>
+                            </div>
+                        ))}
+                    </div>
+                )}
             </div>
         </section>
     )

@@ -466,7 +466,7 @@ const BentoCardGrid: React.FC<{
     gridRef?: React.RefObject<HTMLDivElement | null>;
 }> = ({ children, gridRef }) => (
     <div
-        className="bento-section grid gap-2 p-3 w-full max-w-7xl select-none relative"
+        className="bento-section grid gap-2 w-full max-w-full md:max-w-7xl select-none relative"
         style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)' }}
         ref={gridRef as React.RefObject<HTMLDivElement>}
     >
@@ -622,7 +622,8 @@ const MagicBento: React.FC<BentoProps> = ({
             
             .card-responsive .card {
               width: 100%;
-              min-height: 180px;
+              min-height: 280px;
+              aspect-ratio: auto;
             }
           }
         `}
@@ -641,7 +642,7 @@ const MagicBento: React.FC<BentoProps> = ({
             <BentoCardGrid gridRef={gridRef}>
                 <div className="card-responsive">
                     {cards.map((card, index) => {
-                        const baseClassName = `card group flex flex-col justify-between relative aspect-[4/3] min-h-[100px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-colors duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''
+                        const baseClassName = `card group flex flex-col justify-between relative sm:aspect-[4/3] min-h-[280px] sm:min-h-[100px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-colors duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''
                             } ${card.className || ''}`;
 
                         const cardStyle = {

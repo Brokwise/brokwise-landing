@@ -74,7 +74,7 @@ const Features = () => {
                     </p>
                 </div>
 
-                <div className="flex justify-center">
+                <div className="flex justify-center w-full">
                     <MagicBento
                         cards={featuresData}
                         enableStars={true}
