@@ -1,8 +1,18 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Calendar } from "lucide-react";
+
+import { getCalApi } from "@calcom/embed-react";
+import { useEffect } from "react";
 
 export default function Hero() {
+  useEffect(() => {
+    (async function () {
+      const cal = await getCalApi({ "namespace": "30min" });
+      cal("ui", { "hideEventTypeDetails": false, "layout": "month_view" });
+    })();
+  }, [])
   return (
     <section className="relative h-[90vh] min-h-[600px] w-full flex flex-col items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -31,10 +41,19 @@ export default function Hero() {
           The all-in-one platform that helps real estate brokers list properties, find matching buyers, and scale their business effortlessly.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 mt-4">
+        <div className="flex flex-col sm:flex-row gap-4 mt-8 w-full justify-center">
+          <button 
+            className="group inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-base font-medium text-black transition-all duration-300 hover:bg-gray-50 hover:scale-105 active:scale-95 shadow-[0_0_20px_-5px_rgba(255,255,255,0.3)] hover:shadow-[0_0_25px_-5px_rgba(255,255,255,0.5)] border border-gray-100"
+            data-cal-namespace="30min"
+            data-cal-link="anshul-sharma/30min"
+            data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+          >
+            <Calendar className="mr-2 h-4 w-4 transition-transform group-hover:-rotate-12 text-gray-600 group-hover:text-black" />
+            Book a Demo
+          </button>
           <Link
             href="https://app.brokwise.com"
-            className="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-medium text-primary-foreground transition-all hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl"
+            className="group inline-flex items-center justify-center rounded-full bg-primary px-8 py-4 text-base font-medium text-primary-foreground transition-all duration-300 hover:bg-primary/90 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Get started
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
