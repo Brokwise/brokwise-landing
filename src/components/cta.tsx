@@ -11,14 +11,11 @@ const CTA = () => {
         <section className="py-24 md:py-32 relative overflow-hidden bg-transparent">
             <div className="container px-4 md:px-6 mx-auto relative z-10">
                 <div className="max-w-4xl mx-auto text-center space-y-10">
-                    <div className="inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-2 text-sm text-primary transition-colors hover:bg-primary/10 backdrop-blur-sm">
-                        <Sparkles className="w-3.5 h-3.5" />
-                        <span className="font-normal tracking-wide text-white">Get Flat 90% off for the first month</span>
-                    </div>
+
 
                     <h2 className="text-4xl md:text-5xl lg:text-6xl font-normal tracking-tight text-foreground leading-[1.1]">
                         Ready to Transform Your <br className="hidden md:block" />
-                        <span className="text-white">Brokerage Business?</span>
+                        <span className="text-white">Real Estate Business?</span>
                     </h2>
 
                     <p className="text-lg md:text-xl text-white max-w-2xl mx-auto font-light leading-relaxed">

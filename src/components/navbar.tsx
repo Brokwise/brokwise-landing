@@ -35,14 +35,14 @@ const NavBar = () => {
                     "fixed left-1/2 -translate-x-1/2 z-50 transition-all duration-500 ease-in-out",
                     isScrolled
                         ? "top-0 w-full rounded-none border-b border-white/10 bg-black/80 backdrop-blur-xl px-6 py-4 shadow-2xl shadow-black/20"
-                        : "top-4 md:top-6 w-[90%] md:w-full max-w-4xl rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-6 py-3 md:py-4 shadow-2xl shadow-black/20"
+                        : "top-4 md:top-6 w-[90%] md:w-full max-w-4xl rounded-full border border-white/10 bg-black/40 backdrop-blur-xl px-6 py-2 md:py-4 shadow-2xl shadow-black/20"
                 )}
             >
                 <div className="flex items-center justify-between">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2 group">
-                        <span className="text-xl font-serif italic text-white tracking-tight group-hover:text-primary/90 transition-colors rounded-full">
-                            <Image className="rounded-full" src={"/logo.webp"} alt="Brokwise Logo" width={50} height={50} />
+                        <span className="text-xl font-serif italic text-white tracking-tight group-hover:text-primary/90 transition-colors rounded-full relative w-10 h-10">
+                            <Image className="rounded-full" src={"/logo.webp"} alt="Brokwise Logo" fill />
                         </span>
                     </Link>
 

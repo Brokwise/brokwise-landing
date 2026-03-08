@@ -141,7 +141,7 @@ const FAQ = () => {
     };
 
     return (
-        <section id="faq" className="w-full py-20 bg-background text-foreground font-sans">
+        <section id="faq" className="w-full md:py-20 py-8 bg-background text-foreground font-sans">
             <div className="container mx-auto px-4 md:px-6 max-w-4xl">
                 <div className="text-center mb-16 space-y-4">
                     <h2 className="text-3xl md:text-4xl font-normal tracking-tight text-foreground">

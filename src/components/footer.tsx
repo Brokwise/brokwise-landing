@@ -12,7 +12,7 @@ const Footer = () => {
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-20">
                         {/* Brand - Spans 4 columns */}
                         <div className="md:col-span-5 lg:col-span-4">
-                            <div className="text-3xl md:text-4xl text-white tracking-tight font-serif italic mb-6">
+                            <div className="text-3xl md:text-4xl text-white tracking-tight font-serif  mb-6">
                                 Brokwise
                             </div>
                             <p className="text-sm md:text-base leading-relaxed mb-8 max-w-sm text-neutral-400 font-light">

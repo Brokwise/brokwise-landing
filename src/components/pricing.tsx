@@ -1,7 +1,7 @@
 "use client"
 import { sendGTMEvent } from '@next/third-parties/google';
-import React, { useEffect, useState } from 'react'
-import { Check, Loader2 } from 'lucide-react'
+import React, { useEffect, useState, useRef } from 'react'
+import { Check, Loader2, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid';
 import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConfig } from '@/lib/config';
@@ -32,9 +32,9 @@ const Pricing = () => {
 
     const getPlanLabel = (type: PlanType) => {
         switch (type) {
-            case 'activation': return 'Activation Packs'
-            case 'monthly': return 'Monthly Subscription'
-            case 'quarterly': return '3 Month Subscription'
+            case 'activation': return 'Activation'
+            case 'monthly': return 'Monthly'
+            case 'quarterly': return '3 Months'
         }
     }
 
@@ -46,8 +46,17 @@ const Pricing = () => {
         }
     }
 
+    const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+    const scrollNext = () => {
+        if (scrollContainerRef.current) {
+            const cardWidth = scrollContainerRef.current.children[0].clientWidth
+            scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
+        }
+    }
+
     return (
-        <section id="pricing" className="py-24 bg-background relative overflow-hidden font-sans">
+        <section id="pricing" className="md:py-24 py-4 bg-background relative overflow-hidden font-sans">
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
 
             <div className="container px-4 mx-auto relative z-10">
@@ -60,14 +69,13 @@ const Pricing = () => {
                     </p>
 
                     <div className="flex flex-col items-center gap-6 mt-8">
-                        {/* Plan Type Selector */}
-                        <div className="inline-flex flex-wrap justify-center gap-2 p-1 rounded-full bg-secondary border border-border">
+                        <div className="inline-flex justify-center gap-2 p-1 rounded-full bg-secondary border border-border">
                             {(['activation', 'monthly', 'quarterly'] as PlanType[]).map((type) => (
                                 <button
                                     key={type}
                                     onClick={() => setPlanType(type)}
                                     className={cn(
-                                        "px-6 py-2 rounded-full text-sm font-normal transition-all duration-300",
+                                        "px-2 md:px-6 py-2 rounded-full md:text-sm text-xs font-normal transition-all duration-300",
                                         planType === type
                                             ? "bg-background text-foreground shadow-sm"
                                             : "text-muted-foreground hover:text-foreground"
@@ -88,17 +96,21 @@ const Pricing = () => {
                         <Loader2 className="w-8 h-8 animate-spin text-primary" />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                        {pricing[planType].map((plan, index) => (
-                            <div
-                                key={index}
-                                className={cn(
-                                    "relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-lg flex flex-col bg-card",
-                                    plan.popular
-                                        ? "border-primary/50 shadow-md scale-105 z-10"
-                                        : "border-border hover:border-primary/20"
-                                )}
-                            >
+                    <div className="relative">
+                        <div 
+                            ref={scrollContainerRef}
+                            className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 max-w-7xl md:mx-auto overflow-x-auto snap-x snap-mandatory pb-8 md:pb-0 px-4 md:px-0 -mx-4 scrollbar-hide"
+                        >
+                            {pricing[planType].map((plan, index) => (
+                                <div
+                                    key={index}
+                                    className={cn(
+                                        "min-w-[85vw] md:min-w-0 snap-center md:snap-align-none relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-lg flex flex-col bg-card",
+                                        plan.popular
+                                            ? "border-primary/50 shadow-md md:scale-105 z-10"
+                                            : "border-border hover:border-primary/20"
+                                    )}
+                                >
                                 {plan.popular && (
                                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-normal tracking-wide">
                                         MOST POPULAR
@@ -157,6 +169,16 @@ const Pricing = () => {
                             </div>
                         ))}
                     </div>
+                    
+                    {/* Mobile Navigation Arrow */}
+                    <button 
+                        onClick={scrollNext}
+                        className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-background/80 backdrop-blur-sm p-3 rounded-full shadow-lg border border-border text-foreground hover:bg-secondary transition-colors"
+                        aria-label="Next plan"
+                    >
+                        <ChevronRight className="w-6 h-6" />
+                    </button>
+                </div>
                 )}
             </div>
         </section>
