@@ -40,9 +40,9 @@ const Pricing = () => {
 
     const getPlanSubtitle = (type: PlanType) => {
         switch (type) {
-            case 'activation': return 'Mandatory First Month'
-            case 'monthly': return 'Billed Monthly'
-            case 'quarterly': return 'Billed Quarterly'
+            case 'activation': return 'Required to Get Started'
+            case 'monthly': return 'Renews Every Month'
+            case 'quarterly': return 'Renews Every 3 Months'
         }
     }
 
