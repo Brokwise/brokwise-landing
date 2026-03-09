@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react'
-import { ArrowRight, CheckCircle2, Sparkles } from 'lucide-react'
+import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import * as fpixel from '@/lib/fpixel'
 
