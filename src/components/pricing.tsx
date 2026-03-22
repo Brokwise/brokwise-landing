@@ -8,6 +8,13 @@ import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConf
 
 type PlanType = 'activation' | 'monthly' | 'quarterly'
 
+const featureContextByIndex: (string | null)[] = [
+    "Add property to marketplace",
+    "Add buyer requirement",
+    "Respond to requirement",
+    null,
+]
+
 const Pricing = () => {
     const [planType, setPlanType] = useState<PlanType>('activation')
     const [pricing, setPricing] = useState<PricingData>(pricingDataFallback)
@@ -34,15 +41,15 @@ const Pricing = () => {
         switch (type) {
             case 'activation': return 'Activation'
             case 'monthly': return 'Monthly'
-            case 'quarterly': return '3 Months'
+            case 'quarterly': return '3-Month'
         }
     }
 
     const getPlanSubtitle = (type: PlanType) => {
         switch (type) {
-            case 'activation': return 'Required to Get Started'
-            case 'monthly': return 'Renews Every Month'
-            case 'quarterly': return 'Renews Every 3 Months'
+            case 'activation': return 'Exclusive introductory access to the verified Brokwise network.'
+            case 'monthly': return 'Structured monthly access for consistent professional deal flow.'
+            case 'quarterly': return 'Extended premium access for sustained market expansion.'
         }
     }
 
@@ -140,7 +147,14 @@ const Pricing = () => {
                                                     <div className="mt-0.5 p-0.5 rounded-full bg-primary/10 text-primary shrink-0">
                                                         <Check className="w-3 h-3" />
                                                     </div>
-                                                    {feature}
+                                                    <div>
+                                                        <p>{feature}</p>
+                                                        {featureContextByIndex[i] && (
+                                                            <p className="text-xs text-muted-foreground mt-1">
+                                                                {featureContextByIndex[i]}
+                                                            </p>
+                                                        )}
+                                                    </div>
                                                 </li>
                                             ))}
                                         </ul>

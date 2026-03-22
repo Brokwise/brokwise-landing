@@ -3,32 +3,46 @@ import { Star } from 'lucide-react';
 
 const testimonials = [
     {
+        initials: "AJ",
+        name: "Amit Jain",
+        role: "Residential Broker",
+        location: "Jaipur",
+        content: "Through Brokwise, I started receiving enquiries from areas I never operated in before. Without opening a new branch, my working market expanded."
+    },
+    {
+        initials: "SY",
+        name: "Sandeep Yadav",
+        role: "Property Consultant",
+        location: "Gurugram",
+        content: "Instead of waiting for leads, I now see active requirements daily. Even if one deal doesn&apos;t work, there are always new opportunities available."
+    },
+    {
+        initials: "PV",
+        name: "Priya Verma",
+        role: "Residential Broker",
+        location: "Noida",
+        content: "I like that my contact details are not shared automatically. I decide when to share. This gives better control and avoids time-wasters."
+    },
+    {
+        initials: "MP",
+        name: "Mehul Patel",
+        role: "Brokerage Firm Owner",
+        location: "Ahmedabad",
+        content: "The best part is that only verified brokers are allowed. No fake listings, no unnecessary spam. It feels like a professional network."
+    },
+    {
         initials: "RS",
         name: "Rajesh Sharma",
-        role: "Property Dealer",
-        location: "Mumbai",
-        content: "Brokwise has completely transformed my business. I closed 15 deals last month just through broker connections I made on this platform. The ROI is incredible!"
+        role: "Plot Consultant",
+        location: "Jaipur",
+        content: "Earlier I had to make 30-40 calls daily to match requirements. On Brokwise, I just post an enquiry and serious brokers send proposals. It has saved me a lot of time."
     },
     {
-        initials: "PM",
-        name: "Priya Mehta",
-        role: "Real Estate Agent",
-        location: "Bangalore",
-        content: "As a solo agent, I always struggled to access premium listings. Now I have a network of 200+ brokers who share deals with me. My income has doubled in 6 months."
-    },
-    {
-        initials: "AP",
-        name: "Amit Patel",
-        role: "Agency Owner",
-        location: "Ahmedabad",
-        content: "Managing my team of 12 agents was a nightmare. Brokwise's dashboard gives me complete visibility. We've improved our closure rate by 40% since joining."
-    },
-    {
-        initials: "SR",
-        name: "Sunita Reddy",
-        role: "Independent Broker",
+        initials: "MF",
+        name: "Mohammed Faizan",
+        role: "Plot Specialist",
         location: "Hyderabad",
-        content: "The instant alerts feature alone is worth the subscription. I got a client their dream home within 2 days because I was the first to know about the listing!"
+        content: "I was earlier dependent only on my local contacts. Now I&apos;m getting access to premium requirements from other verified brokers. My average deal size has improved."
     }
 ];
 
@@ -51,7 +65,7 @@ const Testimonials = () => {
                     </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {testimonials.map((testimonial, index) => (
                         <div
                             key={index}
@@ -68,7 +82,7 @@ const Testimonials = () => {
                             </div>
 
                             {/* Content */}
-                            <p className="text-muted-foreground font-light leading-relaxed mb-8 min-h-[100px]">
+                            <p className="text-muted-foreground font-light leading-relaxed mb-8 min-h-[140px]">
                                 &apos;{testimonial.content}&apos;
                             </p>
 
