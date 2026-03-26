@@ -29,7 +29,7 @@ export interface BentoProps {
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-const DEFAULT_GLOW_COLOR = '132, 0, 255';
+const DEFAULT_GLOW_COLOR = '201, 169, 110';
 const MOBILE_BREAKPOINT = 768;
 
 const defaultCardData: BentoCardProps[] = [
@@ -521,8 +521,8 @@ const MagicBento: React.FC<BentoProps> = ({
             --background-dark: hsl(var(--card));
             --white: hsl(var(--foreground));
             --purple-primary: hsl(var(--primary));
-            --purple-glow: rgba(132, 0, 255, 0.2);
-            --purple-border: rgba(132, 0, 255, 0.8);
+            --purple-glow: rgba(201, 169, 110, 0.2);
+            --purple-border: rgba(201, 169, 110, 0.8);
           }
           
           .card-responsive {
@@ -575,7 +575,7 @@ const MagicBento: React.FC<BentoProps> = ({
           }
           
           .card--border-glow:hover {
-            box-shadow: 0 4px 20px rgba(46, 24, 78, 0.4), 0 0 30px rgba(${glowColor}, 0.2);
+            box-shadow: 0 4px 20px rgba(10, 8, 4, 0.6), 0 0 30px rgba(${glowColor}, 0.15);
           }
           
           .particle::before {
@@ -591,7 +591,7 @@ const MagicBento: React.FC<BentoProps> = ({
           }
           
           .particle-container:hover {
-            box-shadow: 0 4px 20px rgba(46, 24, 78, 0.2), 0 0 30px rgba(${glowColor}, 0.2);
+            box-shadow: 0 4px 20px rgba(10, 8, 4, 0.4), 0 0 30px rgba(${glowColor}, 0.15);
           }
           
           .text-clamp-1 {
@@ -670,7 +670,7 @@ const MagicBento: React.FC<BentoProps> = ({
                                     enableMagnetism={enableMagnetism}
                                 >
                                     <div className="card__header flex justify-between gap-3 relative z-10">
-                                        <span className="card__label text-[11px] uppercase tracking-widest text-white/40 font-medium">{card.label}</span>
+                                        <span className="card__label text-[11px] uppercase tracking-widest text-[#fcb542]/40 font-medium">{card.label}</span>
                                     </div>
                                     {card.illustration && (
                                         <div className="flex-1 flex items-center justify-center relative z-[1] pointer-events-none my-1 min-h-0">
@@ -678,11 +678,11 @@ const MagicBento: React.FC<BentoProps> = ({
                                         </div>
                                     )}
                                     <div className="card__content flex flex-col relative z-10">
-                                        <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
+                                        <h3 className={`card__title font-normal text-base m-0 mb-1 text-[#fcb542] ${textAutoHide ? 'text-clamp-1' : ''}`}>
                                             {card.title}
                                         </h3>
                                         <p
-                                            className={`card__description text-xs leading-5 opacity-70 ${textAutoHide ? 'text-clamp-2' : ''}`}
+                                            className={`card__description text-xs leading-5 opacity-60 ${textAutoHide ? 'text-clamp-2' : ''}`}
                                         >
                                             {card.description}
                                         </p>
@@ -807,7 +807,7 @@ const MagicBento: React.FC<BentoProps> = ({
                                 }}
                             >
                                 <div className="card__header flex justify-between gap-3 relative z-10">
-                                    <span className="card__label text-[11px] uppercase tracking-widest text-white/40 font-medium">{card.label}</span>
+                                    <span className="card__label text-[11px] uppercase tracking-widest text-[#fcb542]/40 font-medium">{card.label}</span>
                                 </div>
                                 {card.illustration && (
                                     <div className="flex-1 flex items-center justify-center relative z-[1] pointer-events-none my-1 min-h-0">
@@ -815,10 +815,10 @@ const MagicBento: React.FC<BentoProps> = ({
                                     </div>
                                 )}
                                 <div className="card__content flex flex-col relative z-10">
-                                    <h3 className={`card__title font-normal text-base m-0 mb-1 ${textAutoHide ? 'text-clamp-1' : ''}`}>
+                                    <h3 className={`card__title font-normal text-base m-0 mb-1 text-[#fcb542] ${textAutoHide ? 'text-clamp-1' : ''}`}>
                                         {card.title}
                                     </h3>
-                                    <p className={`card__description text-xs leading-5 opacity-70 ${textAutoHide ? 'text-clamp-2' : ''}`}>
+                                    <p className={`card__description text-xs leading-5 opacity-60 ${textAutoHide ? 'text-clamp-2' : ''}`}>
                                         {card.description}
                                     </p>
                                 </div>

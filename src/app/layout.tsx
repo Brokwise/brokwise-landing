@@ -1,5 +1,5 @@
 import SmoothScrolling from "@/components/smooth-scrolling";
-import { Public_Sans } from "next/font/google";
+import { Public_Sans, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/navbar";
 import Script from "next/script";
@@ -12,6 +12,12 @@ const publicSans = Public_Sans({
   subsets: ["latin"],
   variable: "--font-public-sans",
   weight: ["300", "400", "500"],
+});
+
+const playfairDisplay = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata = {
@@ -27,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en" style={{ scrollBehavior: "smooth" }}>
       <body
-        className={`${publicSans.variable} antialiased bg-background text-foreground overflow-x-hidden selection:bg-primary/10 font-sans`}
+        className={`${publicSans.variable} ${playfairDisplay.variable} antialiased bg-background text-foreground overflow-x-hidden selection:bg-primary/10 font-sans`}
       >
         <Analytics />
         <Script

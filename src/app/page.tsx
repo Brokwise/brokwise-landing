@@ -20,9 +20,9 @@ export default function Home() {
       <div className="relative w-full overflow-hidden">
         <div className="absolute inset-0 w-full h-full z-0">
           <Grainient
-            color1="#FF9FFC"
-            color2="#5227FF"
-            color3="#B19EEF"
+            color1="#fcb542"
+            color2="#8B6914"
+            color3="#D4BA8A"
             timeSpeed={0.25}
             colorBalance={0}
             warpStrength={1}

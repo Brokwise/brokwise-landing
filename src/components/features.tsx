@@ -1,6 +1,7 @@
 "use client";
 import React from 'react';
 import MagicBento, { BentoCardProps } from './MagicBento';
+import HexPattern from './HexPattern';
 import {
     SearchIllustration,
     AlertIllustration,
@@ -17,7 +18,7 @@ const featuresData: BentoCardProps[] = [
         label: 'Search',
         className: 'md:col-span-1',
         illustration: <SearchIllustration />,
-        color: '59, 130, 246'
+        color: '201, 169, 110'
     },
     {
         title: 'Instant Alerts',
@@ -25,7 +26,7 @@ const featuresData: BentoCardProps[] = [
         label: 'Alerts',
         className: 'md:col-span-1',
         illustration: <AlertIllustration />,
-        color: '245, 158, 11'
+        color: '201, 169, 110'
     },
     {
         title: 'Performance Analytics',
@@ -33,7 +34,7 @@ const featuresData: BentoCardProps[] = [
         label: 'Analytics',
         className: 'md:col-span-2 md:row-span-2',
         illustration: <AnalyticsIllustration />,
-        color: '168, 85, 247'
+        color: '201, 169, 110'
     },
     {
         title: 'Lightning Fast Matching',
@@ -41,7 +42,7 @@ const featuresData: BentoCardProps[] = [
         label: 'AI Matching',
         className: 'md:col-span-2 md:row-span-2',
         illustration: <MatchingIllustration />,
-        color: '244, 63, 94'
+        color: '201, 169, 110'
     },
     {
         title: 'Verified Brokers Only',
@@ -49,7 +50,7 @@ const featuresData: BentoCardProps[] = [
         label: 'Trust',
         className: 'md:col-span-1',
         illustration: <ShieldIllustration />,
-        color: '52, 211, 153'
+        color: '201, 169, 110'
     },
     {
         title: 'Boosted Proposals',
@@ -57,16 +58,17 @@ const featuresData: BentoCardProps[] = [
         label: 'Bidding',
         className: 'md:col-span-1',
         illustration: <BiddingIllustration />,
-        color: '139, 92, 246'
+        color: '201, 169, 110'
     }
 ];
 
 const Features = () => {
     return (
         <section id="features" className="md:py-24 py-8 px-4 bg-background relative overflow-hidden">
-            <div className="max-w-7xl mx-auto">
+            <HexPattern id="hexFeatures" fade="radial" opacity={0.1} />
+            <div className="max-w-7xl mx-auto relative z-10">
                 <div className="text-center mb-16 max-w-3xl mx-auto">
-                    <h2 className="text-4xl md:text-5xl font-light mb-6 tracking-tight text-foreground">
+                    <h2 className="text-4xl md:text-5xl font-serif font-medium mb-6 tracking-tight text-[#fcb542]">
                         Everything You Need to Scale Your Business.
                     </h2>
                     <p className="text-lg md:text-xl text-muted-foreground font-light leading-relaxed">
@@ -80,8 +82,7 @@ const Features = () => {
                         enableStars={true}
                         enableSpotlight={true}
                         enableBorderGlow={true}
-                        // enableTilt={true}
-                        glowColor="120, 119, 198" // Default glow color
+                        glowColor="201, 169, 110"
                     />
                 </div>
             </div>
