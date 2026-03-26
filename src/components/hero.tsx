@@ -60,7 +60,7 @@ export default function Hero() {
         </div>
       </div>
 
-      <div
+      {/* <div
         className="relative z-10 w-full max-w-6xl mx-auto px-4 mt-16 md:mt-20 pb-0 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-300 fill-mode-both"
         style={{ perspective: "1200px" }}
       >
@@ -82,7 +82,7 @@ export default function Hero() {
           />
           <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-background via-background/60 to-transparent pointer-events-none" />
         </div>
-      </div>
+      </div> */}
     </section>
   );
 }
