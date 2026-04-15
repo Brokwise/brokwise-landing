@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConfig } from '@/lib/config';
 import HexPattern from './HexPattern';
 
-type PlanType = 'activation' | 'monthly' | 'quarterly'
+type PlanType = 'monthly' | 'quarterly'
 
 const featureContextByIndex: (string | null)[] = [
     "Add property to marketplace",
@@ -17,7 +17,7 @@ const featureContextByIndex: (string | null)[] = [
 ]
 
 const Pricing = () => {
-    const [planType, setPlanType] = useState<PlanType>('activation')
+    const [planType, setPlanType] = useState<PlanType>('monthly')
     const [pricing, setPricing] = useState<PricingData>(pricingDataFallback)
     const [loading, setLoading] = useState(true)
 
@@ -78,7 +78,7 @@ const Pricing = () => {
 
                     <div className="flex flex-col items-center gap-6 mt-8">
                         <div className="inline-flex justify-center gap-2 p-1 rounded-full bg-secondary border border-[#fcb542]/10">
-                            {(['activation', 'monthly', 'quarterly'] as PlanType[]).map((type) => (
+                            {(['monthly', 'quarterly'] as PlanType[]).map((type) => (
                                 <button
                                     key={type}
                                     onClick={() => setPlanType(type)}
@@ -130,7 +130,7 @@ const Pricing = () => {
                                         <div className="flex items-baseline gap-1 mb-1">
                                             <span className="text-4xl font-serif font-medium text-[#fcb542]">₹{plan.price.toLocaleString()}</span>
                                             <span className="text-muted-foreground font-light text-sm">
-                                                {planType === 'monthly' ? '/month' : planType === 'quarterly' ? '/3 months' : '/pack'}
+                                                {planType === 'monthly' ? '/month' : '/3 months'}
                                             </span>
                                         </div>
                                         <p className="text-xs text-muted-foreground font-light mb-4">

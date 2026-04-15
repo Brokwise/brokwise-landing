@@ -59,7 +59,7 @@ const NavBar = () => {
 
                     <div className="flex items-center gap-4">
                         <Link
-                            href="https://app.brokwise.com"
+                            href="https://app.brokwise.com/get-started"
                             className="hidden md:inline-flex items-center justify-center rounded-full bg-[#fcb542] px-5 py-2 text-sm font-medium text-[#080808] transition-all hover:bg-[#D4BA8A] hover:scale-105"
                         >
                             Get Started
@@ -99,7 +99,7 @@ const NavBar = () => {
                         </Link>
                     ))}
                     <Link
-                        href="https://app.brokwise.com"
+                        href="https://app.brokwise.com/get-started"
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="mt-4 inline-flex items-center justify-center rounded-full bg-[#fcb542] px-8 py-3 text-lg font-medium text-[#080808] transition-all hover:bg-[#D4BA8A]"
                     >

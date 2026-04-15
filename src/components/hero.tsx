@@ -42,7 +42,7 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full justify-center">
           <button
-            className="group inline-flex items-center justify-center rounded-full bg-[#fcb542] md:px-8 md:py-4 px-4 py-2 text-base font-medium text-[#080808] transition-all duration-300 hover:bg-[#D4BA8A] hover:scale-105 active:scale-95 shadow-[0_0_30px_-5px_rgba(201,169,110,0.3)] hover:shadow-[0_0_40px_-5px_rgba(201,169,110,0.5)]"
+            className="group inline-flex items-center justify-center rounded-full bg-[#fcb542] md:px-8 md:py-4 px-4 py-2 text-base font-medium text-[#080808] transition-all duration-300 hover:bg-[#D4BA8A] active:scale-95 shadow-[0_0_30px_-5px_rgba(201,169,110,0.3)] hover:shadow-[0_0_40px_-5px_rgba(201,169,110,0.5)]"
             data-cal-namespace="30min"
             data-cal-link="anshul-sharma/30min"
             data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
@@ -51,8 +51,8 @@ export default function Hero() {
             Book a Demo
           </button>
           <Link
-            href="https://app.brokwise.com"
-            className="group inline-flex items-center justify-center rounded-full border border-[#fcb542]/30 bg-transparent md:px-8 md:py-4 px-4 py-2 text-base font-medium text-[#fcb542] transition-all duration-300 hover:bg-[#fcb542]/10 hover:border-[#fcb542]/50 hover:scale-105 active:scale-95"
+            href="https://app.brokwise.com/get-started"
+            className="group inline-flex items-center justify-center rounded-full border border-[#fcb542]/30 bg-transparent md:px-8 md:py-4 px-4 py-2 text-base font-medium text-[#fcb542] transition-all duration-300 hover:bg-[#fcb542]/10 hover:border-[#fcb542]/50  active:scale-95"
           >
             Get started
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
