@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Calendar } from "lucide-react";
+import { ArrowRight, Calendar, Sparkles } from "lucide-react";
 
 import { getCalApi } from "@calcom/embed-react";
 import { useEffect } from "react";
@@ -29,6 +29,18 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 text-center flex flex-col items-center gap-6 max-w-5xl pt-32 md:pt-40 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
+        <div
+          className="inline-flex items-center gap-2 rounded-full border border-[#fcb542]/40 bg-[#080808]/55 px-4 py-2 text-sm font-medium text-[#fcb542] shadow-[0_0_24px_-8px_rgba(252,181,66,0.35)] backdrop-blur-sm"
+          role="status"
+        >
+          <span className="relative flex h-2 w-2 shrink-0">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#fcb542] opacity-60" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#fcb542]" />
+          </span>
+          <Sparkles className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
+          <span>Free early bird offer is on</span>
+        </div>
+
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium tracking-tight text-[#fcb542] leading-[1.1]">
           Where Brokers Connect, <br className="hidden md:block" />
           Collaborate & Close Deals.

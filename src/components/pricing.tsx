@@ -40,7 +40,6 @@ const Pricing = () => {
 
     const getPlanLabel = (type: PlanType) => {
         switch (type) {
-            case 'activation': return 'Activation'
             case 'monthly': return 'Monthly'
             case 'quarterly': return '3-Month'
         }
@@ -48,7 +47,6 @@ const Pricing = () => {
 
     const getPlanSubtitle = (type: PlanType) => {
         switch (type) {
-            case 'activation': return 'Exclusive introductory access to the verified Brokwise network.'
             case 'monthly': return 'Structured monthly access for consistent professional deal flow.'
             case 'quarterly': return 'Extended premium access for sustained market expansion.'
         }
@@ -130,7 +128,7 @@ const Pricing = () => {
                                         <div className="flex items-baseline gap-1 mb-1">
                                             <span className="text-4xl font-serif font-medium text-[#fcb542]">₹{plan.price.toLocaleString()}</span>
                                             <span className="text-muted-foreground font-light text-sm">
-                                                {planType === 'monthly' ? '/month' : '/3 months'}
+                                                {planType === 'monthly' ? '/month' : planType === 'quarterly' ? '/3 months' : '/pack'}
                                             </span>
                                         </div>
                                         <p className="text-xs text-muted-foreground font-light mb-4">

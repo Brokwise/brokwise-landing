@@ -9,7 +9,6 @@ export type PlanCard = {
 }
 
 export type PricingData = {
-    activation: PlanCard[]
     monthly: PlanCard[]
     quarterly: PlanCard[]
 }
@@ -30,14 +29,11 @@ export type TierConfigResponse = {
     success: boolean
     data: {
         tierLimits: TierLimits
-        activationLimits: TierLimits
         pricing: {
-            activationPricing: TierPricing
             monthlyPricing: TierPricing
             quarterlyPricing: TierPricing
         }
         credits: {
-            activationCredits: TierCredits
             monthlyCredits: TierCredits
             quarterlyCredits: TierCredits
         }
@@ -52,22 +48,12 @@ const TIER_META: Record<TierName, { displayName: string; popular: boolean }> = {
     PRO: { displayName: "Pro", popular: false },
 }
 
-const PLAN_META: Record<"activation" | "monthly" | "quarterly", {
+const PLAN_META: Record<"monthly" | "quarterly", {
     descriptions: Record<TierName, string>
     buttonText: string
     featureSuffix: string
     creditsSuffix: string
 }> = {
-    activation: {
-        descriptions: {
-            BASIC: "Perfect for getting started",
-            ESSENTIAL: "Best value for new users",
-            PRO: "For serious professionals",
-        },
-        buttonText: "Get Started",
-        featureSuffix: "",
-        creditsSuffix: "",
-    },
     monthly: {
         descriptions: {
             BASIC: "Monthly subscription",
@@ -106,7 +92,7 @@ function buildFeatures(
 
 export function transformTierConfig(data: TierConfigResponse["data"]): PricingData {
     const buildPlans = (
-        planType: "activation" | "monthly" | "quarterly",
+        planType: "monthly" | "quarterly",
         limits: TierLimits,
         pricing: TierPricing,
         credits: TierCredits,
@@ -124,12 +110,6 @@ export function transformTierConfig(data: TierConfigResponse["data"]): PricingDa
     }
 
     return {
-        activation: buildPlans(
-            "activation",
-            data.activationLimits,
-            data.pricing.activationPricing,
-            data.credits.activationCredits,
-        ),
         monthly: buildPlans(
             "monthly",
             data.tierLimits,
@@ -146,35 +126,6 @@ export function transformTierConfig(data: TierConfigResponse["data"]): PricingDa
 }
 
 export const pricingDataFallback: PricingData = {
-    activation: [
-        {
-            name: "Basic",
-            price: 499,
-            description: "Perfect for getting started",
-            features: ["1 Listings", "2 Enquiries", "3 Proposals", "40 Credits"],
-            buttonText: "Get Started",
-            popular: false,
-            buttonId: "Basic-Activation",
-        },
-        {
-            name: "Essential",
-            price: 999,
-            description: "Best value for new users",
-            features: ["6 Listings", "6 Enquiries", "6 Proposals", "100 Credits"],
-            buttonText: "Get Started",
-            popular: true,
-            buttonId: "Essential-Activation",
-        },
-        {
-            name: "Pro",
-            price: 1799,
-            description: "For serious professionals",
-            features: ["12 Listings", "12 Enquiries", "12 Proposals", "180 Credits"],
-            buttonText: "Get Started",
-            popular: false,
-            buttonId: "Pro-Activation",
-        },
-    ],
     monthly: [
         {
             name: "Basic",
