@@ -93,9 +93,12 @@ export default function Hero() {
             data-cal-link="anshul-sharma/30min"
             data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
             onClick={() => {
-              metaPixel.track("Schedule", {
-                content_name: "Hero Book a Demo",
-              });
+              metaPixel.trackWithBrokwiseCustom(
+                "Schedule",
+                { content_name: "Hero Book a Demo" },
+                "BW_Hero_BookDemo_Click",
+                { placement: "hero" },
+              );
             }}
           >
             <Calendar className="mr-2 h-4 w-4 transition-transform group-hover:-rotate-12" />
@@ -105,9 +108,12 @@ export default function Hero() {
             href="https://app.brokwise.com/get-started"
             className="group inline-flex items-center justify-center rounded-full border border-[#fcb542]/30 bg-transparent md:px-8 md:py-4 px-4 py-2 text-base font-medium text-[#fcb542] transition-all duration-300 hover:bg-[#fcb542]/10 hover:border-[#fcb542]/50  active:scale-95"
             onClick={() => {
-              metaPixel.track("Lead", {
-                content_name: "Hero Get Started",
-              });
+              metaPixel.trackWithBrokwiseCustom(
+                "Lead",
+                { content_name: "Hero Get Started" },
+                "BW_Hero_AppSignup_Click",
+                { placement: "hero" },
+              );
             }}
           >
             Get started

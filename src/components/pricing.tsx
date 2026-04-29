@@ -163,13 +163,20 @@ const Pricing = () => {
                                     <button
                                         onClick={() => {
                                             const eventId = uuidv4();
-                                            metaPixel.track("InitiateCheckout", {
-                                                content_name: plan.name,
-                                                content_ids: [plan.buttonId],
-                                                currency: "INR",
-                                                value: plan.price,
-                                                plan_period: planType,
-                                            });
+                                            metaPixel.trackWithBrokwiseCustom(
+                                                "InitiateCheckout",
+                                                {
+                                                    content_name: plan.name,
+                                                    content_ids: [plan.buttonId],
+                                                    currency: "INR",
+                                                    value: plan.price,
+                                                },
+                                                "BW_Pricing_PlanCheckout_Click",
+                                                {
+                                                    plan_period: planType,
+                                                    plan_id: plan.buttonId,
+                                                },
+                                            );
                                             sendGTMEvent({
                                                 event: "InitiateCheckout - Landing",
                                                 plan: plan.buttonId,

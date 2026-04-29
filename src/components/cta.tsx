@@ -23,17 +23,22 @@ const CTA = () => {
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
                         <button onClick={() => {
-                            metaPixel.track("Lead", {
-                                content_name: "CTA Get Started",
-                            });
+                            metaPixel.trackWithBrokwiseCustom(
+                                "Lead",
+                                { content_name: "CTA Get Started" },
+                                "BW_CTA_AppSignup_Click",
+                                { placement: "footer_cta" },
+                            );
                             router.push("https://app.brokwise.com")
                         }} className="group inline-flex h-12 min-w-[160px] items-center justify-center rounded-full bg-[#ffffff] px-8 text-base font-medium text-[#080808] shadow-[0_0_30px_rgba(201,169,110,0.2)] transition-all hover:bg-[#D4BA8A] hover:scale-[1.02] hover:shadow-[0_0_40px_rgba(201,169,110,0.3)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#fcb542] disabled:pointer-events-none disabled:opacity-50">
                             Get Started
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </button>
                         <button onClick={() => {
-                            metaPixel.track("ViewContent", {
+                            metaPixel.trackCustom("BW_CTA_ScrollToPricing_Click", {
                                 content_name: "CTA View Pricing",
+                                target_section: "pricing",
+                                placement: "footer_cta",
                             });
                             const pricingSection = document.getElementById('pricing');
                             if (pricingSection) {
