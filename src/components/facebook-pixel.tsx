@@ -3,20 +3,24 @@
 import { usePathname, useSearchParams } from "next/navigation";
 import Script from "next/script";
 import { useEffect, Suspense } from "react";
-import * as fpixel from "@/lib/fpixel";
+import { FB_PIXEL_ID, pageview } from "@/lib/fpixel";
 
 const FacebookPixelContent = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    fpixel.pageview();
+    pageview();
   }, [pathname, searchParams]);
 
   return null;
 };
 
 const FacebookPixel = () => {
+  if (!FB_PIXEL_ID) {
+    return null;
+  }
+
   return (
     <>
       <Script
@@ -32,7 +36,7 @@ const FacebookPixel = () => {
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '${fpixel.FB_PIXEL_ID}');
+            fbq('init', '${FB_PIXEL_ID}');
           `,
         }}
       />

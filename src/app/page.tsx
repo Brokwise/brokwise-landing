@@ -6,10 +6,12 @@ import Testimonials from "@/components/testimonials";
 import CTA from "@/components/cta";
 import Footer from "@/components/footer";
 import Grainient from "@/components/Grainient";
+import MetaPixelPageEvents from "@/components/meta-pixel-page-events";
 
 export default function Home() {
   return (
     <main>
+      <MetaPixelPageEvents />
       <Hero />
       <Features />
       <Testimonials />

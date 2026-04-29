@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid';
 import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConfig } from '@/lib/config';
 import HexPattern from './HexPattern';
+import { metaPixel } from '@/lib/fpixel';
 
 type PlanType = 'monthly' | 'quarterly'
 
@@ -162,6 +163,13 @@ const Pricing = () => {
                                     <button
                                         onClick={() => {
                                             const eventId = uuidv4();
+                                            metaPixel.track("InitiateCheckout", {
+                                                content_name: plan.name,
+                                                content_ids: [plan.buttonId],
+                                                currency: "INR",
+                                                value: plan.price,
+                                                plan_period: planType,
+                                            });
                                             sendGTMEvent({
                                                 event: "InitiateCheckout - Landing",
                                                 plan: plan.buttonId,

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { metaPixel } from "@/lib/fpixel";
 
 const NavBar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -61,6 +62,11 @@ const NavBar = () => {
                         <Link
                             href="https://app.brokwise.com/get-started"
                             className="hidden md:inline-flex items-center justify-center rounded-full bg-[#fcb542] px-5 py-2 text-sm font-medium text-[#080808] transition-all hover:bg-[#D4BA8A] hover:scale-105"
+                            onClick={() =>
+                                metaPixel.track("Lead", {
+                                    content_name: "Nav Get Started",
+                                })
+                            }
                         >
                             Get Started
                         </Link>
@@ -100,7 +106,12 @@ const NavBar = () => {
                     ))}
                     <Link
                         href="https://app.brokwise.com/get-started"
-                        onClick={() => setIsMobileMenuOpen(false)}
+                        onClick={() => {
+                            metaPixel.track("Lead", {
+                                content_name: "Nav Get Started (mobile)",
+                            });
+                            setIsMobileMenuOpen(false);
+                        }}
                         className="mt-4 inline-flex items-center justify-center rounded-full bg-[#fcb542] px-8 py-3 text-lg font-medium text-[#080808] transition-all hover:bg-[#D4BA8A]"
                     >
                         Get Started

@@ -3,7 +3,7 @@
 import React from 'react'
 import { ArrowRight, CheckCircle2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import * as fpixel from '@/lib/fpixel'
+import { metaPixel } from '@/lib/fpixel'
 
 const CTA = () => {
     const router = useRouter()
@@ -23,7 +23,7 @@ const CTA = () => {
 
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-6">
                         <button onClick={() => {
-                            fpixel.event("Lead", {
+                            metaPixel.track("Lead", {
                                 content_name: "CTA Get Started",
                             });
                             router.push("https://app.brokwise.com")
@@ -32,7 +32,7 @@ const CTA = () => {
                             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                         </button>
                         <button onClick={() => {
-                            fpixel.event("ViewContent", {
+                            metaPixel.track("ViewContent", {
                                 content_name: "CTA View Pricing",
                             });
                             const pricingSection = document.getElementById('pricing');

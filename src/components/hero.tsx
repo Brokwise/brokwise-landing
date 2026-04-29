@@ -4,14 +4,45 @@ import Link from "next/link";
 import { ArrowRight, Calendar, Sparkles } from "lucide-react";
 
 import { getCalApi } from "@calcom/embed-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { metaPixel } from "@/lib/fpixel";
+
+const DEFAULT_PROMO = {
+  enabled: true,
+  label: "Free early bird offer is on",
+} as const;
 
 export default function Hero() {
+  const [promoBanner, setPromoBanner] = useState(DEFAULT_PROMO);
+
   useEffect(() => {
     (async function () {
       const cal = await getCalApi({ namespace: "30min" });
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
     })();
+  }, []);
+
+  useEffect(() => {
+    const base = process.env.NEXT_PUBLIC_API_BASE_URL;
+    if (!base) return;
+
+    const controller = new AbortController();
+    fetch(`${base}/admin/tier-config`, { signal: controller.signal })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((json) => {
+        const b = json?.data?.publicPromoBanner;
+        if (!b || typeof b.enabled !== "boolean") return;
+        const label =
+          typeof b.label === "string" && b.label.trim().length > 0
+            ? b.label.trim()
+            : DEFAULT_PROMO.label;
+        setPromoBanner({ enabled: b.enabled, label });
+      })
+      .catch(() => {
+        /* keep default */
+      });
+
+    return () => controller.abort();
   }, []);
 
   return (
@@ -29,6 +60,7 @@ export default function Hero() {
       </div>
 
       <div className="relative z-10 container mx-auto px-4 text-center flex flex-col items-center gap-6 max-w-5xl pt-32 md:pt-40 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
+        {promoBanner.enabled ? (
         <div
           className="inline-flex items-center gap-2 rounded-full border border-[#fcb542]/40 bg-[#080808]/55 px-4 py-2 text-sm font-medium text-[#fcb542] shadow-[0_0_24px_-8px_rgba(252,181,66,0.35)] backdrop-blur-sm"
           role="status"
@@ -38,8 +70,9 @@ export default function Hero() {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-[#fcb542]" />
           </span>
           <Sparkles className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
-          <span>Free early bird offer is on</span>
+          <span>{promoBanner.label}</span>
         </div>
+        ) : null}
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium tracking-tight text-[#fcb542] leading-[1.1]">
           Where Brokers Connect, <br className="hidden md:block" />
@@ -54,10 +87,16 @@ export default function Hero() {
 
         <div className="flex flex-col sm:flex-row gap-4 mt-6 w-full justify-center">
           <button
+            type="button"
             className="group inline-flex items-center justify-center rounded-full bg-[#fcb542] md:px-8 md:py-4 px-4 py-2 text-base font-medium text-[#080808] transition-all duration-300 hover:bg-[#D4BA8A] active:scale-95 shadow-[0_0_30px_-5px_rgba(201,169,110,0.3)] hover:shadow-[0_0_40px_-5px_rgba(201,169,110,0.5)]"
             data-cal-namespace="30min"
             data-cal-link="anshul-sharma/30min"
             data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'
+            onClick={() => {
+              metaPixel.track("Schedule", {
+                content_name: "Hero Book a Demo",
+              });
+            }}
           >
             <Calendar className="mr-2 h-4 w-4 transition-transform group-hover:-rotate-12" />
             Book a Demo
@@ -65,6 +104,11 @@ export default function Hero() {
           <Link
             href="https://app.brokwise.com/get-started"
             className="group inline-flex items-center justify-center rounded-full border border-[#fcb542]/30 bg-transparent md:px-8 md:py-4 px-4 py-2 text-base font-medium text-[#fcb542] transition-all duration-300 hover:bg-[#fcb542]/10 hover:border-[#fcb542]/50  active:scale-95"
+            onClick={() => {
+              metaPixel.track("Lead", {
+                content_name: "Hero Get Started",
+              });
+            }}
           >
             Get started
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
