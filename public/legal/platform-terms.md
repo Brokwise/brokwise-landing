@@ -1,6 +1,6 @@
 # Platform Terms of Use
 
-*Last Updated: 11.02.2026*
+_Last Updated: 09.05.2026_
 
 **Brokwise Private Limited**
 
@@ -21,7 +21,9 @@ Similarly, Brokwise enables developers to showcase their approved and upcoming r
 
 These Platform Terms of Use ("Terms") govern the access to and use of the Brokwise Platform by all users, including brokers and developers, and set out the general rules, responsibilities, disclaimers, and limitations applicable to all interactions facilitated through the Platform.
 
-This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and any person or entity accessing, registering on, or using the Platform ("User", "you", or "your"). By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our [Privacy Policy](/privacy-policy) and other applicable platform policies. If you do not agree with these Terms, you must not access or use the Platform.
+This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and any person or entity accessing, registering on, or using the Platform ("User", "you", or "your").
+
+By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our [Privacy Policy](/privacy-policy) and other applicable platform policies. If you do not agree with these Terms, you must not access or use the Platform.
 
 Brokers and developers may be subject to separate category-specific Terms of Use. In the event of any inconsistency or conflict between these Platform Terms and any broker-specific or developer-specific terms, these Platform Terms shall prevail and supersede to the extent of such conflict.
 
@@ -41,7 +43,7 @@ For the purposes of these Platform Terms of Use, the following terms shall have 
 
 - **1.5.** "Subscription Plan" means a paid access plan consisting of either activation plan or subscription plan, offered by Brokwise that grants a User a limited, revocable, non-transferable right to access and use the Platform and its features for a specified duration and subject to specified limits and conditions. Access to and use of the Platform is conditional upon an active Subscription Plan, and without a valid and active Subscription Plan, a User shall not be permitted to access or use the Platform.
 
-- **1.6.** "Transaction" means any engagement, enquiry, communication, negotiation, discussion, arrangement, understanding, agreement, collaboration, or business dealing initiated, facilitated through contact, or concluded between Users through or as a result of access to or use of the Platform, whether formal or informal, oral or written, and whether or not resulting in a completed deal, transfer, booking, sale, purchase, or other commercial outcome. For the avoidance of doubt, every Transaction is entered into solely and independently between the concerned Users. Brokwise does not act as a broker, agent, real estate intermediary, representative, partner, or advisor in respect of any Transaction, and is not a party to, does not negotiate, conclude, control, guarantee, or supervise any such Transaction. Brokwise assumes no responsibility or liability whatsoever in relation to the performance, non-performance, validity, legality, or enforceability of any Transaction between Users, and does not directly earn any commission, brokerage, or consideration from the execution or completion of such Transaction between Users.
+- **1.6.** "Transaction" means any engagement, enquiry, communication, negotiation, discussion, arrangement, understanding, agreement, collaboration, or business dealing initiated, facilitated through contact, or concluded between Users through or as a result of access to or use of the Platform, whether formal or informal, oral or written, and whether or not resulting in a completed deal, transfer, booking, sale, purchase, rental, lease or other commercial outcome. For the avoidance of doubt, every Transaction is entered into solely and independently between the concerned Users. Brokwise does not act as a broker, agent, real estate intermediary, representative, partner, or advisor in respect of any Transaction, and is not a party to, does not negotiate, conclude, control, guarantee, or supervise any such Transaction. Brokwise assumes no responsibility or liability whatsoever in relation to the performance, non-performance, validity, legality, or enforceability of any Transaction between Users, and does not directly earn any commission, brokerage, or consideration from the execution or completion of such Transaction between Users.
 
 ---
 
@@ -56,7 +58,6 @@ For the purposes of these Platform Terms of Use, the following terms shall have 
 - **2.4.** Brokwise does not participate in any quotation of listings, offers, negotiations, transactions, does not draft or conclude agreements, does not collect or process transaction consideration on behalf of Users, and does not represent or bind any User in any manner whatsoever.
 
 - **2.5.** Brokwise merely provides a technology intermediary platform and therefore does not verify, validate, certify, endorse, or investigate:
-
   - the legal title, ownership, or encumbrance status of any property;
   - the regulatory approvals, licenses, or RERA registrations of any property or project;
   - the identity, credentials, authority, or legitimacy of any User;
@@ -214,11 +215,16 @@ Brokwise reserves the right to suspend, restrict, or terminate your account and 
 
 You may terminate your account at any time by providing written notice to Brokwise and ceasing all use of the Platform. Termination shall not entitle you to any refund of fees unless expressly agreed in writing.
 
-### 16.2. Effect of Termination
+### 17.2. Effect of Termination
 
-Upon termination for any reason: a) All rights and licenses granted to you under these Terms shall immediately cease; b) Your access to the Platform and account shall be disabled; c) Please note, deletion or deactivation of account access upon termination does not necessarily result in immediate deletion of all associated data. All your data would be retained and processed in accordance with our Privacy Policy and applicable legal requirements d) You shall remain liable for all obligations, liabilities, and outstanding fees accrued prior to termination.
+Upon termination for any reason:
 
-### 16.3. Survival
+- a) All rights and licenses granted to you under these Terms shall immediately cease;
+- b) Your access to the Platform and account shall be disabled;
+- c) Please note, deletion or deactivation of account access upon termination does not necessarily result in immediate deletion of all associated data. All your data would be retained and processed in accordance with our [Privacy Policy](/privacy-policy) and applicable legal requirements;
+- d) You shall remain liable for all obligations, liabilities, and outstanding fees accrued prior to termination.
+
+### 17.3. Survival
 
 Clauses relating to intellectual property, disclaimers, limitation of liability, indemnification, governing law, dispute resolution, and any provision which by its nature is intended to survive, shall survive termination of these Terms.
 
@@ -244,9 +250,11 @@ If you have any questions, concerns, or require assistance regarding the Platfor
 
 ## 21. Grievance Redressal
 
-In accordance with the DPDP Act, we have appointed a Grievance Officer to address any concerns relating to processing of personal data. Contact details: Name of Grievance Officer: Mr. Anshul Sharma E-mail: [Grievance@Brokwise.com](mailto:Grievance@Brokwise.com)
+In accordance with the DPDP Act, we have appointed a Grievance Officer to address any concerns relating to processing of personal data. Contact details:
 
-Registered address: Plot no. 27 A, Bahubali Nagar, Mansarovar, Jaipur - 302020
+- **Name of Grievance Officer:** Mr. Anshul Sharma
+- **E-mail:** [Grievance@Brokwise.com](mailto:Grievance@Brokwise.com)
+- **Registered address:** Plot no. 27 A, Bahubali Nagar, Mansarovar, Jaipur - 302020
 
 - You may submit a complaint or grievance via email, or by sending a written letter at our registered address.
 - We will acknowledge receipt of your grievance within two (2) working days.
@@ -269,4 +277,4 @@ If any of these conditions shall be deemed invalid, void, or for any reason unen
 
 **Copyright Disclaimer:** Brokwise reserves exclusive rights over all its policies and content; any unauthorised copying, adaptation, or distribution is a violation of our intellectual property rights and will result in strict legal action.
 
-*2026 Brokwise. All rights reserved.*
+© 2026 Brokwise. All rights reserved.

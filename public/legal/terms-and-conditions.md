@@ -1,6 +1,6 @@
 # Terms of Use for Brokers
 
-*Last Updated: 11.02.2026*
+_Last Updated: 09.05.2026_
 
 **Brokwise Private Limited**
 
@@ -19,7 +19,11 @@ Through Brokwise, brokers are empowered to:
 
 Similarly, Brokwise enables developers to showcase their approved and upcoming real estate projects to a network of brokers, facilitating professional engagement and potential business opportunities between developers and brokers.
 
-These Terms of Use govern the access to and use of the Brokwise platform by brokers and outline the rules, responsibilities, and limitations applicable to broker-to-broker and developer-to-broker interactions facilitated through the Platform. This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and you, being a broker using the Platform ("you", "your", or "Broker"). By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our [Platform Terms of Use](/platform-terms), [Privacy Policy](/privacy-policy) and our other policies of our platform. If you do not agree with these Terms, you must not access or use the Platform.
+These Terms of Use govern the access to and use of the Brokwise platform by brokers and outline the rules, responsibilities, and limitations applicable to broker-to-broker and developer-to-broker interactions facilitated through the Platform.
+
+This agreement is a legally binding contract between Brokwise Pvt. Ltd., its affiliates and subsidiaries (hereinafter referred to as "we", "us", or "our"), and you, being a broker using the Platform ("you", "your", or "Broker").
+
+By accessing, registering on, or using the Brokwise Platform, you acknowledge that you have read, understood, and agreed to be bound by these Terms of Use, along with our [Platform Terms of Use](/platform-terms), [Privacy Policy](/privacy-policy) and our other policies of our platform. If you do not agree with these Terms, you must not access or use the Platform.
 
 Brokwise solely acts as a technology intermediary and does not act as a real estate broker, agent, consultant, or advisor. Any engagement, transaction, or arrangement arising between brokers or between developers and brokers through the Platform is undertaken independently by the concerned parties, without Brokwise being a party to or responsible for such arrangements.
 
@@ -27,7 +31,11 @@ Brokwise solely acts as a technology intermediary and does not act as a real est
 
 ## 1. Applicability of Broker Terms
 
-These Terms of Use for Brokers ("Broker Terms") are supplemental to and form an integral part of the Platform Terms of Use ("Platform Terms") of Brokwise. By accessing or using the Platform in the capacity of a broker, you expressly acknowledge and agree that you shall be bound by both the Platform Terms and these Broker Terms of use, read together. In the event of any inconsistency or conflict between the Platform Terms and these Broker Terms, the Platform Terms of Use shall prevail and supersede to the extent of such conflict.
+These Terms of Use for Brokers ("Broker Terms") are supplemental to and form an integral part of the Platform Terms of Use ("Platform Terms") of Brokwise.
+
+By accessing or using the Platform in the capacity of a broker, you expressly acknowledge and agree that you shall be bound by both the Platform Terms and these Broker Terms of use, read together.
+
+In the event of any inconsistency or conflict between the Platform Terms and these Broker Terms, the Platform Terms of Use shall prevail and supersede to the extent of such conflict.
 
 ---
 
@@ -45,7 +53,7 @@ The Platform is intended exclusively for business-to-business (B2B) use by real 
 
 ## 4. Eligibility of Broker
 
-Any individual who is engaged in the regular business of facilitating the sale or purchase of real estate and earns brokerage or commission from such activities shall be eligible to register and use the Platform and shall be considered a "Broker" for the purposes of these Terms of Use. Such individual must be at least eighteen years of age. Please note that a broker dealing in RERA compliant properties shall hold valid real estate agent registration certificate and shall maintain such registration during the term of use of the Platform.
+Any individual who is engaged in the regular business of facilitating the sale, purchase, rental or lease of real estate and earns brokerage or commission from such activities shall be eligible to register and use the Platform and shall be considered a "Broker" for the purposes of these Terms of Use. Such individual must be at least eighteen years of age. Please note that a broker dealing in RERA compliant properties shall hold valid real estate agent registration certificate and shall maintain such registration during the term of use of the Platform.
 
 ---
 
@@ -63,7 +71,7 @@ To access and use the Platform, a Broker must complete the registration process 
 
 ## 7. Permitted Activities
 
-Subject to compliance with these Terms of Use, Brokers are granted a limited, revocable, and non-exclusive license to access and use the Brokwise Platform solely to: (i) list the properties; (ii) place enquiries; (iii) submit proposals in response to enquiries; (iv) send offers in respect of listed properties & development projects; and (v) access the contact details of the counter-party broker/developer on request and upon its approval by the counter-party broker/developer.
+Subject to compliance with these Terms of Use, Brokers are granted a limited, revocable, and non-exclusive license to access and use the Brokwise Platform solely to: (i) list the properties for sale or rent & lease; (ii) place enquiries; (iii) submit proposals in response to enquiries; (iv) send offers in respect of listed properties & development projects; and (v) access the contact details of the counter-party broker/developer on request and upon its approval by the counter-party broker/developer.
 
 ---
 
@@ -85,7 +93,7 @@ Access to and use of the Platform is subject to the Broker subscribing to one of
 
 - **10.2.** The Broker shall ensure that, while uploading or inputting any information, content, documents, images, or materials on the Platform, no intellectual property rights or proprietary rights of any third party are infringed.
 
-- **10.3.** The Broker shall ensure that they possess the necessary rights, licenses, and permissions to list the property on our platform for sale.
+- **10.3.** The Broker shall ensure that they possess the necessary rights, licenses, and permissions to list the property on our platform for sale, rent or lease.
 
 - **10.4.** The Broker shall ensure that complete and non-misleading information is provided at all times and that no material facts are concealed or omitted while posting listings, enquiries, proposals, or offers on the Platform.
 
@@ -155,7 +163,7 @@ The Broker hereby represents and warrants that:
 
 - **15.5.** The use of the Platform and the content uploaded by the Broker does not violate any applicable law, regulation, contractual obligation, or third-party right, including intellectual property rights.
 
-- **15.6.** The Broker shall comply with all applicable laws, including real estate, anti-money laundering, tax, and advertising laws, in connection with any transaction initiated through the Platform.
+- **15.6.** The Broker shall comply with all applicable laws, including real estate, rent & lease laws, anti-money laundering, tax, and advertising laws, in connection with any transaction initiated through the Platform.
 
 - **15.7.** The Broker acknowledges that Brokwise does not verify or endorse any listings or users and that the Broker is solely responsible for conducting independent due diligence before entering into any transaction.
 
@@ -185,11 +193,11 @@ We reserve the right to take down your content without prior notice under the fo
 
 ## 19. Term & Termination
 
-**19.1. Termination by Brokwise:** We reserves the right to terminate or suspend your account and access to the platform at our sole discretion, without prior notice or liability, for any reason, including but not limited to the following: a) Infringing the copyright or intellectual property rights of others. b) Breach of our policies. c) Unauthorised use of the platform. d) For violation of any prevailing laws. e) Providing false or misleading information or data. f) Engaging in conduct that hurts the sentiments of the public, including posting/uploading any content that is considered hatred, humiliation, violence, or any other form of objectionable content. g) Creating or using a fake account. h) Using the platform as a minor.
+**19.1. Termination by Brokwise:** We reserve the right to terminate or suspend your account and access to the platform at our sole discretion, without prior notice or liability, for any reason, including but not limited to the following: a) Infringing the copyright or intellectual property rights of others. b) Breach of our policies. c) Unauthorised use of the platform. d) For violation of any prevailing laws. e) Providing false or misleading information or data. f) Engaging in conduct that hurts the sentiments of the public, including posting/uploading any content that is considered hatred, humiliation, violence, or any other form of objectionable content. g) Creating or using a fake account. h) Using the platform as a minor.
 
 **19.2. Termination by User:** You may terminate your account with Brokwise at any time by providing written notice to us. Upon termination, you must cease all use of the platform.
 
-**19.3. Effect of Termination:** Upon termination of your account for any reason: a) All licenses and rights granted to you under this agreement will immediately cease. b) You will no longer have access to your account, including any data or information stored in your account. c) Any properties, enquiries and proposals listed on the platform will be removed. d) You will remain responsible for any obligations or liabilities incurred before the termination date, including but not limited to outstanding fees and charges.
+**19.3. Effect of Termination:** Upon termination of your account for any reason: a) All licenses and rights granted to you under this agreement will immediately cease. b) You will no longer have access to your account, including any data or information stored in your account. c) Any properties, enquiries and proposals listed on the platform will be removed. d) You will remain responsible for any obligations or liabilities incurred before the termination date, including but not limited to outstanding fees and charges. e) Subscription if any will immediately stand terminated, and we would not be liable to refund you anything.
 
 **19.4. Survival of Terms:** Provisions of this agreement that by their nature should survive termination shall survive termination, including but not limited to clauses related to assignment of rights, indemnification, limitation of liability, and any other obligations that expressly or by their nature extend beyond the termination of this agreement.
 
@@ -241,4 +249,4 @@ If any of these conditions shall be deemed invalid, void, or for any reason unen
 
 **Copyright Disclaimer:** Brokwise reserves exclusive rights over all its policies and content; any unauthorised copying, adaptation, or distribution is a violation of our intellectual property rights and will result in strict legal action.
 
-*2026 Brokwise. All rights reserved.*
+© 2026 Brokwise. All rights reserved.

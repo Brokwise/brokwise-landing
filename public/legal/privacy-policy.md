@@ -1,6 +1,6 @@
 # Privacy Policy
 
-*Last Updated: 11.02.2026*
+_Last Updated: 11.02.2026_
 
 **Brokwise Private Limited**
 
@@ -102,7 +102,6 @@ The data that is collected as per the above-mentioned clause will be used in the
 We take utmost care in protecting your personal information and do not engage in the sale of your data to third parties. However, we may share or disclose your relevant data to third-party service providers, agents, representatives, support teams and law enforcement agencies to ensure the best possible delivery of our services and for legal compliances. The details of how we share the collected data are outlined below:
 
 1. **Sharing with third party service providers, agents, representatives, support team and business partners:** Service Providers: We work with third-party service providers to execute various functionalities of our Platform. We may share your relevant information with such service providers to help you access our services in the best possible manner. Some of these functionalities may include:
-
    - For ensuring your seamless and enjoyable experience at our platform.
    - For seamlessly providing all the features on our Platform.
    - For resolving any issues, technical glitches and for enabling regular maintenance of our Platform.
@@ -196,4 +195,4 @@ We reserve the right to revise this Policy at any time. Where required under app
 
 **Copyright Disclaimer:** Brokwise reserves exclusive rights over all its policies and content; any unauthorised copying, adaptation, or distribution is a violation of our intellectual property rights and will result in strict legal action.
 
-*©2026 Brokwise. All rights reserved.*
+_©2026 Brokwise. All rights reserved._
