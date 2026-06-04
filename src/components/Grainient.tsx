@@ -225,10 +225,25 @@ const Grainient: React.FC<GrainientProps> = ({
       renderer.render({ scene: mesh });
       raf = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+
+    // Only run the render loop while the canvas is in the viewport.
+    // The callback fires immediately with the current visibility state, so the
+    // loop starts on mount if the section is already visible, and stays paused
+    // until the user scrolls to it otherwise.
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        cancelAnimationFrame(raf); // prevent double-scheduling if fired twice
+        raf = requestAnimationFrame(loop);
+      } else {
+        cancelAnimationFrame(raf);
+        raf = 0;
+      }
+    });
+    io.observe(container);
 
     return () => {
       cancelAnimationFrame(raf);
+      io.disconnect();
       ro.disconnect();
       try {
         container.removeChild(canvas);

@@ -16,7 +16,7 @@ const FacebookPixelContent = () => {
   return null;
 };
 
-const FacebookPixel = () => {
+const FacebookPixel = ({ nonce }: { nonce?: string }) => {
   if (!FB_PIXEL_ID) {
     return null;
   }
@@ -25,6 +25,7 @@ const FacebookPixel = () => {
     <>
       <Script
         id="fb-pixel"
+        nonce={nonce}
         strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
