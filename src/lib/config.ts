@@ -37,6 +37,10 @@ export type TierConfigResponse = {
             monthlyCredits: TierCredits
             quarterlyCredits: TierCredits
         }
+        publicPromoBanner?: {
+            enabled: boolean
+            label: string
+        }
     }
 }
 

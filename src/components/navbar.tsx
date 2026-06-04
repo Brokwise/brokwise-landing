@@ -7,6 +7,14 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { metaPixel } from "@/lib/fpixel";
 
+const NAV_LINKS = [
+    { name: "Features", href: "/#features" },
+    { name: "Testimonials", href: "/#testimonials" },
+    { name: "Pricing", href: "/#pricing" },
+    { name: "FAQ", href: "/#faq" },
+    { name: "Support", href: "/support" },
+] as const;
+
 const NavBar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -20,14 +28,6 @@ const NavBar = () => {
         handleScroll();
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
-
-    const navLinks = [
-        { name: "Features", href: "/#features" },
-        { name: "Testimonials", href: "/#testimonials" },
-        { name: "Pricing", href: "/#pricing" },
-        { name: "FAQ", href: "/#faq" },
-        { name: "Support", href: "/support" },
-    ];
 
     return (
         <>
@@ -47,7 +47,7 @@ const NavBar = () => {
                     </Link>
 
                     <div className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => (
+                        {NAV_LINKS.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
@@ -97,7 +97,7 @@ const NavBar = () => {
                 )}
             >
                 <div className="flex flex-col items-center gap-8">
-                    {navLinks.map((link) => (
+                    {NAV_LINKS.map((link) => (
                         <Link
                             key={link.name}
                             href={link.href}

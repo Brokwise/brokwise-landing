@@ -120,7 +120,10 @@ const Support = () => {
         setStatus("loading");
 
         try {
-            const response = await fetch("https://api.brokwise.com/api/form", {
+            const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL;
+            if (!apiBase) throw new Error("NEXT_PUBLIC_API_BASE_URL is not set");
+
+            const response = await fetch(`${apiBase}/api/form`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

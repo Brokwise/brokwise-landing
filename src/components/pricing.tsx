@@ -1,12 +1,13 @@
 "use client"
 import { sendGTMEvent } from '@next/third-parties/google';
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { Check, Loader2, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid';
-import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConfig } from '@/lib/config';
+import { pricingDataFallback, transformTierConfig } from '@/lib/config';
 import HexPattern from './HexPattern';
 import { metaPixel } from '@/lib/fpixel';
+import { useTierConfig } from '@/hooks/useTierConfig';
 
 type PlanType = 'monthly' | 'quarterly'
 
@@ -19,25 +20,14 @@ const featureContextByIndex: (string | null)[] = [
 
 const Pricing = () => {
     const [planType, setPlanType] = useState<PlanType>('monthly')
-    const [pricing, setPricing] = useState<PricingData>(pricingDataFallback)
-    const [loading, setLoading] = useState(true)
+    const { data: tierConfig, loading } = useTierConfig()
 
-    useEffect(() => {
-        const fetchTierConfig = async () => {
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/tier-config`)
-                const json: TierConfigResponse = await res.json()
-                if (json.success) {
-                    setPricing(transformTierConfig(json.data))
-                }
-            } catch {
-                // fallback already set
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchTierConfig()
-    }, [])
+    // Derive pricing from the shared tier-config response.
+    // Falls back to the hardcoded defaults if the API is unavailable.
+    const pricing =
+        tierConfig?.success
+            ? transformTierConfig(tierConfig.data)
+            : pricingDataFallback
 
     const getPlanLabel = (type: PlanType) => {
         switch (type) {
@@ -56,10 +46,9 @@ const Pricing = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null)
 
     const scrollNext = () => {
-        if (scrollContainerRef.current) {
-            const cardWidth = scrollContainerRef.current.children[0].clientWidth
-            scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
-        }
+        if (!scrollContainerRef.current?.children.length) return
+        const cardWidth = (scrollContainerRef.current.children[0] as HTMLElement).clientWidth
+        scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
     }
 
     return (
@@ -108,9 +97,9 @@ const Pricing = () => {
                             ref={scrollContainerRef}
                             className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 max-w-7xl md:mx-auto overflow-x-auto snap-x snap-mandatory py-8 px-4 md:px-0 -mx-4 scrollbar-hide"
                         >
-                            {pricing[planType].map((plan, index) => (
+                            {pricing[planType].map((plan) => (
                                 <div
-                                    key={index}
+                                    key={`${plan.buttonId}-${planType}`}
                                     className={cn(
                                         "min-w-[85vw] md:min-w-0 snap-center md:snap-align-none relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.08)] flex flex-col bg-card",
                                         plan.popular

@@ -4,8 +4,9 @@ import Link from "next/link";
 import { ArrowRight, Calendar, Sparkles } from "lucide-react";
 
 import { getCalApi } from "@calcom/embed-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { metaPixel } from "@/lib/fpixel";
+import { useTierConfig } from "@/hooks/useTierConfig";
 
 const DEFAULT_PROMO = {
   enabled: true,
@@ -13,36 +14,35 @@ const DEFAULT_PROMO = {
 } as const;
 
 export default function Hero() {
-  const [promoBanner, setPromoBanner] = useState(DEFAULT_PROMO);
+  const { data: tierConfig } = useTierConfig();
+
+  // Derive the promo banner from the shared tier-config response.
+  // Falls back to DEFAULT_PROMO while loading or if the API returns nothing valid.
+  const b = tierConfig?.data?.publicPromoBanner;
+  const promoBanner =
+    b && typeof b.enabled === "boolean"
+      ? {
+          enabled: b.enabled,
+          label:
+            typeof b.label === "string" && b.label.trim().length > 0
+              ? b.label.trim()
+              : DEFAULT_PROMO.label,
+        }
+      : DEFAULT_PROMO;
 
   useEffect(() => {
-    (async function () {
-      const cal = await getCalApi({ namespace: "30min" });
-      cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+    let mounted = true;
+    (async () => {
+      try {
+        const cal = await getCalApi({ namespace: "30min" });
+        if (mounted) cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+      } catch {
+        // Cal.com SDK failed to load (network error, outage). The booking
+        // button's data-cal-* attributes still render; only the pre-styling
+        // of the modal is skipped.
+      }
     })();
-  }, []);
-
-  useEffect(() => {
-    const base = process.env.NEXT_PUBLIC_API_BASE_URL;
-    if (!base) return;
-
-    const controller = new AbortController();
-    fetch(`${base}/admin/tier-config`, { signal: controller.signal })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json) => {
-        const b = json?.data?.publicPromoBanner;
-        if (!b || typeof b.enabled !== "boolean") return;
-        const label =
-          typeof b.label === "string" && b.label.trim().length > 0
-            ? b.label.trim()
-            : DEFAULT_PROMO.label;
-        setPromoBanner({ enabled: b.enabled, label });
-      })
-      .catch(() => {
-        /* keep default */
-      });
-
-    return () => controller.abort();
+    return () => { mounted = false; };
   }, []);
 
   return (
