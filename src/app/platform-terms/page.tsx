@@ -4,14 +4,13 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-// import { Button } from "@/components/ui/button";
 
-export default function PrivacyPolicyPage() {
+export default function PlatformTermsPage() {
     const [content, setContent] = useState<string>("");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch("/legal/privacy-policy.md")
+        fetch("/legal/platform-terms.md")
             .then((res) => res.text())
             .then((text) => {
                 setContent(text);
@@ -25,12 +24,10 @@ export default function PrivacyPolicyPage() {
             <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200">
                 <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
                     <Link href="/">
-
                         <ArrowLeft className="h-5 w-5" />
-                        {/* </Button> */}
                     </Link>
                     <div>
-                        <h1 className="text-xl font-semibold text-slate-900">Privacy Policy</h1>
+                        <h1 className="text-xl font-semibold text-slate-900">Platform Terms of Use</h1>
                         <p className="text-sm text-slate-500">Brokwise Private Limited</p>
                     </div>
                 </div>
@@ -82,8 +79,6 @@ export default function PrivacyPolicyPage() {
                     </article>
                 )}
             </main>
-
-
         </div>
     );
 }

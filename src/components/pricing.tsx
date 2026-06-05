@@ -1,122 +1,63 @@
 "use client"
-
-import React, { useState } from 'react'
-import { Check } from 'lucide-react'
+import { sendGTMEvent } from '@next/third-parties/google';
+import React, { useState, useRef } from 'react'
+import { Check, Loader2, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { v4 as uuidv4 } from 'uuid';
+import { pricingDataFallback, transformTierConfig } from '@/lib/config';
+import HexPattern from './HexPattern';
+import { metaPixel } from '@/lib/fpixel';
+import { useTierConfig } from '@/hooks/useTierConfig';
 
-const pricingData = {
-    brokers: {
-        starter: {
-            name: "Starter",
-            price: 500,
-            description: "Access the platform for",
-            features: [
-                "1000+ Properties",
-                "1000+ Buyers",
-                "1000+ Sellers",
-                "1000+ Leads",
-                "1000+ Deals",
-                "1000+ Referrals"
-            ],
-            buttonText: "Get Started",
-            popular: false
-        },
-        essentials: {
-            name: "Essentials",
-            price: 1000,
-            description: "Access the platform for",
-            features: [
-                "1000+ Properties",
-                "1000+ Buyers",
-                "1000+ Sellers",
-                "1000+ Leads",
-                "1000+ Deals",
-                "1000+ Referrals"
-            ],
-            buttonText: "Get Started",
-            popular: true
-        },
-        elite: {
-            name: "Elite",
-            price: 1500,
-            description: "Access the platform for",
-            features: [
-                "1000+ Properties",
-                "1000+ Buyers",
-                "1000+ Sellers",
-                "1000+ Leads",
-                "1000+ Deals",
-                "1000+ Referrals"
-            ],
-            buttonText: "Get Started",
-            popular: false
-        }
-    },
-    channelPartners: {
-        foundation: {
-            name: "Foundation",
-            price: 500,
-            description: "Access the platform for",
-            features: [
-                "1000+ Properties",
-                "1000+ Buyers",
-                "1000+ Sellers",
-                "1000+ Leads",
-                "1000+ Deals",
-                "1000+ Referrals"
-            ],
-            buttonText: "Get Started",
-            popular: false
-        },
-        growth: {
-            name: "Growth",
-            price: 1000,
-            description: "Access the platform for",
-            features: [
-                "1000+ Properties",
-                "1000+ Buyers",
-                "1000+ Sellers",
-                "1000+ Leads",
-                "1000+ Deals",
-                "1000+ Referrals"
-            ],
-            buttonText: "Get Started",
-            popular: true
-        },
-        enterprise: {
-            name: "Enterprise",
-            price: 1500,
-            description: "Access the platform for",
-            features: [
-                "1000+ Properties",
-                "1000+ Buyers",
-                "1000+ Sellers",
-                "1000+ Leads",
-                "1000+ Deals",
-                "1000+ Referrals"
-            ],
-            buttonText: "Get Started",
-            popular: false
-        }
-    }
-}
+type PlanType = 'monthly' | 'quarterly'
+
+const featureContextByIndex: (string | null)[] = [
+    "Add property to marketplace",
+    "Add buyer requirement",
+    "Respond to requirement",
+    null,
+]
 
 const Pricing = () => {
-    const [planType, setPlanType] = useState<'brokers' | 'channelPartners'>('brokers')
-    const [duration, setDuration] = useState<3 | 6 | 12>(3)
+    const [planType, setPlanType] = useState<PlanType>('monthly')
+    const { data: tierConfig, loading } = useTierConfig()
 
-    const getDurationLabel = (months: number) => {
-        if (months === 12) return '1 Year'
-        return `${months} Months`
+    // Derive pricing from the shared tier-config response.
+    // Falls back to the hardcoded defaults if the API is unavailable.
+    const pricing =
+        tierConfig?.success
+            ? transformTierConfig(tierConfig.data)
+            : pricingDataFallback
+
+    const getPlanLabel = (type: PlanType) => {
+        switch (type) {
+            case 'monthly': return 'Monthly'
+            case 'quarterly': return '3-Month'
+        }
+    }
+
+    const getPlanSubtitle = (type: PlanType) => {
+        switch (type) {
+            case 'monthly': return 'Structured monthly access for consistent professional deal flow.'
+            case 'quarterly': return 'Extended premium access for sustained market expansion.'
+        }
+    }
+
+    const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+    const scrollNext = () => {
+        if (!scrollContainerRef.current?.children.length) return
+        const cardWidth = (scrollContainerRef.current.children[0] as HTMLElement).clientWidth
+        scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
     }
 
     return (
-        <section className="py-24 bg-background relative overflow-hidden font-sans">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+        <section id="pricing" className="md:py-24 py-4 bg-background relative overflow-hidden font-sans">
+            <HexPattern id="hexPricing" fade="top" opacity={0.05} size={48} />
 
             <div className="container px-4 mx-auto relative z-10">
                 <div className="text-center max-w-3xl mx-auto mb-16">
-                    <h2 className="text-3xl md:text-5xl font-normal tracking-tight mb-4 text-foreground">
+                    <h2 className="text-3xl md:text-5xl font-serif font-medium tracking-tight mb-4 text-[#fcb542]">
                         Simple, transparent pricing
                     </h2>
                     <p className="text-lg text-muted-foreground font-light">
@@ -124,108 +65,137 @@ const Pricing = () => {
                     </p>
 
                     <div className="flex flex-col items-center gap-6 mt-8">
-                        {/* Plan Type Selector */}
-                        <div className="inline-flex p-1 rounded-full bg-secondary border border-border">
-                            <button
-                                onClick={() => setPlanType('brokers')}
-                                className={cn(
-                                    "px-6 py-2 rounded-full text-sm font-normal transition-all duration-300",
-                                    planType === 'brokers'
-                                        ? "bg-background text-foreground shadow-sm"
-                                        : "text-muted-foreground hover:text-foreground"
-                                )}
-                            >
-                                Brokers
-                            </button>
-                            <button
-                                onClick={() => setPlanType('channelPartners')}
-                                className={cn(
-                                    "px-6 py-2 rounded-full text-sm font-normal transition-all duration-300",
-                                    planType === 'channelPartners'
-                                        ? "bg-background text-foreground shadow-sm"
-                                        : "text-muted-foreground hover:text-foreground"
-                                )}
-                            >
-                                Channel Partners
-                            </button>
-                        </div>
-
-                        {/* Duration Selector */}
-                        <div className="inline-flex p-1 rounded-full bg-secondary/50 border border-border/50">
-                            {[3, 6, 12].map((d) => (
+                        <div className="inline-flex justify-center gap-2 p-1 rounded-full bg-secondary border border-[#fcb542]/10">
+                            {(['monthly', 'quarterly'] as PlanType[]).map((type) => (
                                 <button
-                                    key={d}
-                                    onClick={() => setDuration(d as 3 | 6 | 12)}
+                                    key={type}
+                                    onClick={() => setPlanType(type)}
                                     className={cn(
-                                        "px-4 py-1.5 rounded-full text-xs font-normal transition-all duration-300 min-w-[80px]",
-                                        duration === d
-                                            ? "bg-primary text-primary-foreground shadow-sm"
+                                        "px-2 md:px-6 py-2 rounded-full md:text-sm text-xs font-normal transition-all duration-300",
+                                        planType === type
+                                            ? "bg-[#fcb542] text-[#080808] shadow-sm"
                                             : "text-muted-foreground hover:text-foreground"
                                     )}
                                 >
-                                    {getDurationLabel(d)}
+                                    {getPlanLabel(type)}
                                 </button>
                             ))}
                         </div>
+                        <p className="text-sm text-[#fcb542] font-medium">
+                            {getPlanSubtitle(planType)}
+                        </p>
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    {Object.values(pricingData[planType]).map((plan, index) => {
-                        const totalPrice = plan.price * duration
+                {loading ? (
+                    <div className="flex justify-center items-center py-20">
+                        <Loader2 className="w-8 h-8 animate-spin text-[#fcb542]" />
+                    </div>
+                ) : (
+                    <div className="relative">
+                        <div
+                            ref={scrollContainerRef}
+                            className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 max-w-7xl md:mx-auto overflow-x-auto snap-x snap-mandatory py-8 px-4 md:px-0 -mx-4 scrollbar-hide"
+                        >
+                            {pricing[planType].map((plan) => (
+                                <div
+                                    key={`${plan.buttonId}-${planType}`}
+                                    className={cn(
+                                        "min-w-[85vw] md:min-w-0 snap-center md:snap-align-none relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.08)] flex flex-col bg-card",
+                                        plan.popular
+                                            ? "border-[#fcb542]/40 shadow-[0_0_30px_rgba(201,169,110,0.1)] md:scale-105 z-10"
+                                            : "border-[#fcb542]/10 hover:border-[#fcb542]/25"
+                                    )}
+                                >
+                                    {plan.popular && (
+                                        <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#fcb542] text-[#080808] px-4 py-1 rounded-full text-xs font-medium tracking-wide">
+                                            MOST POPULAR
+                                        </div>
+                                    )}
 
-                        return (
-                            <div
-                                key={index}
-                                className={cn(
-                                    "relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-lg flex flex-col bg-card",
-                                    plan.popular
-                                        ? "border-primary/50 shadow-md scale-105 z-10"
-                                        : "border-border hover:border-primary/20"
-                                )}
-                            >
-                                {plan.popular && (
-                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-primary-foreground px-4 py-1 rounded-full text-xs font-normal tracking-wide">
-                                        MOST POPULAR
+                                    <div className="mb-8">
+                                        <h3 className="text-xl font-normal text-foreground mb-2">{plan.name}</h3>
+                                        <div className="flex items-baseline gap-1 mb-1">
+                                            <span className="text-4xl font-serif font-medium text-[#fcb542]">₹{plan.price.toLocaleString()}</span>
+                                            <span className="text-muted-foreground font-light text-sm">
+                                                {planType === 'monthly' ? '/month' : planType === 'quarterly' ? '/3 months' : '/pack'}
+                                            </span>
+                                        </div>
+                                        <p className="text-xs text-muted-foreground font-light mb-4">
+                                            + 18% GST
+                                        </p>
+                                        <p className="text-muted-foreground font-light text-sm leading-relaxed">
+                                            {plan.description}
+                                        </p>
                                     </div>
-                                )}
 
-                                <div className="mb-8">
-                                    <h3 className="text-xl font-normal text-foreground mb-2">{plan.name}</h3>
-                                    <div className="flex items-baseline gap-1 mb-4">
-                                        <span className="text-4xl font-normal text-foreground">₹{totalPrice}</span>
-                                        <span className="text-muted-foreground font-light text-sm">/{getDurationLabel(duration).toLowerCase()}</span>
+                                    <div className="flex-1 mb-8">
+                                        <ul className="space-y-4">
+                                            {plan.features.map((feature, i) => (
+                                                <li key={i} className="flex items-start gap-3 text-sm text-foreground/80 font-light">
+                                                    <div className="mt-0.5 p-0.5 rounded-full bg-[#fcb542]/10 text-[#fcb542] shrink-0">
+                                                        <Check className="w-3 h-3" />
+                                                    </div>
+                                                    <div>
+                                                        <p>{feature}</p>
+                                                        {featureContextByIndex[i] && (
+                                                            <p className="text-xs text-muted-foreground mt-1">
+                                                                {featureContextByIndex[i]}
+                                                            </p>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
                                     </div>
-                                    <p className="text-muted-foreground font-light text-sm leading-relaxed">
-                                        {plan.description} {getDurationLabel(duration).toLowerCase()} at just {totalPrice} INR
-                                    </p>
-                                </div>
 
-                                <div className="flex-1 mb-8">
-                                    <ul className="space-y-4">
-                                        {plan.features.map((feature, i) => (
-                                            <li key={i} className="flex items-start gap-3 text-sm text-foreground/80 font-light">
-                                                <div className="mt-0.5 p-0.5 rounded-full bg-primary/10 text-primary shrink-0">
-                                                    <Check className="w-3 h-3" />
-                                                </div>
-                                                {feature}
-                                            </li>
-                                        ))}
-                                    </ul>
+                                    <button
+                                        onClick={() => {
+                                            const eventId = uuidv4();
+                                            metaPixel.trackWithBrokwiseCustom(
+                                                "InitiateCheckout",
+                                                {
+                                                    content_name: plan.name,
+                                                    content_ids: [plan.buttonId],
+                                                    currency: "INR",
+                                                    value: plan.price,
+                                                },
+                                                "BW_Pricing_PlanCheckout_Click",
+                                                {
+                                                    plan_period: planType,
+                                                    plan_id: plan.buttonId,
+                                                },
+                                            );
+                                            sendGTMEvent({
+                                                event: "InitiateCheckout - Landing",
+                                                plan: plan.buttonId,
+                                                eventId: eventId,
+                                            });
+                                            setTimeout(() => {
+                                                window.location.href = "https://app.brokwise.com";
+                                            }, 300);
+                                        }}
+                                        className={cn(
+                                            "w-full py-3 px-6 rounded-xl text-sm font-normal transition-colors duration-300",
+                                            plan.popular
+                                                ? "bg-[#fcb542] text-[#080808] hover:bg-[#D4BA8A]"
+                                                : "bg-[#fcb542]/10 text-[#fcb542] border border-[#fcb542]/20 hover:bg-[#fcb542]/20"
+                                        )}>
+                                        {plan.buttonText}
+                                    </button>
                                 </div>
+                            ))}
+                        </div>
 
-                                <button className={cn(
-                                    "w-full py-3 px-6 rounded-xl text-sm font-normal transition-colors duration-300",
-                                    plan.popular
-                                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                                )}>
-                                    {plan.buttonText}
-                                </button>
-                            </div>
-                        )
-                    })}
-                </div>
+                        <button
+                            onClick={scrollNext}
+                            className="md:hidden absolute right-4 top-1/2 -translate-y-1/2 z-20 bg-[#080808]/80 backdrop-blur-sm p-3 rounded-full shadow-lg border border-[#fcb542]/20 text-[#fcb542] hover:bg-[#fcb542]/10 transition-colors"
+                            aria-label="Next plan"
+                        >
+                            <ChevronRight className="w-6 h-6" />
+                        </button>
+                    </div>
+                )}
             </div>
         </section>
     )

@@ -381,10 +381,10 @@ const Main = () => {
                                 </p>
                                 <p>
                                     <a
-                                        href="tel:+919571850046"
+                                        href="tel:+919929750046"
                                         className="hover:text-white transition-colors"
                                     >
-                                        +91 95718 50046
+                                        +91 99297 50046
                                     </a>
                                 </p>
                                 <p>
@@ -405,12 +405,15 @@ const Main = () => {
                     {/* Bottom Bar */}
                     <div className="border-t border-neutral-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-600 animate-on-scroll">
                         <p>© 2026 Brokwise. All rights reserved.</p>
-                        <div className="flex gap-6">
-                            <Link href={"/privacy-policy"} className="hover:text-neutral-400 transition-colors">
-                                Privacy Policy
+                        <div className="flex flex-wrap gap-x-6 gap-y-2">
+                            <Link href="/platform-terms" className="hover:text-neutral-400 transition-colors">
+                                Platform Terms
                             </Link>
-                            <Link href={"/terms-and-conditions"} className="hover:text-neutral-400 transition-colors">
-                                Terms of Service
+                            <Link href="/terms-and-conditions" className="hover:text-neutral-400 transition-colors">
+                                Terms of Use for Brokers
+                            </Link>
+                            <Link href="/privacy-policy" className="hover:text-neutral-400 transition-colors">
+                                Privacy Policy
                             </Link>
                         </div>
                     </div>
