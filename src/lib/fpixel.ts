@@ -18,10 +18,8 @@ declare global {
 const READY_MS = 10_000;
 const POLL_MS = 50;
 
-/** Dedupe PageView (Strict Mode double-mount + overlapping listeners). */
+/** Dedupe PageView — never re-fire for the same route key within a single page session. */
 let lastPageViewRouteKey = "";
-let lastPageViewAt = 0;
-const PAGE_VIEW_DEDUPE_MS = 1500;
 
 function whenFbqReady(run: (fbq: FbqFn) => void): void {
   if (typeof window === "undefined") return;
@@ -41,15 +39,8 @@ function whenFbqReady(run: (fbq: FbqFn) => void): void {
 export function pageview(): void {
   if (!FB_PIXEL_ID || typeof window === "undefined") return;
   const routeKey = `${window.location.pathname}${window.location.search}`;
-  const now = Date.now();
-  if (
-    routeKey === lastPageViewRouteKey &&
-    now - lastPageViewAt < PAGE_VIEW_DEDUPE_MS
-  ) {
-    return;
-  }
+  if (routeKey === lastPageViewRouteKey) return;
   lastPageViewRouteKey = routeKey;
-  lastPageViewAt = now;
 
   whenFbqReady((fbq) => {
     fbq("trackSingle", FB_PIXEL_ID, "PageView");
