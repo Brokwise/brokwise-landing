@@ -10,6 +10,12 @@ import { metaPixel } from '@/lib/fpixel';
 
 type PlanType = 'monthly' | 'quarterly'
 
+const QUARTERLY_DISCOUNTS: Record<string, number> = {
+    Basic: 12.5,
+    Essential: 20,
+    Pro: 23.5,
+}
+
 const featureContextByIndex: (string | null)[] = [
     "Add property to marketplace",
     "Add buyer requirement",
@@ -108,7 +114,11 @@ const Pricing = () => {
                             ref={scrollContainerRef}
                             className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 max-w-7xl md:mx-auto overflow-x-auto snap-x snap-mandatory py-8 px-4 md:px-0 -mx-4 scrollbar-hide"
                         >
-                            {pricing[planType].map((plan, index) => (
+                            {pricing[planType].map((plan, index) => {
+                                const discountPct = planType === 'quarterly' ? (QUARTERLY_DISCOUNTS[plan.name] ?? null) : null
+                                const originalPrice = discountPct !== null ? Math.round(plan.price / (1 - discountPct / 100)) : null
+
+                                return (
                                 <div
                                     key={index}
                                     className={cn(
@@ -126,6 +136,12 @@ const Pricing = () => {
 
                                     <div className="mb-8">
                                         <h3 className="text-xl font-normal text-foreground mb-2">{plan.name}</h3>
+                                        {discountPct !== null && originalPrice !== null && (
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="text-sm text-muted-foreground line-through">₹{originalPrice.toLocaleString()}</span>
+                                                <span className="text-xs font-medium bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">{discountPct}% OFF</span>
+                                            </div>
+                                        )}
                                         <div className="flex items-baseline gap-1 mb-1">
                                             <span className="text-4xl font-serif font-medium text-[#fcb542]">₹{plan.price.toLocaleString()}</span>
                                             <span className="text-muted-foreground font-light text-sm">
@@ -192,10 +208,12 @@ const Pricing = () => {
                                                 ? "bg-[#fcb542] text-[#080808] hover:bg-[#D4BA8A]"
                                                 : "bg-[#fcb542]/10 text-[#fcb542] border border-[#fcb542]/20 hover:bg-[#fcb542]/20"
                                         )}>
-                                        {plan.buttonText}
+                                        {/* {plan.buttonText} */}
+                                        {'Get Started'}
                                     </button>
                                 </div>
-                            ))}
+                                )
+                            })}
                         </div>
 
                         <button

@@ -64,14 +64,14 @@ const NavBar = () => {
                             className="hidden md:inline-flex items-center justify-center rounded-full bg-[#fcb542] px-5 py-2 text-sm font-medium text-[#080808] transition-all hover:bg-[#D4BA8A] hover:scale-105"
                             onClick={() =>
                                 metaPixel.trackWithBrokwiseCustom(
-                                    "Lead",
+                                    "SignupBegin",
                                     { content_name: "Nav Get Started" },
                                     "BW_Nav_AppSignup_Click",
                                     { placement: "nav_desktop" },
                                 )
                             }
                         >
-                            Get Started
+                            Sign Up
                         </Link>
 
                         <button
