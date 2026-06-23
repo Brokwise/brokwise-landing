@@ -21,6 +21,15 @@ const POLL_MS = 50;
 /** Dedupe PageView — never re-fire for the same route key within a single page session. */
 let lastPageViewRouteKey = "";
 
+/**
+ * Counter incremented while our own code is issuing a PageView so the proxy
+ * guard knows to let it through instead of treating it as an external duplicate.
+ */
+let bwPageViewInProgress = 0;
+
+/** True once the fbq proxy has been installed. */
+let guardInstalled = false;
+
 function whenFbqReady(run: (fbq: FbqFn) => void): void {
   if (typeof window === "undefined") return;
   const started = Date.now();
@@ -36,6 +45,51 @@ function whenFbqReady(run: (fbq: FbqFn) => void): void {
   tick();
 }
 
+/**
+ * Polls until fbevents.js has fully initialised (signalled by callMethod being
+ * set on the fbq object), then installs a proxy on window.fbq that silently
+ * drops any PageView fired by an external source (e.g. a GTM pixel tag) for
+ * the route our code already tracked.
+ */
+function installPageViewGuard(): void {
+  if (guardInstalled || typeof window === "undefined") return;
+  const original = window.fbq;
+  if (!original) return;
+  guardInstalled = true;
+
+  const guarded: FbqFn = (cmd, ...rest) => {
+    const isPageView =
+      (cmd === "track" && rest[0] === "PageView") ||
+      (cmd === "trackSingle" && rest[1] === "PageView");
+
+    if (isPageView && bwPageViewInProgress === 0) {
+      const currentKey = `${window.location.pathname}${window.location.search}`;
+      if (currentKey === lastPageViewRouteKey) return;
+    }
+
+    original(cmd, ...rest);
+  };
+
+  // Preserve fbq's own properties (callMethod, queue, loaded, version …)
+  Object.assign(guarded, original);
+  window.fbq = guarded;
+}
+
+function whenFbqFullyLoaded(run: () => void): void {
+  if (typeof window === "undefined") return;
+  const started = Date.now();
+  const tick = () => {
+    const fbq = window.fbq as FbqFn & { callMethod?: unknown };
+    if (typeof fbq === "function" && typeof fbq.callMethod === "function") {
+      run();
+      return;
+    }
+    if (Date.now() - started > READY_MS) return;
+    window.setTimeout(tick, POLL_MS);
+  };
+  tick();
+}
+
 export function pageview(): void {
   if (!FB_PIXEL_ID || typeof window === "undefined") return;
   const routeKey = `${window.location.pathname}${window.location.search}`;
@@ -43,8 +97,15 @@ export function pageview(): void {
   lastPageViewRouteKey = routeKey;
 
   whenFbqReady((fbq) => {
+    bwPageViewInProgress++;
     fbq("trackSingle", FB_PIXEL_ID, "PageView");
+    bwPageViewInProgress--;
   });
+
+  // After fbevents.js is fully ready, proxy window.fbq so any external source
+  // (e.g. a GTM-managed pixel tag) cannot fire a duplicate PageView for the
+  // same route.
+  whenFbqFullyLoaded(installPageViewGuard);
 }
 
 export function track(
