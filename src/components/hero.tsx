@@ -19,6 +19,17 @@ export default function Hero() {
     (async function () {
       const cal = await getCalApi({ namespace: "30min" });
       cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+      cal("on", {
+        action: "bookingSuccessful",
+        callback: () => {
+          metaPixel.trackWithBrokwiseCustom(
+            "Schedule",
+            { content_name: "Hero Book a Demo" },
+            "BW_Hero_BookDemo_Confirmed",
+            { placement: "hero" },
+          );
+        },
+      });
     })();
   }, []);
 
