@@ -12,7 +12,7 @@ type PlanType = 'monthly' | 'quarterly'
 
 const QUARTERLY_DISCOUNTS: Record<string, number> = {
     Basic: 12.5,
-    Essential: 20,
+    Essential: 14,
     Pro: 23.5,
 }
 
