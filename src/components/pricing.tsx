@@ -30,8 +30,14 @@ const Pricing = () => {
 
     useEffect(() => {
         const fetchTierConfig = async () => {
+            const base = process.env.NEXT_PUBLIC_API_BASE_URL
+            if (!base) {
+                setLoading(false)
+                return
+            }
             try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/tier-config`)
+                const res = await fetch(`${base}/admin/tier-config`)
+                if (!res.ok) throw new Error(`Tier config API error: ${res.status}`)
                 const json: TierConfigResponse = await res.json()
                 if (json.success) {
                     setPricing(transformTierConfig(json.data))
@@ -114,13 +120,13 @@ const Pricing = () => {
                             ref={scrollContainerRef}
                             className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 max-w-7xl md:mx-auto overflow-x-auto snap-x snap-mandatory py-8 px-4 md:px-0 -mx-4 scrollbar-hide"
                         >
-                            {pricing[planType].map((plan, index) => {
+                            {pricing[planType].map((plan) => {
                                 const discountPct = planType === 'quarterly' ? (QUARTERLY_DISCOUNTS[plan.name] ?? null) : null
                                 const originalPrice = discountPct !== null ? Math.round(plan.price / (1 - discountPct / 100)) : null
 
                                 return (
                                 <div
-                                    key={index}
+                                    key={`${plan.buttonId}-${planType}`}
                                     className={cn(
                                         "min-w-[85vw] md:min-w-0 snap-center md:snap-align-none relative rounded-2xl p-8 border transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.08)] flex flex-col bg-card",
                                         plan.popular
@@ -186,11 +192,13 @@ const Pricing = () => {
                                                     content_ids: [plan.buttonId],
                                                     currency: "INR",
                                                     value: plan.price,
+                                                    event_id: eventId,
                                                 },
                                                 "BW_Pricing_PlanCheckout_Click",
                                                 {
                                                     plan_period: planType,
                                                     plan_id: plan.buttonId,
+                                                    event_id: eventId,
                                                 },
                                             );
                                             sendGTMEvent({
