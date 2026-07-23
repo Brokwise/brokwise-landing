@@ -1,13 +1,12 @@
 "use client"
 import { sendGTMEvent } from '@next/third-parties/google';
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Check, Loader2, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid';
-import { pricingDataFallback, transformTierConfig } from '@/lib/config';
+import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConfig } from '@/lib/config';
 import HexPattern from './HexPattern';
 import { metaPixel } from '@/lib/fpixel';
-import { useTierConfig } from '@/hooks/useTierConfig';
 
 type PlanType = 'monthly' | 'quarterly'
 
@@ -26,14 +25,31 @@ const featureContextByIndex: (string | null)[] = [
 
 const Pricing = () => {
     const [planType, setPlanType] = useState<PlanType>('monthly')
-    const { data: tierConfig, loading } = useTierConfig()
+    const [pricing, setPricing] = useState<PricingData>(pricingDataFallback)
+    const [loading, setLoading] = useState(true)
 
-    // Derive pricing from the shared tier-config response.
-    // Falls back to the hardcoded defaults if the API is unavailable.
-    const pricing =
-        tierConfig?.success
-            ? transformTierConfig(tierConfig.data)
-            : pricingDataFallback
+    useEffect(() => {
+        const fetchTierConfig = async () => {
+            const base = process.env.NEXT_PUBLIC_API_BASE_URL
+            if (!base) {
+                setLoading(false)
+                return
+            }
+            try {
+                const res = await fetch(`${base}/admin/tier-config`)
+                if (!res.ok) throw new Error(`Tier config API error: ${res.status}`)
+                const json: TierConfigResponse = await res.json()
+                if (json.success) {
+                    setPricing(transformTierConfig(json.data))
+                }
+            } catch {
+                // fallback already set
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchTierConfig()
+    }, [])
 
     const getPlanLabel = (type: PlanType) => {
         switch (type) {
@@ -52,9 +68,10 @@ const Pricing = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null)
 
     const scrollNext = () => {
-        if (!scrollContainerRef.current?.children.length) return
-        const cardWidth = (scrollContainerRef.current.children[0] as HTMLElement).clientWidth
-        scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
+        if (scrollContainerRef.current) {
+            const cardWidth = scrollContainerRef.current.children[0].clientWidth
+            scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
+        }
     }
 
     return (
