@@ -4,56 +4,51 @@ import Link from "next/link";
 import { ArrowRight, Calendar, Sparkles } from "lucide-react";
 
 import { getCalApi } from "@calcom/embed-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { metaPixel } from "@/lib/fpixel";
 
-const DEFAULT_PROMO = {
+export type PromoBanner = {
+  enabled: boolean;
+  label: string;
+};
+
+export const DEFAULT_PROMO: PromoBanner = {
   enabled: true,
   label: "Free early bird offer is on",
-} as const;
+};
 
-export default function Hero() {
-  const [promoBanner, setPromoBanner] = useState(DEFAULT_PROMO);
-
+export default function Hero({
+  promoBanner = DEFAULT_PROMO,
+}: {
+  promoBanner?: PromoBanner;
+}) {
   useEffect(() => {
+    let mounted = true;
     (async function () {
-      const cal = await getCalApi({ namespace: "30min" });
-      cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
-      cal("on", {
-        action: "bookingSuccessful",
-        callback: () => {
-          metaPixel.trackWithBrokwiseCustom(
-            "Schedule",
-            { content_name: "Hero Book a Demo" },
-            "BW_Hero_BookDemo_Confirmed",
-            { placement: "hero" },
-          );
-        },
-      });
+      try {
+        const cal = await getCalApi({ namespace: "30min" });
+        if (!mounted) return;
+        cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+        cal("on", {
+          action: "bookingSuccessful",
+          callback: () => {
+            metaPixel.trackWithBrokwiseCustom(
+              "Schedule",
+              { content_name: "Hero Book a Demo" },
+              "BW_Hero_BookDemo_Confirmed",
+              { placement: "hero" },
+            );
+          },
+        });
+      } catch (e) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Cal.com embed failed to initialize:", e);
+        }
+      }
     })();
-  }, []);
-
-  useEffect(() => {
-    const base = process.env.NEXT_PUBLIC_API_BASE_URL;
-    if (!base) return;
-
-    const controller = new AbortController();
-    fetch(`${base}/admin/tier-config`, { signal: controller.signal })
-      .then((res) => (res.ok ? res.json() : null))
-      .then((json) => {
-        const b = json?.data?.publicPromoBanner;
-        if (!b || typeof b.enabled !== "boolean") return;
-        const label =
-          typeof b.label === "string" && b.label.trim().length > 0
-            ? b.label.trim()
-            : DEFAULT_PROMO.label;
-        setPromoBanner({ enabled: b.enabled, label });
-      })
-      .catch(() => {
-        /* keep default */
-      });
-
-    return () => controller.abort();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (

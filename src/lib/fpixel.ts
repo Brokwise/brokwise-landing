@@ -108,13 +108,31 @@ export function pageview(): void {
   whenFbqFullyLoaded(installPageViewGuard);
 }
 
+/**
+ * Reads an `event_id` off the params (if present) and returns Meta's event
+ * options object so browser hits can be deduplicated against server-side
+ * Conversions API events that carry the same id.
+ */
+function eventOptions(
+  params: Record<string, unknown>,
+): { eventID: string } | undefined {
+  return typeof params.event_id === "string" && params.event_id
+    ? { eventID: params.event_id }
+    : undefined;
+}
+
 export function track(
   eventName: string,
   params: Record<string, unknown> = {},
 ): void {
   if (!FB_PIXEL_ID) return;
+  const options = eventOptions(params);
   whenFbqReady((fbq) => {
-    fbq("trackSingle", FB_PIXEL_ID, eventName, params);
+    if (options) {
+      fbq("trackSingle", FB_PIXEL_ID, eventName, params, options);
+    } else {
+      fbq("trackSingle", FB_PIXEL_ID, eventName, params);
+    }
   });
 }
 
@@ -124,8 +142,13 @@ export function trackCustom(
   params: Record<string, unknown> = {},
 ): void {
   if (!FB_PIXEL_ID) return;
+  const options = eventOptions(params);
   whenFbqReady((fbq) => {
-    fbq("trackSingleCustom", FB_PIXEL_ID, eventName, params);
+    if (options) {
+      fbq("trackSingleCustom", FB_PIXEL_ID, eventName, params, options);
+    } else {
+      fbq("trackSingleCustom", FB_PIXEL_ID, eventName, params);
+    }
   });
 }
 
