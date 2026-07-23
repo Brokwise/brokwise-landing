@@ -8,41 +8,48 @@ import { useEffect } from "react";
 import { metaPixel } from "@/lib/fpixel";
 import { useTierConfig } from "@/hooks/useTierConfig";
 
-const DEFAULT_PROMO = {
+export type PromoBanner = {
+  enabled: boolean;
+  label: string;
+};
+
+export const DEFAULT_PROMO: PromoBanner = {
   enabled: true,
   label: "Free early bird offer is on",
-} as const;
+};
 
-export default function Hero() {
-  const { data: tierConfig } = useTierConfig();
-
-  // Derive the promo banner from the shared tier-config response.
-  // Falls back to DEFAULT_PROMO while loading or if the API returns nothing valid.
-  const b = tierConfig?.data?.publicPromoBanner;
-  const promoBanner =
-    b && typeof b.enabled === "boolean"
-      ? {
-          enabled: b.enabled,
-          label:
-            typeof b.label === "string" && b.label.trim().length > 0
-              ? b.label.trim()
-              : DEFAULT_PROMO.label,
-        }
-      : DEFAULT_PROMO;
-
+export default function Hero({
+  promoBanner = DEFAULT_PROMO,
+}: {
+  promoBanner?: PromoBanner;
+}) {
   useEffect(() => {
     let mounted = true;
-    (async () => {
+    (async function () {
       try {
         const cal = await getCalApi({ namespace: "30min" });
-        if (mounted) cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
-      } catch {
-        // Cal.com SDK failed to load (network error, outage). The booking
-        // button's data-cal-* attributes still render; only the pre-styling
-        // of the modal is skipped.
+        if (!mounted) return;
+        cal("ui", { hideEventTypeDetails: false, layout: "month_view" });
+        cal("on", {
+          action: "bookingSuccessful",
+          callback: () => {
+            metaPixel.trackWithBrokwiseCustom(
+              "Schedule",
+              { content_name: "Hero Book a Demo" },
+              "BW_Hero_BookDemo_Confirmed",
+              { placement: "hero" },
+            );
+          },
+        });
+      } catch (e) {
+        if (process.env.NODE_ENV === "development") {
+          console.error("Cal.com embed failed to initialize:", e);
+        }
       }
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
