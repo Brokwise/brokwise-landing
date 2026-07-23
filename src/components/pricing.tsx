@@ -1,15 +1,20 @@
 "use client"
 import { sendGTMEvent } from '@next/third-parties/google';
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Check, Loader2, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { v4 as uuidv4 } from 'uuid';
-import { pricingDataFallback, transformTierConfig } from '@/lib/config';
+import { PricingData, TierConfigResponse, pricingDataFallback, transformTierConfig } from '@/lib/config';
 import HexPattern from './HexPattern';
 import { metaPixel } from '@/lib/fpixel';
-import { useTierConfig } from '@/hooks/useTierConfig';
 
 type PlanType = 'monthly' | 'quarterly'
+
+const QUARTERLY_DISCOUNTS: Record<string, number> = {
+    Basic: 12.5,
+    Essential: 14,
+    Pro: 23.5,
+}
 
 const featureContextByIndex: (string | null)[] = [
     "Add property to marketplace",
@@ -20,14 +25,31 @@ const featureContextByIndex: (string | null)[] = [
 
 const Pricing = () => {
     const [planType, setPlanType] = useState<PlanType>('monthly')
-    const { data: tierConfig, loading } = useTierConfig()
+    const [pricing, setPricing] = useState<PricingData>(pricingDataFallback)
+    const [loading, setLoading] = useState(true)
 
-    // Derive pricing from the shared tier-config response.
-    // Falls back to the hardcoded defaults if the API is unavailable.
-    const pricing =
-        tierConfig?.success
-            ? transformTierConfig(tierConfig.data)
-            : pricingDataFallback
+    useEffect(() => {
+        const fetchTierConfig = async () => {
+            const base = process.env.NEXT_PUBLIC_API_BASE_URL
+            if (!base) {
+                setLoading(false)
+                return
+            }
+            try {
+                const res = await fetch(`${base}/admin/tier-config`)
+                if (!res.ok) throw new Error(`Tier config API error: ${res.status}`)
+                const json: TierConfigResponse = await res.json()
+                if (json.success) {
+                    setPricing(transformTierConfig(json.data))
+                }
+            } catch {
+                // fallback already set
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchTierConfig()
+    }, [])
 
     const getPlanLabel = (type: PlanType) => {
         switch (type) {
@@ -46,9 +68,10 @@ const Pricing = () => {
     const scrollContainerRef = useRef<HTMLDivElement>(null)
 
     const scrollNext = () => {
-        if (!scrollContainerRef.current?.children.length) return
-        const cardWidth = (scrollContainerRef.current.children[0] as HTMLElement).clientWidth
-        scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
+        if (scrollContainerRef.current) {
+            const cardWidth = scrollContainerRef.current.children[0].clientWidth
+            scrollContainerRef.current.scrollBy({ left: cardWidth + 20, behavior: 'smooth' })
+        }
     }
 
     return (
@@ -97,7 +120,11 @@ const Pricing = () => {
                             ref={scrollContainerRef}
                             className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 max-w-7xl md:mx-auto overflow-x-auto snap-x snap-mandatory py-8 px-4 md:px-0 -mx-4 scrollbar-hide"
                         >
-                            {pricing[planType].map((plan) => (
+                            {pricing[planType].map((plan) => {
+                                const discountPct = planType === 'quarterly' ? (QUARTERLY_DISCOUNTS[plan.name] ?? null) : null
+                                const originalPrice = discountPct !== null ? Math.round(plan.price / (1 - discountPct / 100)) : null
+
+                                return (
                                 <div
                                     key={`${plan.buttonId}-${planType}`}
                                     className={cn(
@@ -115,6 +142,12 @@ const Pricing = () => {
 
                                     <div className="mb-8">
                                         <h3 className="text-xl font-normal text-foreground mb-2">{plan.name}</h3>
+                                        {discountPct !== null && originalPrice !== null && (
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <span className="text-sm text-muted-foreground line-through">₹{originalPrice.toLocaleString()}</span>
+                                                <span className="text-xs font-medium bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full">{discountPct}% OFF</span>
+                                            </div>
+                                        )}
                                         <div className="flex items-baseline gap-1 mb-1">
                                             <span className="text-4xl font-serif font-medium text-[#fcb542]">₹{plan.price.toLocaleString()}</span>
                                             <span className="text-muted-foreground font-light text-sm">
@@ -159,11 +192,13 @@ const Pricing = () => {
                                                     content_ids: [plan.buttonId],
                                                     currency: "INR",
                                                     value: plan.price,
+                                                    event_id: eventId,
                                                 },
                                                 "BW_Pricing_PlanCheckout_Click",
                                                 {
                                                     plan_period: planType,
                                                     plan_id: plan.buttonId,
+                                                    event_id: eventId,
                                                 },
                                             );
                                             sendGTMEvent({
@@ -181,10 +216,12 @@ const Pricing = () => {
                                                 ? "bg-[#fcb542] text-[#080808] hover:bg-[#D4BA8A]"
                                                 : "bg-[#fcb542]/10 text-[#fcb542] border border-[#fcb542]/20 hover:bg-[#fcb542]/20"
                                         )}>
-                                        {plan.buttonText}
+                                        {/* {plan.buttonText} */}
+                                        {'Get Started'}
                                     </button>
                                 </div>
-                            ))}
+                                )
+                            })}
                         </div>
 
                         <button

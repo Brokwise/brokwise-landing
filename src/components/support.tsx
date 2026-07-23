@@ -147,7 +147,10 @@ const Support = () => {
             setTouchedFields({});
             setHasSubmitted(false);
         } catch (error) {
-            console.error("Error submitting form:", error);
+            if (process.env.NODE_ENV === "development") {
+                console.error("Error submitting form:", error);
+            }
+            // TODO: forward `error` to an error-monitoring service (e.g. PostHog captureException / Sentry) in production.
             setStatus("error");
             setErrorMessage("Something went wrong. Please try again later.");
         }
