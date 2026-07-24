@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Check, Lock, ShieldCheck } from "lucide-react";
 import { submitEnquiry } from "@/lib/directory/api";
 import {
@@ -25,6 +26,8 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
     new Set(areaNames.slice(0, 1))
   );
   const [callback, setCallback] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
   const isBroker = profile.profileType === "BROKER";
 
@@ -85,13 +88,15 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
         Send an enquiry
       </button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-[60] flex items-center justify-center bg-black/55 p-5 backdrop-blur-sm"
-          onClick={(e) => e.target === e.currentTarget && close()}
-          role="dialog"
-          aria-modal="true"
-        >
+      {open && mounted &&
+        createPortal(
+          <div className="directory-scope">
+            <div
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/55 p-5 backdrop-blur-sm"
+              onClick={(e) => e.target === e.currentTarget && close()}
+              role="dialog"
+              aria-modal="true"
+            >
           <div className="max-h-[calc(100vh-40px)] w-full max-w-[440px] overflow-y-auto rounded-2xl border border-line bg-surface shadow-2xl">
             {done ? (
               <div className="px-7 py-9 text-center">
@@ -212,8 +217,10 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
               </form>
             )}
           </div>
-        </div>
-      )}
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 }
