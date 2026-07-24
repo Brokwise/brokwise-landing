@@ -213,3 +213,29 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ---- Broker directory (/directory) scoped amber palette ---- */
+/* Dark-amber to sit consistently within the dark landing site. */
+.directory-scope {
+  --paper: 40 27% 6%;
+  --surface: 35 27% 9%;
+  --surface-2: 39 28% 11%;
+  --ink: 40 36% 91%;
+  --dmuted: 39 15% 62%;
+  --faint: 40 13% 44%;
+  --line: 40 29% 13%;
+  --line-strong: 42 30% 18%;
+  --brand: 39 97% 62%;
+  --brand-strong: 40 97% 69%;
+  --brand-ink: 39 97% 62%;
+  --brand-soft: 40 55% 13%;
+  --on-brand: 40 57% 9%;
+  --dmark: 36 74% 59%;
+  --good: 157 52% 55%;
+  --good-soft: 168 37% 14%;
+}
+.mono-label {
+  font-family: var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}

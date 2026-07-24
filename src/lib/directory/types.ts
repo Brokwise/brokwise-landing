@@ -1,0 +1,92 @@
+export type ProfileType = "COMPANY" | "BROKER" | "PARTNER";
+export type Specialization = "BUY" | "SELL" | "RENT";
+export type PropertyCategory =
+  | "RESIDENTIAL"
+  | "COMMERCIAL"
+  | "INDUSTRIAL"
+  | "AGRICULTURAL"
+  | "RESORT"
+  | "FARM_HOUSE";
+
+export interface ProfileCardData {
+  slug: string;
+  displayName: string;
+  profileType: ProfileType;
+  city?: string;
+  specializations: Specialization[];
+  propertyCategories: PropertyCategory[];
+  propertyTypes: string[];
+  heroImage?: string;
+  reraVerified: boolean;
+  yearsOfExperience?: number;
+  operatingAreas: string[];
+  operatingAreaCount: number;
+}
+
+export interface ProfileListResponse {
+  profiles: ProfileCardData[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+export interface AnonymizedCategorySummary {
+  category: PropertyCategory;
+  count: number;
+  propertyTypes: string[];
+  bhkRange: { min: number; max: number } | null;
+  sizeRange: { min: number; max: number; unit: string } | null;
+  priceRange: { min: number; max: number } | null;
+}
+
+export interface AreaSummary {
+  label: string;
+  formattedAddress: string;
+  city?: string;
+  center?: [number, number]; // [lng, lat]
+  radiusKm: number;
+  summary: {
+    identifiable: boolean;
+    totalCount: number;
+    categories: AnonymizedCategorySummary[];
+  };
+}
+
+export interface ProfileDetail {
+  slug: string;
+  displayName: string;
+  profileType: ProfileType;
+  about?: string;
+  city?: string;
+  specializations: Specialization[];
+  propertyCategories: PropertyCategory[];
+  propertyTypes: string[];
+  heroImage?: string;
+  gallery: string[];
+  reraNumber?: string;
+  reraVerified: boolean;
+  yearsOfExperience?: number;
+  areas: AreaSummary[];
+}
+
+export const PROFILE_TYPE_LABEL: Record<ProfileType, string> = {
+  COMPANY: "Company / Agency",
+  BROKER: "Individual broker",
+  PARTNER: "Channel partner",
+};
+
+export const SPEC_LABEL: Record<Specialization, string> = {
+  BUY: "Buy",
+  SELL: "Sell",
+  RENT: "Rent",
+};
+
+export const CATEGORY_LABEL: Record<PropertyCategory, string> = {
+  RESIDENTIAL: "Residential",
+  COMMERCIAL: "Commercial",
+  INDUSTRIAL: "Industrial",
+  AGRICULTURAL: "Agricultural",
+  RESORT: "Resort",
+  FARM_HOUSE: "Farm house",
+};
