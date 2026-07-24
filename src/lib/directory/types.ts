@@ -71,7 +71,8 @@ export interface ProfileDetail {
 }
 
 export const PROFILE_TYPE_LABEL: Record<ProfileType, string> = {
-  COMPANY: "Company / Agency",
+  // A Company account in Brokwise is a Channel Partner (CP).
+  COMPANY: "Channel partner",
   BROKER: "Individual broker",
   PARTNER: "Channel partner",
 };

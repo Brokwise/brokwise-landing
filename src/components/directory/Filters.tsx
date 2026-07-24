@@ -7,7 +7,6 @@ import { SPEC_LABEL } from "@/lib/directory/types";
 
 const TYPE_OPTIONS = [
   { value: "", label: "All profiles" },
-  { value: "COMPANY", label: "Companies & agencies" },
   { value: "BROKER", label: "Individual brokers" },
   { value: "PARTNER", label: "Channel partners" },
 ];
