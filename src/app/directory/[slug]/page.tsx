@@ -65,7 +65,7 @@ export default async function ProfilePage({
       <div className="mx-auto max-w-[1160px] px-6">
         <Link
           href="/directory"
-          className="inline-flex items-center gap-2 pt-6 text-[13.5px] font-semibold text-dmuted hover:text-brand-ink"
+          className="inline-flex items-center gap-2 pt-28 text-[13.5px] font-semibold text-dmuted hover:text-brand-ink md:pt-32"
         >
           <ArrowLeft className="h-4 w-4" /> All profiles
         </Link>

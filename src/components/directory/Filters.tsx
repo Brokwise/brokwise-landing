@@ -64,7 +64,7 @@ export default function Filters({ cities }: { cities: string[] }) {
 
   return (
     <div
-      className={`sticky top-[62px] z-30 border-y border-line bg-paper/90 py-3.5 backdrop-blur ${
+      className={`sticky top-[64px] z-30 border-y border-line bg-paper/90 py-3.5 backdrop-blur md:top-[72px] ${
         isPending ? "opacity-70" : ""
       }`}
     >

@@ -30,7 +30,7 @@ export default async function ListingPage({
 
   return (
     <main className="directory-scope min-h-screen bg-paper text-ink">
-      <section className="py-12">
+      <section className="pb-12 pt-28 md:pt-36">
         <div className="mx-auto max-w-[1160px] px-6">
           <div className="mono-label text-[11.5px] font-semibold text-brand-ink">
             Public broker directory
