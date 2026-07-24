@@ -134,7 +134,8 @@ export default async function ProfilePage({
 
             {p.areas.length === 0 ? (
               <p className="mt-4 text-[14px] text-dmuted">
-                This profile hasn&apos;t published operating areas yet.
+                No active listings to map service areas yet. Send an enquiry and
+                they&apos;ll get in touch.
               </p>
             ) : (
               <div className="mt-4 flex flex-col gap-3.5">
