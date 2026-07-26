@@ -239,3 +239,34 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
+
+/* ─────────────────────────────────────────────────────────────
+   New landing page (v2) — scoped helpers
+   Palette + display type live in tailwind.config.ts (v2-* tokens,
+   font-display). These are the few things Tailwind can't express.
+   ───────────────────────────────────────────────────────────── */
+.landing-v2 {
+  --v2-navy: #0b1522;
+  --v2-gold: #e8b662;
+}
+
+/* Faint dot-grid used behind dark v2 sections */
+.v2-dotgrid {
+  background-image: radial-gradient(
+    rgba(232, 182, 98, 0.10) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+}
+
+/* Horizontal marquee shared by v2 testimonials / network feed */
+@keyframes v2Marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.v2-marquee-track { animation: v2Marquee 48s linear infinite; will-change: transform; }
+.v2-marquee:hover .v2-marquee-track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-marquee-track { animation: none; }
+}

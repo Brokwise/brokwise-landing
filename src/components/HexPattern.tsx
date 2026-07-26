@@ -9,10 +9,13 @@ interface HexPatternProps {
   fade?: "horizontal" | "top" | "radial";
 }
 
+// Round to fixed precision so server and client render byte-identical point
+// strings (raw Math.cos/sin output can differ in the last digit across JS
+// engines, which triggers a React hydration mismatch).
 const hexPoints = (cx: number, cy: number, r: number) =>
   Array.from({ length: 6 }, (_, i) => {
     const a = (Math.PI / 3) * i;
-    return `${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`;
+    return `${(cx + r * Math.cos(a)).toFixed(3)},${(cy + r * Math.sin(a)).toFixed(3)}`;
   }).join(" ");
 
 const HexPattern: React.FC<HexPatternProps> = ({

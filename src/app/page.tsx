@@ -1,12 +1,16 @@
-import Features from "@/components/features";
-import Hero, { DEFAULT_PROMO, type PromoBanner } from "@/components/hero";
-import Pricing from "@/components/pricing";
-import FAQ from "@/components/faq";
-import Testimonials from "@/components/testimonials";
-import CTA from "@/components/cta";
-import Footer from "@/components/footer";
-import Grainient from "@/components/Grainient";
+import Navbar from "@/components/v2/Navbar";
+import Hero from "@/components/v2/Hero";
+import Testimonials from "@/components/v2/Testimonials";
+import Comparison from "@/components/v2/Comparison";
+import Steps from "@/components/v2/Steps";
+import CtaBand from "@/components/v2/CtaBand";
+import Features from "@/components/v2/Features";
+import Network from "@/components/v2/Network";
+import Pricing from "@/components/v2/Pricing";
+import Faq from "@/components/v2/Faq";
+import Footer from "@/components/v2/Footer";
 import MetaPixelPageEvents from "@/components/meta-pixel-page-events";
+import { DEFAULT_PROMO, PromoBanner } from "@/components/hero";
 
 // Fetch the promo banner on the server so its text is present in the initial
 // HTML (crawlable / no post-hydration flash). Always resolves — any failure
@@ -41,47 +45,21 @@ export default async function Home() {
   const promoBanner = await getPromoBanner();
 
   return (
-    <main>
+    <div className="landing-v2 bg-v2-navy font-sans">
       <MetaPixelPageEvents />
-      <Hero promoBanner={promoBanner} />
-      <Features />
-      <Testimonials />
-      <Pricing />
-      <FAQ />
-
-      {/* Shared container for CTA and Footer to have continuous background */}
-      <div className="relative w-full overflow-hidden">
-        <div className="absolute inset-0 w-full h-full z-0">
-          <Grainient
-            color1="#fcb542"
-            color2="#8B6914"
-            color3="#D4BA8A"
-            timeSpeed={0.25}
-            colorBalance={0}
-            warpStrength={1}
-            warpFrequency={5}
-            warpSpeed={2}
-            warpAmplitude={50}
-            blendAngle={0}
-            blendSoftness={0.05}
-            rotationAmount={500}
-            noiseScale={2}
-            grainAmount={0.1}
-            grainScale={2}
-            grainAnimated={false}
-            contrast={1.5}
-            gamma={1}
-            saturation={1}
-            centerX={0}
-            centerY={0}
-            zoom={0.9}
-          />
-        </div>
-        <div className="relative z-10">
-          <CTA />
-          <Footer />
-        </div>
-      </div>
-    </main>
+      <Navbar />
+      <main>
+        <Hero />
+        <Testimonials />
+        <Comparison />
+        <Steps />
+        <CtaBand />
+        <Features />
+        <Network />
+        <Pricing />
+        <Faq />
+      </main>
+      <Footer />
+    </div>
   );
 }
