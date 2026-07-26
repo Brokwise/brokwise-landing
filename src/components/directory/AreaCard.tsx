@@ -9,7 +9,7 @@ export default function AreaCard({ area }: { area: AreaSummary }) {
   return (
     <div className="rounded-xl border border-line bg-surface p-4 shadow-sm">
       <div className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2 text-[16px] font-extrabold">
+        <div className="flex items-center gap-2 font-display text-[16px] font-bold">
           <MapPin className="h-4 w-4 text-dmark" />
           {area.label}
         </div>

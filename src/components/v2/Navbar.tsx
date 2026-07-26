@@ -9,10 +9,10 @@ import { metaPixel } from "@/lib/fpixel";
 import { REGISTER_URL } from "./content";
 
 const LINKS = [
-  { name: "Features", href: "#features" },
-  { name: "Testimonials", href: "#testimonials" },
-  { name: "Pricing", href: "#pricing" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Features", href: "/#features" },
+  { name: "Directory", href: "/directory" },
+  { name: "Pricing", href: "/#pricing" },
+  { name: "FAQ", href: "/#faq" },
   { name: "Support", href: "/support" },
 ];
 

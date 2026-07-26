@@ -117,31 +117,35 @@ export default function Steps() {
     <section className="relative overflow-hidden bg-v2-navy pt-28 pb-20 md:pt-32 md:pb-28">
       <div className="v2-dotgrid absolute inset-0 opacity-30" />
       <div className="relative mx-auto max-w-6xl px-5 md:px-8">
-        <h2 className="text-center font-display text-3xl font-bold tracking-tight text-v2-gold md:text-5xl">
+        <h2 className="text-center font-display text-3xl font-bold leading-tight tracking-tight text-v2-gold md:text-5xl md:leading-tight">
           How it works?
         </h2>
 
-        <div className="mt-14 flex flex-col items-stretch gap-3 md:flex-row md:gap-2">
+        <div className="mt-14 flex flex-col items-stretch gap-4 md:flex-row md:gap-2">
           {STEPS.map((step, i) => {
             const Visual = VISUALS[i];
             return (
               <React.Fragment key={step.title}>
-                <div className="flex flex-1 items-center gap-4 rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 md:p-7">
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-start gap-3">
-                      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-v2-gold font-display text-base font-bold text-v2-ink">
-                        {i + 1}
-                      </span>
-                      <h3 className="pt-1 font-display text-xl font-bold leading-[1.15] text-white">
-                        {step.title}
-                      </h3>
-                    </div>
-                    <p className="mt-4 text-sm leading-relaxed text-white/55">
+                <div className="flex flex-1 flex-col rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-white/[0.01] p-6 md:p-7">
+                  {/* Header: number + title get the full card width, so nothing
+                      collides with the visual below. */}
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-v2-gold font-display text-base font-bold text-v2-ink">
+                      {i + 1}
+                    </span>
+                    <h3 className="font-display text-xl font-bold leading-tight text-white">
+                      {step.title}
+                    </h3>
+                  </div>
+
+                  {/* Body + visual, side by side, vertically centred. */}
+                  <div className="mt-6 flex flex-1 items-center gap-4">
+                    <p className="min-w-0 flex-1 text-sm leading-relaxed text-white/55">
                       {step.body}
                     </p>
-                  </div>
-                  <div className="w-[45%] max-w-[190px] shrink-0">
-                    <Visual />
+                    <div className="w-[42%] max-w-[170px] shrink-0">
+                      <Visual />
+                    </div>
                   </div>
                 </div>
                 {i < STEPS.length - 1 && <Arrow />}

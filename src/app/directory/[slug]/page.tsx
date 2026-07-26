@@ -11,6 +11,9 @@ import {
 import AreaCard from "@/components/directory/AreaCard";
 import ServiceAreaMap from "@/components/directory/ServiceAreaMap";
 import EnquiryModal from "@/components/directory/EnquiryModal";
+import { DirectoryHeroShell } from "@/components/directory/DirectoryHero";
+import DirectorySearch from "@/components/directory/DirectorySearch";
+import Navbar from "@/components/v2/Navbar";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brokwise.com";
 
@@ -56,64 +59,65 @@ export default async function ProfilePage({
   };
 
   return (
-    <main className="directory-scope min-h-screen bg-paper text-ink">
+    <div className="landing-v2">
+      <Navbar />
+      <main className="directory-scope min-h-screen bg-paper text-ink">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="mx-auto max-w-[1160px] px-6">
+      <DirectoryHeroShell compact>
         <Link
           href="/directory"
-          className="inline-flex items-center gap-2 pt-28 text-[13.5px] font-semibold text-dmuted hover:text-brand-ink md:pt-32"
+          className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-white/70 transition-colors hover:text-v2-gold"
         >
           <ArrowLeft className="h-4 w-4" /> All profiles
         </Link>
-      </div>
 
-      <div className="border-b border-line">
-        <div className="mx-auto max-w-[1160px] px-6 pb-7 pt-4">
-          {/* Identity cluster: who they are */}
-          <div className="flex items-start gap-4">
-            {p.heroImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={p.heroImage}
-                alt={p.displayName}
-                className="h-16 w-16 flex-none rounded-full object-cover"
-              />
-            ) : (
-              <div className="grid h-16 w-16 flex-none place-items-center rounded-full bg-brand-soft text-xl font-bold text-brand-ink">
-                {profileInitials(p.displayName)}
-              </div>
-            )}
-            <div className="min-w-0">
-              <div className="mono-label flex items-center gap-1.5 text-[10px] font-semibold text-dmark">
-                <span className="h-[5px] w-[5px] rounded-full bg-dmark" />
-                {PROFILE_TYPE_LABEL[p.profileType]}
-              </div>
-              <h1 className="mt-1.5 flex flex-wrap items-center gap-2.5 text-[clamp(26px,4vw,38px)] font-extrabold leading-tight tracking-tight">
-                {p.displayName}
-                {p.reraVerified && (
-                  <ShieldCheck className="h-6 w-6 text-good" aria-label="RERA verified" />
-                )}
-              </h1>
-              <div className="mono-label mt-1.5 text-[12px] text-faint">
-                {[p.city, p.yearsOfExperience ? `${p.yearsOfExperience} yrs experience` : null]
-                  .filter(Boolean)
-                  .join("  ·  ")}
-              </div>
+        <div className="mt-6 flex items-start gap-4">
+          {p.heroImage ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={p.heroImage}
+              alt={p.displayName}
+              className="h-16 w-16 flex-none rounded-full object-cover ring-2 ring-white/15"
+            />
+          ) : (
+            <div className="grid h-16 w-16 flex-none place-items-center rounded-full bg-white/10 text-xl font-bold text-white ring-1 ring-white/15">
+              {profileInitials(p.displayName)}
+            </div>
+          )}
+          <div className="min-w-0">
+            <div className="mono-label flex items-center gap-1.5 text-[10px] font-semibold text-v2-gold">
+              <span className="h-[5px] w-[5px] rounded-full bg-v2-gold" />
+              {PROFILE_TYPE_LABEL[p.profileType]}
+            </div>
+            <h1 className="mt-1.5 flex flex-wrap items-center gap-2.5 font-display text-[clamp(26px,4vw,40px)] font-bold leading-tight tracking-tight text-white">
+              {p.displayName}
+              {p.reraVerified && (
+                <ShieldCheck className="h-6 w-6 text-emerald-400" aria-label="RERA verified" />
+              )}
+            </h1>
+            <div className="mono-label mt-2 text-[12px] text-white/55">
+              {[p.city, p.yearsOfExperience ? `${p.yearsOfExperience} yrs experience` : null]
+                .filter(Boolean)
+                .join("  ·  ")}
             </div>
           </div>
+        </div>
 
+        <DirectorySearch className="mt-7" />
+      </DirectoryHeroShell>
+
+      <div className="mx-auto max-w-[1160px] px-6">
+        <div className="border-b border-line py-7">
           {p.about && (
-            <p className="mt-5 max-w-[64ch] text-[15.5px] leading-relaxed text-dmuted">
+            <p className="max-w-[64ch] text-[15.5px] leading-relaxed text-dmuted">
               {p.about}
             </p>
           )}
-
-          {/* Capability cluster: what they do */}
-          <div className="mt-5 flex flex-wrap gap-1.5">
+          <div className={`flex flex-wrap gap-1.5 ${p.about ? "mt-5" : ""}`}>
             {p.reraVerified && (
               <span className="mono-label inline-flex items-center gap-1.5 rounded-md bg-good-soft px-2.5 py-1 text-[11px] font-medium text-good">
                 <ShieldCheck className="h-3.5 w-3.5" /> RERA {p.reraNumber || "verified"}
@@ -137,9 +141,7 @@ export default async function ProfilePage({
             ))}
           </div>
         </div>
-      </div>
 
-      <div className="mx-auto max-w-[1160px] px-6">
         <div className="grid grid-cols-1 items-start gap-10 py-8 md:grid-cols-[1fr_380px]">
           <div>
             <div className="mono-label text-[11.5px] font-semibold text-brand-ink">
@@ -176,7 +178,7 @@ export default async function ProfilePage({
             </div>
 
             <div className="rounded-xl border border-line bg-surface p-5 shadow-sm">
-              <h3 className="text-[18px] font-extrabold tracking-tight">Interested in this area?</h3>
+              <h3 className="font-display text-[18px] font-bold tracking-tight">Interested in this area?</h3>
               <p className="mt-2 text-[13.5px] text-dmuted">
                 Send {p.displayName} a message about what you&apos;re looking for.
                 They&apos;ll get it instantly in the Brokwise app and reach out to you.
@@ -193,7 +195,8 @@ export default async function ProfilePage({
           </aside>
         </div>
       </div>
-    </main>
+      </main>
+    </div>
   );
 }
 

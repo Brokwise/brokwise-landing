@@ -6,6 +6,7 @@ import Steps from "@/components/v2/Steps";
 import CtaBand from "@/components/v2/CtaBand";
 import Features from "@/components/v2/Features";
 import Network from "@/components/v2/Network";
+import Directory from "@/components/v2/Directory";
 import Pricing from "@/components/v2/Pricing";
 import Faq from "@/components/v2/Faq";
 import Footer from "@/components/v2/Footer";
@@ -56,6 +57,7 @@ export default async function Home() {
         <CtaBand />
         <Features />
         <Network />
+        <Directory />
         <Pricing />
         <Faq />
       </main>

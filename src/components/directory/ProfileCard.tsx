@@ -38,7 +38,7 @@ export default function ProfileCard({ p }: { p: ProfileCardData }) {
             {PROFILE_TYPE_LABEL[p.profileType]}
           </div>
           <div className="mt-1 flex items-center gap-1.5">
-            <h3 className="truncate text-[17px] font-extrabold tracking-tight">
+            <h3 className="truncate font-display text-[17px] font-bold tracking-tight">
               {p.displayName}
             </h3>
             {p.reraVerified && (
