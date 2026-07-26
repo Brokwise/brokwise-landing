@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ShieldCheck, Lock } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Lock, EyeOff, Send } from "lucide-react";
 import { fetchProfile } from "@/lib/directory/api";
 import {
   PROFILE_TYPE_LABEL,
@@ -72,43 +72,38 @@ export default async function ProfilePage({
       </div>
 
       <div className="border-b border-line">
-        <div className="mx-auto max-w-[1160px] px-6 pb-6 pt-4">
-          <div className="mono-label flex items-center gap-1.5 text-[10px] font-semibold text-dmark">
-            <span className="h-[5px] w-[5px] rounded-full bg-dmark" />
-            {PROFILE_TYPE_LABEL[p.profileType]}
-          </div>
-          {(p.city || p.specializations.length > 0) && (
-            <div className="mono-label mt-2 text-[11.5px] font-semibold text-brand-ink">
-              {[p.city, p.specializations.map((s) => SPEC_LABEL[s]).join(" / ")]
-                .filter(Boolean)
-                .join(" · ")}
+        <div className="mx-auto max-w-[1160px] px-6 pb-7 pt-4">
+          {/* Identity cluster: who they are */}
+          <div className="flex items-start gap-4">
+            {p.heroImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={p.heroImage}
+                alt={p.displayName}
+                className="h-16 w-16 flex-none rounded-full object-cover"
+              />
+            ) : (
+              <div className="grid h-16 w-16 flex-none place-items-center rounded-full bg-brand-soft text-xl font-bold text-brand-ink">
+                {profileInitials(p.displayName)}
+              </div>
+            )}
+            <div className="min-w-0">
+              <div className="mono-label flex items-center gap-1.5 text-[10px] font-semibold text-dmark">
+                <span className="h-[5px] w-[5px] rounded-full bg-dmark" />
+                {PROFILE_TYPE_LABEL[p.profileType]}
+              </div>
+              <h1 className="mt-1.5 flex flex-wrap items-center gap-2.5 text-[clamp(26px,4vw,38px)] font-extrabold leading-tight tracking-tight">
+                {p.displayName}
+                {p.reraVerified && (
+                  <ShieldCheck className="h-6 w-6 text-good" aria-label="RERA verified" />
+                )}
+              </h1>
+              <div className="mono-label mt-1.5 text-[12px] text-faint">
+                {[p.city, p.yearsOfExperience ? `${p.yearsOfExperience} yrs experience` : null]
+                  .filter(Boolean)
+                  .join("  ·  ")}
+              </div>
             </div>
-          )}
-          <h1 className="mt-2 flex flex-wrap items-center gap-2.5 text-[clamp(26px,4vw,38px)] font-extrabold tracking-tight">
-            {p.displayName}
-            {p.reraVerified && <ShieldCheck className="h-6 w-6 text-good" aria-label="RERA verified" />}
-          </h1>
-
-          <div className="mt-4 flex flex-wrap gap-6">
-            <Stat k="Type" v={PROFILE_TYPE_LABEL[p.profileType]} />
-            {typeof p.yearsOfExperience === "number" && (
-              <Stat k="Experience" v={`${p.yearsOfExperience} years`} />
-            )}
-            {p.specializations.length > 0 && (
-              <Stat k="Specialisation" v={p.specializations.map((s) => SPEC_LABEL[s]).join(" · ")} />
-            )}
-            <Stat
-              k="RERA"
-              v={
-                p.reraVerified ? (
-                  <span className="inline-flex items-center gap-1.5 text-good">
-                    <ShieldCheck className="h-4 w-4" /> {p.reraNumber || "Verified"}
-                  </span>
-                ) : (
-                  "Verification pending"
-                )
-              }
-            />
           </div>
 
           {p.about && (
@@ -116,6 +111,31 @@ export default async function ProfilePage({
               {p.about}
             </p>
           )}
+
+          {/* Capability cluster: what they do */}
+          <div className="mt-5 flex flex-wrap gap-1.5">
+            {p.reraVerified && (
+              <span className="mono-label inline-flex items-center gap-1.5 rounded-md bg-good-soft px-2.5 py-1 text-[11px] font-medium text-good">
+                <ShieldCheck className="h-3.5 w-3.5" /> RERA {p.reraNumber || "verified"}
+              </span>
+            )}
+            {p.specializations.map((s) => (
+              <span
+                key={s}
+                className="mono-label rounded-md bg-brand-soft px-2.5 py-1 text-[11px] font-medium text-brand-ink"
+              >
+                {SPEC_LABEL[s]}
+              </span>
+            ))}
+            {p.propertyCategories.map((c) => (
+              <span
+                key={c}
+                className="mono-label rounded-md border border-line-strong px-2.5 py-1 text-[11px] font-medium text-dmuted"
+              >
+                {CATEGORY_LABEL[c]}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -168,6 +188,8 @@ export default async function ProfilePage({
                 inside their app.
               </p>
             </div>
+
+            <TrustPanel reraNumber={p.reraVerified ? p.reraNumber : undefined} />
           </aside>
         </div>
       </div>
@@ -175,11 +197,50 @@ export default async function ProfilePage({
   );
 }
 
-function Stat({ k, v }: { k: string; v: React.ReactNode }) {
+function profileInitials(name: string): string {
+  const parts = name.trim().split(/\s+/).slice(0, 2);
+  return parts.map((p) => p[0]?.toUpperCase() || "").join("") || "B";
+}
+
+function TrustPanel({ reraNumber }: { reraNumber?: string }) {
+  const items = [
+    {
+      icon: ShieldCheck,
+      title: "RERA-verified broker",
+      body: reraNumber
+        ? `Registration ${reraNumber}, verified by Brokwise.`
+        : "Verified by Brokwise before listing.",
+    },
+    {
+      icon: Lock,
+      title: "Your data stays yours",
+      body: "We never share your details without your permission.",
+    },
+    {
+      icon: EyeOff,
+      title: "Their contact stays private",
+      body: "You only see the broker's number once they respond to you.",
+    },
+    {
+      icon: Send,
+      title: "Delivered in-app",
+      body: "Your enquiry reaches the broker instantly in the Brokwise app.",
+    },
+  ];
   return (
-    <div>
-      <div className="mono-label text-[10.5px] text-faint">{k}</div>
-      <div className="mt-0.5 text-[15px] font-bold">{v}</div>
+    <div className="rounded-xl border border-line bg-surface p-5 shadow-sm">
+      <div className="mono-label mb-3.5 text-[10.5px] text-faint">Why enquire on Brokwise</div>
+      <ul className="flex flex-col gap-3.5">
+        {items.map((it) => (
+          <li key={it.title} className="flex gap-3">
+            <it.icon className="mt-0.5 h-4 w-4 flex-none text-good" />
+            <div>
+              <p className="text-[13.5px] font-semibold text-ink">{it.title}</p>
+              <p className="text-[12.5px] text-dmuted">{it.body}</p>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -72,7 +72,7 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
   }
 
   const chip = (active: boolean) =>
-    `mono-label rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition ${
+    `mono-label inline-flex items-center gap-1 rounded-full border px-2.5 py-1.5 text-[11px] font-medium transition ${
       active
         ? "border-brand bg-brand text-on-brand"
         : "border-line-strong bg-surface text-dmuted hover:border-brand hover:text-ink"
@@ -144,6 +144,7 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
                           onClick={() => toggle(selCats, c, setSelCats)}
                           className={chip(selCats.has(c))}
                         >
+                          {selCats.has(c) && <Check className="h-3 w-3" />}
                           {CATEGORY_LABEL[c]}
                         </button>
                       ))}
@@ -163,6 +164,7 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
                             onClick={() => toggle(selAreas, a, setSelAreas)}
                             className={chip(selAreas.has(a))}
                           >
+                            {selAreas.has(a) && <Check className="h-3 w-3" />}
                             {a}
                           </button>
                         ))}
