@@ -62,6 +62,7 @@ export interface ProfileDetail {
   specializations: Specialization[];
   propertyCategories: PropertyCategory[];
   propertyTypes: string[];
+  languages: string[];
   heroImage?: string;
   gallery: string[];
   reraNumber?: string;

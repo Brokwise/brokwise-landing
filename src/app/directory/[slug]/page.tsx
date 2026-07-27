@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ShieldCheck, Lock, EyeOff, Send } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Lock, EyeOff, Send, Languages } from "lucide-react";
 import { fetchProfile } from "@/lib/directory/api";
 import {
   PROFILE_TYPE_LABEL,
@@ -104,6 +104,12 @@ export default async function ProfilePage({
                 .filter(Boolean)
                 .join("  ·  ")}
             </div>
+            {p.languages.length > 0 && (
+              <div className="mt-2 flex items-center gap-1.5 text-[13px] text-white/70">
+                <Languages className="h-3.5 w-3.5 flex-none text-dmark" />
+                Speaks {p.languages.join(", ")}
+              </div>
+            )}
           </div>
         </div>
 
