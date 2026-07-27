@@ -13,6 +13,7 @@ export interface ProfileCardData {
   displayName: string;
   profileType: ProfileType;
   city?: string;
+  avatarImage?: string;
   specializations: Specialization[];
   propertyCategories: PropertyCategory[];
   propertyTypes: string[];
@@ -59,6 +60,7 @@ export interface ProfileDetail {
   profileType: ProfileType;
   about?: string;
   city?: string;
+  avatarImage?: string;
   specializations: Specialization[];
   propertyCategories: PropertyCategory[];
   propertyTypes: string[];

@@ -19,11 +19,11 @@ export default function ProfileCard({ p }: { p: ProfileCardData }) {
       className="group flex flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-sm transition hover:-translate-y-0.5 hover:border-line-strong hover:shadow-lg"
     >
       <div className="flex items-start gap-3.5 p-4">
-        {/* Broker avatar - image if provided, else initials for a consistent identity. */}
-        {p.heroImage ? (
+        {/* Broker's account profile photo, else initials for a consistent identity. */}
+        {p.avatarImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={p.heroImage}
+            src={p.avatarImage}
             alt={p.displayName}
             className="h-12 w-12 flex-none rounded-full object-cover"
           />

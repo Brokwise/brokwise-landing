@@ -75,11 +75,21 @@ export default async function ProfilePage({
           <ArrowLeft className="h-4 w-4" /> All profiles
         </Link>
 
-        <div className="mt-6 flex items-start gap-4">
-          {p.heroImage ? (
+        {p.heroImage && (
+          // Cover banner (separate from the broker's profile photo).
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={p.heroImage}
+            alt=""
+            className="mt-6 h-40 w-full rounded-2xl object-cover ring-1 ring-white/10"
+          />
+        )}
+
+        <div className={`${p.heroImage ? "mt-4" : "mt-6"} flex items-start gap-4`}>
+          {p.avatarImage ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={p.heroImage}
+              src={p.avatarImage}
               alt={p.displayName}
               className="h-16 w-16 flex-none rounded-full object-cover ring-2 ring-white/15"
             />
