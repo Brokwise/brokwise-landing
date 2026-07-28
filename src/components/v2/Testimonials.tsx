@@ -10,12 +10,11 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative overflow-hidden bg-v2-navy pt-20 pb-20 md:pt-24 md:pb-28"
+      className="relative overflow-hidden bg-v2-navy pb-20 pt-28 md:pb-28 md:pt-36"
     >
       <div className="mx-auto max-w-6xl px-5 text-center md:px-8">
         <h2 className="mx-auto max-w-3xl font-display text-3xl font-bold leading-tight tracking-tight text-white md:text-[2.75rem]">
-          Trusted by brokers across India&apos;s{" "}
-          <span className="text-v2-gold">fastest-growing property markets.</span>
+          Why Brokers Trust <span className="text-v2-gold">Brokwise</span>
         </h2>
       </div>
 

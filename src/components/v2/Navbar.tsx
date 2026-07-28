@@ -2,17 +2,18 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { metaPixel } from "@/lib/fpixel";
 import { REGISTER_URL } from "./content";
 
 const LINKS = [
-  { name: "Features", href: "/#features" },
-  { name: "Directory", href: "/directory" },
+  { name: "How It Works", href: "/#how-it-works" },
+  { name: "Why Brokwise", href: "/#features" },
   { name: "Pricing", href: "/#pricing" },
-  { name: "FAQ", href: "/#faq" },
+  { name: "Testimonials", href: "/#testimonials" },
+  { name: "Browse Brokers", href: "/directory" },
+  { name: "FAQs", href: "/#faq" },
   { name: "Support", href: "/support" },
 ];
 
@@ -45,20 +46,13 @@ const Navbar = () => {
             : "border-white/10 bg-v2-navy/50 backdrop-blur-md",
         )}
       >
-        <Link href="/" className="flex items-center gap-2.5">
-          <Image
-            src="/logo.webp"
-            alt="Brokwise logo"
-            width={36}
-            height={36}
-            className="h-8 w-8 rounded-md ring-1 ring-white/10 md:h-9 md:w-9"
-          />
-          <span className="font-display text-xl font-bold tracking-tight text-white md:text-2xl">
+        <Link href="/" className="flex items-center">
+          <span className="font-display text-xl font-bold tracking-tight text-v2-gold md:text-2xl">
             Brokwise
           </span>
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-6 lg:flex xl:gap-8">
           {LINKS.map((l) => (
             <Link
               key={l.name}
@@ -74,14 +68,14 @@ const Navbar = () => {
           <Link
             href={REGISTER_URL}
             onClick={() => trackSignup("v2_nav_desktop")}
-            className="hidden rounded-full bg-v2-gold px-5 py-2 text-sm font-semibold text-v2-ink transition-all hover:bg-v2-gold-2 hover:scale-[1.03] md:inline-flex"
+            className="hidden rounded-full bg-v2-gold px-5 py-2 text-sm font-semibold text-v2-ink transition-all hover:bg-v2-gold-2 hover:scale-[1.03] lg:inline-flex"
           >
-            Sign Up
+            Join Now
           </Link>
           <button
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
-            className="rounded-full p-1.5 text-v2-gold transition-colors hover:bg-white/5 md:hidden"
+            className="rounded-full p-1.5 text-v2-gold transition-colors hover:bg-white/5 lg:hidden"
           >
             {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
@@ -113,7 +107,7 @@ const Navbar = () => {
           }}
           className="mt-2 rounded-full bg-v2-gold px-8 py-3 text-lg font-semibold text-v2-ink"
         >
-          Sign Up
+          Join Now
         </Link>
       </div>
     </header>

@@ -17,7 +17,7 @@ import { APP_URL } from "./content";
 type PlanType = "monthly" | "quarterly";
 
 export default function Pricing() {
-  const [planType, setPlanType] = useState<PlanType>("monthly");
+  const planType: PlanType = "monthly";
   const [pricing, setPricing] = useState<PricingData>(pricingDataFallback);
   const [loading, setLoading] = useState(true);
 
@@ -57,30 +57,11 @@ export default function Pricing() {
       <div className="mx-auto max-w-6xl px-5 md:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-display text-3xl font-bold leading-tight tracking-tight text-v2-ink md:text-5xl">
-            Start free. Pay only when it&apos;s working for you.
+            Choose Your Plan
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base text-v2-ink/60">
-            Claim your early-bird offer: 25 free credits to post requirements, send
-            proposals, and connect with verified brokers - at zero cost. Simple,
-            transparent pricing after that. No hidden fees. Cancel anytime.
+            Start with 25 free credits and pay only when you need more. No hidden fees.
           </p>
-
-          <div className="mt-8 inline-flex gap-1 rounded-full border border-black/10 bg-v2-paper-2 p-1">
-            {(["monthly", "quarterly"] as PlanType[]).map((type) => (
-              <button
-                key={type}
-                onClick={() => setPlanType(type)}
-                className={cn(
-                  "rounded-full px-6 py-2 text-sm font-semibold transition-all",
-                  planType === type
-                    ? "bg-v2-gold text-v2-ink shadow-sm"
-                    : "text-v2-ink/60 hover:text-v2-ink",
-                )}
-              >
-                {type === "monthly" ? "Monthly" : "3-Month"}
-              </button>
-            ))}
-          </div>
         </div>
 
         {loading ? (
@@ -116,7 +97,7 @@ export default function Pricing() {
                     {planType === "monthly" ? "/month" : "/3 months"}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-v2-ink/40">+ 18% GST</p>
+                <p className="mt-1 text-xs text-v2-ink/40">18% GST</p>
                 <p className="mt-3 text-sm text-v2-ink/60">{plan.description}</p>
 
                 <ul className="mt-7 mb-8 flex-1 space-y-3.5">

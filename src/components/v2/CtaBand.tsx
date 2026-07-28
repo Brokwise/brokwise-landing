@@ -32,9 +32,9 @@ export default function CtaBand() {
           </div>
 
           <div className="flex flex-col gap-5">
-            <ul className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <ul className="grid grid-cols-1 gap-3">
               {CTA_CHECKLIST.map((item) => (
-                <li key={item} className="flex items-center gap-2 text-sm text-white/85">
+                <li key={item} className="flex items-center gap-2.5 text-sm text-white/85">
                   <span className="flex h-5 w-5 items-center justify-center rounded-full border border-v2-gold/50 text-v2-gold">
                     <Check className="h-3 w-3" />
                   </span>
@@ -59,7 +59,7 @@ export default function CtaBand() {
                 }
                 className="inline-flex items-center justify-center rounded-full bg-v2-gold px-6 py-3 text-sm font-semibold text-v2-ink transition-all hover:bg-v2-gold-2 hover:scale-[1.02] active:scale-95"
               >
-                Request a live demo
+                Request a Live Demo
               </button>
               <Link
                 href={REGISTER_URL}
@@ -73,7 +73,7 @@ export default function CtaBand() {
                 }
                 className="inline-flex items-center justify-center rounded-full border border-white/25 px-6 py-3 text-sm font-semibold text-white transition-all hover:border-white/50 hover:bg-white/5 active:scale-95"
               >
-                Join now
+                Join Now
               </Link>
             </div>
           </div>

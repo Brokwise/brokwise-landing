@@ -1,43 +1,61 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Minus, Check } from "lucide-react";
+import { useMemo, useState } from "react";
+import { Plus, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { FAQS } from "./content";
-
-const POINTS = [
-  "Verified brokers. Trusted connections. Better opportunities.",
-  "Expand your network with real estate professionals nationwide.",
-  "Collaborate, refer, and grow together with confidence.",
-];
+import { FAQS, FAQ_CATEGORIES, type FaqCategory } from "./content";
 
 export default function Faq() {
-  const [open, setOpen] = useState<number | null>(0);
+  const [active, setActive] = useState<FaqCategory>("General");
+  const [open, setOpen] = useState<string | null>(null);
+
+  const items = useMemo(
+    () => FAQS.filter((f) => f.category === active),
+    [active],
+  );
+
+  const selectCategory = (category: FaqCategory) => {
+    setActive(category);
+    setOpen(null);
+  };
 
   return (
     <section id="faq" className="bg-v2-navy py-20 md:py-28">
-      <div className="mx-auto grid max-w-6xl gap-12 px-5 md:grid-cols-[0.85fr_1.15fr] md:px-8">
-        <div>
+      <div className="mx-auto max-w-3xl px-5 md:px-8">
+        <div className="text-center">
           <h2 className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">
             <span className="text-v2-gold">F</span>requently{" "}
             <span className="text-v2-gold">A</span>sked{" "}
             <span className="text-v2-gold">Q</span>uestions
           </h2>
-          <ul className="mt-8 space-y-4">
-            {POINTS.map((p) => (
-              <li key={p} className="flex items-start gap-3 text-sm text-white/60">
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full border border-v2-gold/40 text-v2-gold">
-                  <Check className="h-3 w-3" />
-                </span>
-                {p}
-              </li>
-            ))}
-          </ul>
+          <p className="mx-auto mt-4 max-w-xl text-base text-white/60">
+            Everything you need to know about Brokwise, credits, subscriptions, and
+            more.
+          </p>
         </div>
 
-        <div className="space-y-3">
-          {FAQS.map((item, i) => {
-            const isOpen = open === i;
+        {/* Category tabs */}
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-2 md:gap-3">
+          {FAQ_CATEGORIES.map((category) => (
+            <button
+              key={category}
+              onClick={() => selectCategory(category)}
+              className={cn(
+                "rounded-full px-5 py-2 text-sm font-medium transition-colors",
+                active === category
+                  ? "bg-v2-gold text-v2-ink"
+                  : "text-white/60 hover:text-white",
+              )}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+
+        {/* Accordion */}
+        <div className="mt-10 space-y-3">
+          {items.map((item) => {
+            const isOpen = open === item.question;
             return (
               <div
                 key={item.question}
@@ -47,7 +65,7 @@ export default function Faq() {
                 )}
               >
                 <button
-                  onClick={() => setOpen(isOpen ? null : i)}
+                  onClick={() => setOpen(isOpen ? null : item.question)}
                   aria-expanded={isOpen}
                   className="flex w-full items-center justify-between gap-4 p-5 text-left"
                 >

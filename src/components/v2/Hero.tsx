@@ -3,12 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { CalendarDays, UserPlus, ShieldCheck, Star } from "lucide-react";
+import { CalendarDays, UserPlus, ShieldCheck, Star, StarHalf } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
 import { metaPixel } from "@/lib/fpixel";
-import { CAL, HERO_AVATARS, HERO_BULLETS, REGISTER_URL, STATS } from "./content";
+import { CAL, HERO_BULLETS, REGISTER_URL, STATS } from "./content";
 
-const DEFAULT_PROMO = { enabled: true, label: "Free early bird offer is on" };
+const DEFAULT_PROMO = {
+  enabled: true,
+  label: "Claim Your 25 Free Credits with Our Early Bird Offer",
+};
 
 export default function Hero() {
   const [promo, setPromo] = useState(DEFAULT_PROMO);
@@ -40,9 +43,9 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-v2-navy text-white">
+    <section className="relative z-10 bg-[#040B14] text-white">
       {/* Background image + gradients */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0 overflow-hidden">
         <Image
           src="/hero-new.png"
           alt="Two brokers shaking hands over a connected city network"
@@ -52,11 +55,12 @@ export default function Hero() {
           className="object-cover object-center opacity-90"
         />
         {/* Darken the left so the copy stays legible over the image */}
-        <div className="absolute inset-0 bg-gradient-to-r from-v2-navy via-v2-navy/90 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-b from-v2-navy/70 via-transparent to-v2-navy" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#040B14] via-[#040B14]/90 to-transparent" />
+        {/* Fade the bottom into the next section's navy so the seam is seamless */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#040B14]/80 via-transparent to-v2-navy" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-16 pt-32 md:px-8 md:pb-20 md:pt-44">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-28 pt-32 md:px-8 md:pb-32 md:pt-44">
         <div className="max-w-2xl">
           {promo.enabled && (
             <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-v2-gold/40 bg-v2-gold/10 px-4 py-2 text-sm font-semibold text-v2-gold">
@@ -100,7 +104,7 @@ export default function Hero() {
               className="group inline-flex items-center justify-center gap-2 rounded-full bg-v2-gold px-7 py-3.5 text-base font-semibold text-v2-ink transition-all hover:bg-v2-gold-2 hover:scale-[1.02] active:scale-95"
             >
               <CalendarDays className="h-5 w-5" />
-              Request a live demo
+              Request a Live Demo
             </button>
             <Link
               href={REGISTER_URL}
@@ -115,50 +119,45 @@ export default function Hero() {
               className="group inline-flex items-center justify-center gap-2 rounded-full border border-v2-gold/40 bg-white/5 px-7 py-3.5 text-base font-semibold text-v2-gold transition-all hover:border-v2-gold/70 hover:bg-v2-gold/10 active:scale-95"
             >
               <UserPlus className="h-5 w-5" />
-              Register your business
+              Join Now
             </Link>
           </div>
 
           {/* Social proof */}
-          <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3">
-            <div className="flex -space-x-3">
-              {HERO_AVATARS.map((src) => (
-                <span
-                  key={src}
-                  className="relative h-10 w-10 overflow-hidden rounded-full border-2 border-v2-navy"
-                >
-                  <Image
-                    src={src}
-                    alt=""
-                    fill
-                    sizes="40px"
-                    className="object-cover"
-                  />
-                </span>
+          <div className="mt-9 flex flex-col gap-1.5">
+            <div className="flex gap-0.5">
+              {Array.from({ length: 4 }).map((_, i) => (
+                <Star key={i} className="h-5 w-5 fill-v2-gold text-v2-gold" />
               ))}
+              <StarHalf className="h-5 w-5 fill-v2-gold text-v2-gold" />
             </div>
-            <div className="flex flex-col">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-v2-gold text-v2-gold" />
-                ))}
-              </div>
-              <span className="mt-1 text-sm text-white/60">
-                Trusted by top brokers across India
-              </span>
-            </div>
+            <span className="text-sm font-semibold text-white/80">
+              Trusted by top brokers across India
+            </span>
           </div>
         </div>
 
-        {/* Stats bar */}
-        <div className="mt-16 md:mt-20">
-          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-md md:grid-cols-4">
+      </div>
+
+      {/* Stats bar — floats across the hero / next-section boundary */}
+      <div className="absolute inset-x-0 bottom-0 z-20 translate-y-1/2">
+        <div className="mx-auto max-w-6xl px-5 md:px-8">
+          <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] backdrop-blur-md md:grid-cols-4">
             {STATS.map((s) => (
-              <div key={s.label} className="flex flex-col gap-1 bg-v2-navy-2/60 px-6 py-6">
-                <span className="font-display text-2xl font-bold text-v2-gold md:text-3xl">
-                  {s.value}
+              <div
+                key={s.label}
+                className="flex items-center gap-3.5 bg-v2-navy-2/80 px-6 py-6"
+              >
+                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={s.icon} alt="" className="h-6 w-6" />
                 </span>
-                <span className="text-sm text-white/60">{s.label}</span>
+                <span className="flex flex-col">
+                  <span className="font-display text-2xl font-bold text-v2-gold md:text-3xl">
+                    {s.value}
+                  </span>
+                  <span className="text-sm text-white/60">{s.label}</span>
+                </span>
               </div>
             ))}
           </div>
