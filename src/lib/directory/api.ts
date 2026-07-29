@@ -56,6 +56,8 @@ export async function fetchProfile(slug: string): Promise<ProfileDetail | null> 
 /** Client-side: submit a public enquiry. */
 export async function submitEnquiry(body: {
   slug: string;
+  /** Target a specific broker under a channel partner (company page). */
+  brokerId?: string;
   visitorName: string;
   visitorPhone: string;
   visitorEmail?: string;

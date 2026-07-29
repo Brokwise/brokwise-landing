@@ -10,15 +10,27 @@ import {
   ProfileDetail,
 } from "@/lib/directory/types";
 
-export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
+export default function EnquiryModal({
+  profile,
+  broker,
+  renderTrigger,
+}: {
+  profile: ProfileDetail;
+  /** When set, the enquiry targets this specific broker under a channel partner. */
+  broker?: { brokerId: string; name: string; categories?: PropertyCategory[] };
+  renderTrigger?: (open: () => void) => React.ReactNode;
+}) {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const cats = profile.propertyCategories.length
-    ? profile.propertyCategories
-    : (["RESIDENTIAL"] as PropertyCategory[]);
+  const targetName = broker?.name || profile.displayName;
+  const cats = broker?.categories?.length
+    ? broker.categories
+    : profile.propertyCategories.length
+      ? profile.propertyCategories
+      : (["RESIDENTIAL"] as PropertyCategory[]);
   const areaNames = profile.areas.map((a) => a.label);
 
   const [selCats, setSelCats] = useState<Set<string>>(new Set([cats[0]!]));
@@ -29,7 +41,7 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
 
-  const isBroker = profile.profileType === "BROKER";
+  const isBrokerTarget = !!broker || profile.profileType === "BROKER";
 
   const close = () => {
     setOpen(false);
@@ -58,6 +70,7 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
     setSubmitting(true);
     const res = await submitEnquiry({
       slug: profile.slug,
+      ...(broker ? { brokerId: broker.brokerId } : {}),
       visitorName: String(form.get("name") || ""),
       visitorPhone: String(form.get("phone") || ""),
       visitorEmail: String(form.get("email") || "") || undefined,
@@ -80,13 +93,17 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
 
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="mt-4 w-full rounded-lg bg-brand py-3 text-[15px] font-bold text-on-brand transition hover:bg-brand-strong"
-      >
-        Send an enquiry
-      </button>
+      {renderTrigger ? (
+        renderTrigger(() => setOpen(true))
+      ) : (
+        <button
+          type="button"
+          onClick={() => setOpen(true)}
+          className="mt-4 w-full rounded-lg bg-brand py-3 text-[15px] font-bold text-on-brand transition hover:bg-brand-strong"
+        >
+          Send an enquiry
+        </button>
+      )}
 
       {open && mounted &&
         createPortal(
@@ -105,7 +122,7 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
                 </div>
                 <h3 className="text-xl font-extrabold">Enquiry sent</h3>
                 <p className="mx-auto mt-2 max-w-[34ch] text-sm text-dmuted">
-                  {profile.displayName} just received your enquiry in the Brokwise
+                  {targetName} just received your enquiry in the Brokwise
                   app and will reach out to you directly. No contact details are
                   shared until they respond.
                 </p>
@@ -122,8 +139,12 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
                   <div>
                     <h3 className="text-[19px] font-extrabold tracking-tight">Send an enquiry</h3>
                     <div className="mt-0.5 text-[13px] text-dmuted">
-                      to {profile.displayName}
-                      {profile.city ? ` · ${profile.city}` : ""}
+                      to {targetName}
+                      {broker
+                        ? ` · via ${profile.displayName}`
+                        : profile.city
+                          ? ` · ${profile.city}`
+                          : ""}
                     </div>
                   </div>
                   <button type="button" onClick={close} aria-label="Close" className="p-1 text-faint hover:text-ink">
@@ -212,7 +233,8 @@ export default function EnquiryModal({ profile }: { profile: ProfileDetail }) {
 
                   <p className="flex items-start gap-2 text-[12px] text-faint">
                     <Lock className="mt-0.5 h-3.5 w-3.5 flex-none text-good" />
-                    Your details go only to this {isBroker ? "broker" : "agency"}. Their
+                    Your details go only to this {isBrokerTarget ? "broker" : "agency"}
+                    {broker ? " and their channel partner" : ""}. Their
                     contact stays private until they respond.
                   </p>
                 </div>

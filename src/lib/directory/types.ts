@@ -54,6 +54,17 @@ export interface AreaSummary {
   };
 }
 
+export interface CompanyBroker {
+  brokerId: string;
+  fullName: string;
+  profilePhoto?: string;
+  reraNumber?: string;
+  city?: string;
+  yearsOfExperience?: number;
+  description?: string;
+  categories: PropertyCategory[];
+}
+
 export interface ProfileDetail {
   slug: string;
   displayName: string;
@@ -61,6 +72,7 @@ export interface ProfileDetail {
   about?: string;
   city?: string;
   avatarImage?: string;
+  brokers?: CompanyBroker[];
   specializations: Specialization[];
   propertyCategories: PropertyCategory[];
   propertyTypes: string[];

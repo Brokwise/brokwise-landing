@@ -11,6 +11,7 @@ import {
 import AreaCard from "@/components/directory/AreaCard";
 import ServiceAreaMap from "@/components/directory/ServiceAreaMap";
 import EnquiryModal from "@/components/directory/EnquiryModal";
+import CompanyBrokers from "@/components/directory/CompanyBrokers";
 import { DirectoryHeroShell } from "@/components/directory/DirectoryHero";
 import DirectorySearch from "@/components/directory/DirectorySearch";
 import Navbar from "@/components/v2/Navbar";
@@ -48,6 +49,9 @@ export default async function ProfilePage({
 }) {
   const p = await fetchProfile(params.slug);
   if (!p) notFound();
+
+  // Channel partners (companies) show a broker grid instead of service areas.
+  const isCompany = p.profileType !== "BROKER";
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -160,27 +164,42 @@ export default async function ProfilePage({
 
         <div className="grid grid-cols-1 items-start gap-10 py-8 md:grid-cols-[1fr_380px]">
           <div>
-            <div className="mono-label text-[11.5px] font-semibold text-brand-ink">
-              Where they operate
-            </div>
-            <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-dashed border-line-strong bg-surface-2 px-3.5 py-3 text-[13px] text-dmuted">
-              <Lock className="mt-0.5 h-4 w-4 flex-none text-dmark" />
-              Exact properties and addresses are confidential. The figures below are
-              anonymised summaries of active inventory in each area - never individual
-              listings.
-            </div>
-
-            {p.areas.length === 0 ? (
-              <p className="mt-4 text-[14px] text-dmuted">
-                No active listings to map service areas yet. Send an enquiry and
-                they&apos;ll get in touch.
-              </p>
+            {isCompany ? (
+              <>
+                <div className="mono-label text-[11.5px] font-semibold text-brand-ink">
+                  Our brokers
+                </div>
+                <p className="mt-2 text-[13px] text-dmuted">
+                  Reach the right specialist directly - enquiries go to the broker and
+                  are shared with {p.displayName}.
+                </p>
+                <CompanyBrokers profile={p} />
+              </>
             ) : (
-              <div className="mt-4 flex flex-col gap-3.5">
-                {p.areas.map((a) => (
-                  <AreaCard key={a.label} area={a} />
-                ))}
-              </div>
+              <>
+                <div className="mono-label text-[11.5px] font-semibold text-brand-ink">
+                  Where they operate
+                </div>
+                <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-dashed border-line-strong bg-surface-2 px-3.5 py-3 text-[13px] text-dmuted">
+                  <Lock className="mt-0.5 h-4 w-4 flex-none text-dmark" />
+                  Exact properties and addresses are confidential. The figures below are
+                  anonymised summaries of active inventory in each area - never individual
+                  listings.
+                </div>
+
+                {p.areas.length === 0 ? (
+                  <p className="mt-4 text-[14px] text-dmuted">
+                    No active listings to map service areas yet. Send an enquiry and
+                    they&apos;ll get in touch.
+                  </p>
+                ) : (
+                  <div className="mt-4 flex flex-col gap-3.5">
+                    {p.areas.map((a) => (
+                      <AreaCard key={a.label} area={a} />
+                    ))}
+                  </div>
+                )}
+              </>
             )}
           </div>
 
