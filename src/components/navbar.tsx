@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -18,6 +19,13 @@ const NAV_LINKS = [
 const NavBar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    // On the public directory, the audience is brokers - make the CTA specific.
+    const pathname = usePathname();
+    const isDirectory = pathname?.startsWith("/directory") ?? false;
+    const ctaHref = isDirectory
+        ? "https://app.brokwise.com"
+        : "https://app.brokwise.com/get-started";
+    const ctaLabel = isDirectory ? "Login as Broker" : "Get Started";
 
     React.useEffect(() => {
         const handleScroll = () => {
@@ -60,18 +68,18 @@ const NavBar = () => {
 
                     <div className="flex items-center gap-4">
                         <Link
-                            href="https://app.brokwise.com/get-started"
+                            href={ctaHref}
                             className="hidden md:inline-flex items-center justify-center rounded-full bg-[#fcb542] px-5 py-2 text-sm font-medium text-[#080808] transition-all hover:bg-[#D4BA8A] hover:scale-105"
                             onClick={() =>
                                 metaPixel.trackWithBrokwiseCustom(
-                                    "SignupBegin",
-                                    { content_name: "Nav Get Started" },
+                                    "Lead",
+                                    { content_name: `Nav ${ctaLabel}` },
                                     "BW_Nav_AppSignup_Click",
                                     { placement: "nav_desktop" },
                                 )
                             }
                         >
-                            Sign Up
+                            {ctaLabel}
                         </Link>
 
                         <button
@@ -108,11 +116,11 @@ const NavBar = () => {
                         </Link>
                     ))}
                     <Link
-                        href="https://app.brokwise.com/get-started"
+                        href={ctaHref}
                         onClick={() => {
                             metaPixel.trackWithBrokwiseCustom(
                                 "Lead",
-                                { content_name: "Nav Get Started (mobile)" },
+                                { content_name: `Nav ${ctaLabel} (mobile)` },
                                 "BW_Nav_AppSignup_Click",
                                 { placement: "nav_mobile" },
                             );
@@ -120,7 +128,7 @@ const NavBar = () => {
                         }}
                         className="mt-4 inline-flex items-center justify-center rounded-full bg-[#fcb542] px-8 py-3 text-lg font-medium text-[#080808] transition-all hover:bg-[#D4BA8A]"
                     >
-                        Get Started
+                        {ctaLabel}
                     </Link>
                 </div>
             </div>

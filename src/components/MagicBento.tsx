@@ -465,10 +465,14 @@ const GlobalSpotlight: React.FC<{
 const BentoCardGrid: React.FC<{
     children: React.ReactNode;
     gridRef?: React.RefObject<HTMLDivElement | null>;
-}> = ({ children, gridRef }) => (
+    glowColor?: string;
+}> = ({ children, gridRef, glowColor = DEFAULT_GLOW_COLOR }) => (
     <div
         className="bento-section grid gap-2 w-full max-w-full md:max-w-7xl select-none relative"
-        style={{ fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)' }}
+        style={{
+            fontSize: 'clamp(1rem, 0.9rem + 0.5vw, 1.5rem)',
+            '--glow-color': glowColor,
+        } as React.CSSProperties}
         ref={gridRef as React.RefObject<HTMLDivElement>}
     >
         {children}
@@ -510,126 +514,6 @@ const MagicBento: React.FC<BentoProps> = ({
 
     return (
         <>
-            <style>
-                {`
-          .bento-section {
-            --glow-x: 50%;
-            --glow-y: 50%;
-            --glow-intensity: 0;
-            --glow-radius: 200px;
-            --glow-color: ${glowColor};
-            --border-color: hsl(var(--border));
-            --background-dark: hsl(var(--card));
-            --white: hsl(var(--foreground));
-            --purple-primary: hsl(var(--primary));
-            --purple-glow: rgba(201, 169, 110, 0.2);
-            --purple-border: rgba(201, 169, 110, 0.8);
-          }
-          
-          .card-responsive {
-            display: grid;
-            grid-template-columns: 1fr;
-            width: 100%;
-            margin: 0 auto;
-            gap: 1rem;
-            grid-auto-flow: dense;
-          }
-          
-          @media (min-width: 600px) {
-            .card-responsive {
-              grid-template-columns: repeat(2, 1fr);
-            }
-          }
-          
-          @media (min-width: 1024px) {
-            .card-responsive {
-              grid-template-columns: repeat(4, 1fr);
-            }
-          }
-          
-          .card {
-            --card-glow-rgb: ${glowColor};
-          }
-
-          .card--border-glow::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            padding: 6px;
-            background: radial-gradient(var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-                rgba(var(--card-glow-rgb), calc(var(--glow-intensity) * 0.8)) 0%,
-                rgba(var(--card-glow-rgb), calc(var(--glow-intensity) * 0.4)) 30%,
-                transparent 60%);
-            border-radius: inherit;
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-            pointer-events: none;
-            opacity: 1;
-            transition: opacity 0.3s ease;
-            z-index: 1;
-          }
-          
-          .card--border-glow:hover::after {
-            opacity: 1;
-          }
-          
-          .card--border-glow:hover {
-            box-shadow: 0 4px 20px rgba(10, 8, 4, 0.6), 0 0 30px rgba(${glowColor}, 0.15);
-          }
-          
-          .particle::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: rgba(${glowColor}, 0.2);
-            border-radius: 50%;
-            z-index: -1;
-          }
-          
-          .particle-container:hover {
-            box-shadow: 0 4px 20px rgba(10, 8, 4, 0.4), 0 0 30px rgba(${glowColor}, 0.15);
-          }
-          
-          .text-clamp-1 {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
-            line-clamp: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          
-          .text-clamp-2 {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-          
-          @media (max-width: 599px) {
-            .card-responsive {
-              grid-template-columns: 1fr;
-              width: 90%;
-              margin: 0 auto;
-              padding: 0.5rem;
-            }
-            
-            .card-responsive .card {
-              width: 100%;
-              min-height: 280px;
-              aspect-ratio: auto;
-            }
-          }
-        `}
-            </style>
-
             {enableSpotlight && (
                 <GlobalSpotlight
                     gridRef={gridRef}
@@ -640,7 +524,7 @@ const MagicBento: React.FC<BentoProps> = ({
                 />
             )}
 
-            <BentoCardGrid gridRef={gridRef}>
+            <BentoCardGrid gridRef={gridRef} glowColor={glowColor}>
                 <div className="card-responsive">
                     {cards.map((card, index) => {
                         const baseClassName = `card group flex flex-col justify-between relative sm:aspect-[4/3] min-h-[280px] sm:min-h-[100px] w-full max-w-full p-5 rounded-[20px] border border-solid font-light overflow-hidden transition-colors duration-300 ease-in-out hover:-translate-y-0.5 hover:shadow-[0_8px_25px_rgba(0,0,0,0.15)] ${enableBorderGlow ? 'card--border-glow' : ''
