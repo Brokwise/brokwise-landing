@@ -6,7 +6,6 @@ import { ArrowRight, Calendar, Sparkles } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
 import { useEffect } from "react";
 import { metaPixel } from "@/lib/fpixel";
-import { useTierConfig } from "@/hooks/useTierConfig";
 
 export type PromoBanner = {
   enabled: boolean;
@@ -68,17 +67,36 @@ export default function Hero({
 
       <div className="relative z-10 container mx-auto px-4 text-center flex flex-col items-center gap-6 max-w-5xl pt-32 md:pt-40 animate-in fade-in slide-in-from-bottom-8 duration-1000 fill-mode-both">
         {promoBanner.enabled ? (
-        <div
-          className="inline-flex items-center gap-2 rounded-full border border-[#fcb542]/40 bg-[#080808]/55 px-4 py-2 text-sm font-medium text-[#fcb542] shadow-[0_0_24px_-8px_rgba(252,181,66,0.35)] backdrop-blur-sm"
-          role="status"
-        >
-          <span className="relative flex h-2 w-2 shrink-0">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#fcb542] opacity-60" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#fcb542]" />
-          </span>
-          <Sparkles className="h-3.5 w-3.5 shrink-0 opacity-90" aria-hidden />
-          <span>{promoBanner.label}</span>
-        </div>
+          <div className="relative inline-flex">
+            {/* Large breathing halo */}
+            <span className="absolute -inset-5 rounded-full bg-[#fcb542]/10 blur-3xl animate-pulse pointer-events-none" />
+            {/* Tight inner glow */}
+            <span className="absolute -inset-1 rounded-full bg-[#fcb542]/10 blur-lg pointer-events-none" />
+
+            <div
+              className="relative inline-flex items-center gap-3 rounded-full border border-[#fcb542]/35 bg-[#0d0d0d]/90 px-7 py-3.5 shadow-[0_0_55px_-8px_rgba(252,181,66,0.5),inset_0_1px_0_rgba(252,181,66,0.2)] backdrop-blur-md overflow-hidden"
+              role="status"
+            >
+              {/* Warm gradient tint inside */}
+              <span className="absolute inset-0 bg-gradient-to-r from-[#fcb542]/8 via-transparent to-[#fcb542]/8 pointer-events-none" />
+              {/* Top highlight line */}
+              <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-[#fcb542]/55 to-transparent" />
+
+              {/* Glowing live dot */}
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#fcb542] opacity-70" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#fcb542] shadow-[0_0_8px_2px_rgba(252,181,66,0.7)]" />
+              </span>
+
+              <Sparkles className="h-4 w-4 text-[#fcb542]/70 shrink-0" aria-hidden />
+
+              <span className="relative text-[#ffd878] text-sm font-semibold tracking-wide whitespace-nowrap">
+                {promoBanner.label}
+              </span>
+
+              <Sparkles className="h-4 w-4 text-[#fcb542]/70 shrink-0" aria-hidden />
+            </div>
+          </div>
         ) : null}
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-medium tracking-tight text-[#fcb542] leading-[1.1]">
@@ -123,7 +141,7 @@ export default function Hero({
               );
             }}
           >
-            Get started
+            Get started for free
             <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Link>
         </div>

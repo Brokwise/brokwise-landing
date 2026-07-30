@@ -328,3 +328,83 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ---- Broker directory (/directory) scoped palette ---- */
+/* Dark navy content theme matching the v2 landing shell: white ink on deep
+   navy surfaces with the gold brand accent. The hero band and the listing /
+   profile content share one continuous dark background. */
+.directory-scope {
+  /* Dark navy + gold, matching the v2 landing shell. */
+  --paper: 213 52% 6%;         /* #070f19  page background */
+  --surface: 213 38% 11%;      /* #111d27  cards */
+  --surface-2: 213 40% 9%;     /* #0c1520  inset panels / stat strips */
+  --ink: 0 0% 100%;            /* white text */
+  --dmuted: 213 18% 72%;       /* body copy on dark */
+  --faint: 213 14% 55%;        /* labels, secondary */
+  --line: 213 25% 20%;         /* card border */
+  --line-strong: 213 24% 28%;  /* stronger border / control border */
+  --brand: 38 74% 65%;         /* #E8B662  gold */
+  --brand-strong: 40 82% 72%;  /* lighter gold hover on dark */
+  --brand-ink: 38 80% 70%;     /* gold accent TEXT, readable on dark */
+  --brand-soft: 38 45% 16%;    /* dark gold chip background */
+  --on-brand: 213 52% 8%;      /* navy text on gold buttons */
+  --dmark: 38 74% 65%;         /* accent mark */
+  --good: 158 64% 52%;         /* emerald, readable on dark */
+  --good-soft: 158 40% 14%;    /* deep emerald chip background */
+}
+
+/* Light-theme override for the /directory results grid only (heading, cards,
+   empty state, pagination). Nests inside .directory-scope so it re-defines
+   the same tokens every downstream component already reads - the hero,
+   filters bar and profile/company pages outside this wrapper stay dark. */
+.directory-results-light {
+  --paper: 210 17% 98%;         /* #f6f8f9  section background */
+  --surface: 0 0% 100%;         /* white cards */
+  --surface-2: 210 20% 95%;     /* light inset panels / stat strips */
+  --ink: 222 47% 11%;           /* near-black text */
+  --dmuted: 215 16% 40%;        /* body copy on light */
+  --faint: 215 14% 46%;         /* labels, secondary */
+  --line: 214 20% 89%;          /* card border */
+  --line-strong: 214 20% 80%;   /* stronger border / control border */
+  --brand-ink: 32 55% 38%;      /* gold accent TEXT, readable on white */
+  --brand-soft: 38 70% 93%;     /* pale gold chip background */
+  --good: 158 64% 34%;          /* emerald, readable on white */
+  --good-soft: 158 40% 92%;     /* pale emerald chip background */
+}
+/* Eyebrow labels: match the v2 landing (Public Sans caps), not a mono face. */
+.mono-label {
+  font-family: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   New landing page (v2) — scoped helpers
+   Palette + display type live in tailwind.config.ts (v2-* tokens,
+   font-display). These are the few things Tailwind can't express.
+   ───────────────────────────────────────────────────────────── */
+.landing-v2 {
+  --v2-navy: #0b1522;
+  --v2-gold: #e8b662;
+}
+
+/* Faint dot-grid used behind dark v2 sections */
+.v2-dotgrid {
+  background-image: radial-gradient(
+    rgba(232, 182, 98, 0.10) 1px,
+    transparent 1px
+  );
+  background-size: 26px 26px;
+}
+
+/* Horizontal marquee shared by v2 testimonials / network feed */
+@keyframes v2Marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.v2-marquee-track { animation: v2Marquee 48s linear infinite; will-change: transform; }
+.v2-marquee:hover .v2-marquee-track { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .v2-marquee-track { animation: none; }
+}

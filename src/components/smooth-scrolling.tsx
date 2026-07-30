@@ -7,6 +7,12 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+declare global {
+  interface Window {
+    lenis?: Lenis;
+  }
+}
+
 export default function SmoothScrolling({ children }: { children: ReactNode }) {
   useEffect(() => {
     const lenis = new Lenis({
@@ -26,7 +32,12 @@ export default function SmoothScrolling({ children }: { children: ReactNode }) {
 
     gsap.ticker.lagSmoothing(0);
 
+    // Expose the instance so components can trigger programmatic smooth scrolls
+    // (e.g. the directory search jumping down to results).
+    window.lenis = lenis;
+
     return () => {
+      if (window.lenis === lenis) delete window.lenis;
       lenis.destroy();
       gsap.ticker.remove(tick);
     };

@@ -1,7 +1,7 @@
 import SmoothScrolling from "@/components/smooth-scrolling";
-import { Public_Sans, Playfair_Display } from "next/font/google";
+import { Public_Sans, Playfair_Display, Sora } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/components/navbar";
+import SiteNav from "@/components/site-nav";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/next";
 import LayoutFooter from "@/components/layout-footer";
@@ -19,6 +19,13 @@ const playfairDisplay = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
   weight: ["400", "500", "600", "700"],
+});
+
+// Display face for the new landing page (v2). Chunky geometric grotesque.
+const sora = Sora({
+  subsets: ["latin"],
+  variable: "--font-sora",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata = {
@@ -43,7 +50,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${publicSans.variable} ${playfairDisplay.variable} antialiased bg-background text-foreground overflow-x-hidden selection:bg-primary/10 font-sans`}
+        className={`${publicSans.variable} ${playfairDisplay.variable} ${sora.variable} antialiased bg-background text-foreground overflow-x-hidden selection:bg-primary/10 font-sans`}
       >
         {/* GTM spec requires the noscript fallback as the very first child of <body> */}
         <noscript>
@@ -80,7 +87,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               src="https://www.aura.build/FxFilter.js"
               strategy="afterInteractive"
             />
-            <NavBar />
+            <SiteNav />
             {children}
             <LayoutFooter />
           </SmoothScrolling>

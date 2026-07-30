@@ -1,8 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { Mail, MapPin, Phone, ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import {
+    Mail,
+    MapPin,
+    Phone,
+    ArrowRight,
+    CheckCircle2,
+    AlertCircle,
+    Loader2,
+    ChevronDown,
+    type LucideIcon,
+} from "lucide-react";
+import { FOOTER_CONTACT } from "@/components/v2/content";
 
 type SupportFormData = {
     name: string;
@@ -16,6 +28,14 @@ type FormErrors = Partial<Record<keyof SupportFormData, string>>;
 
 const CONTACT_NUMBER_REGEX = /^\+?[0-9]{10,15}$/;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const CATEGORIES = [
+    "General Inquiry",
+    "Technical Support",
+    "Billing",
+    "Partnership",
+    "Feedback",
+] as const;
 
 const validateField = (field: keyof SupportFormData, value: string): string => {
     switch (field) {
@@ -67,6 +87,64 @@ const normalizeFormData = (data: SupportFormData): SupportFormData => ({
     message: data.message.trim(),
 });
 
+/* ── Shared field primitives (v2 landing form language) ───────────────── */
+
+const CONTROL_BASE =
+    "w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[15px] text-white outline-none transition-colors placeholder:text-white/30 focus:border-v2-gold/60 focus:bg-white/[0.07]";
+
+const CONTROL_INVALID = "border-red-400/60 focus:border-red-400/60";
+
+const controlClass = (invalid: boolean) => cn(CONTROL_BASE, invalid && CONTROL_INVALID);
+
+function Field({
+    label,
+    htmlFor,
+    error,
+    children,
+}: {
+    label: string;
+    htmlFor: string;
+    error?: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <div>
+            <label
+                htmlFor={htmlFor}
+                className="mb-2 block text-[13px] font-medium text-white/70"
+            >
+                {label}
+            </label>
+            {children}
+            {error && <p className="mt-1.5 text-xs font-medium text-red-300">{error}</p>}
+        </div>
+    );
+}
+
+function ContactCard({
+    icon: Icon,
+    label,
+    children,
+}: {
+    icon: LucideIcon;
+    label: string;
+    children: React.ReactNode;
+}) {
+    return (
+        <div className="flex items-start gap-4 rounded-3xl border border-white/10 bg-v2-navy-2 p-6 transition-colors hover:border-v2-gold/30">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-v2-gold text-v2-ink">
+                <Icon className="h-5 w-5" strokeWidth={2} />
+            </span>
+            <div className="min-w-0">
+                <h3 className="mono-label text-[11px] font-semibold text-v2-gold">{label}</h3>
+                <div className="mt-2 text-[15px] leading-relaxed text-white/70">{children}</div>
+            </div>
+        </div>
+    );
+}
+
+/* ── Page section ─────────────────────────────────────────────────────── */
+
 const Support = () => {
     const [formData, setFormData] = useState<SupportFormData>({
         name: "",
@@ -81,6 +159,12 @@ const Support = () => {
     const [fieldErrors, setFieldErrors] = useState<FormErrors>({});
     const [touchedFields, setTouchedFields] = useState<Partial<Record<keyof SupportFormData, boolean>>>({});
     const [hasSubmitted, setHasSubmitted] = useState(false);
+
+    /** A field shows its error only once the user has left it or tried to submit. */
+    const errorFor = (field: keyof SupportFormData) =>
+        (touchedFields[field] || hasSubmitted) && fieldErrors[field]
+            ? fieldErrors[field]
+            : undefined;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -157,71 +241,85 @@ const Support = () => {
     };
 
     return (
-        <section className="w-full min-h-screen bg-background text-foreground font-sans py-24 px-6 md:px-12 lg:px-24">
-            <div className="max-w-7xl mx-auto">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-                    {/* Left Column: Contact Info */}
-                    <div className="flex flex-col justify-center space-y-12">
-                        <div className="space-y-6">
-                            <h1 className="text-4xl md:text-5xl font-light tracking-tight text-foreground/90">
-                                Get in touch
-                            </h1>
-                            <p className="text-lg font-light text-muted-foreground leading-relaxed max-w-md">
-                                We&apos;re here to help. Whether you have a question about our platform, need technical assistance, or just want to say hello.
-                            </p>
-                        </div>
+        <section className="relative overflow-hidden bg-v2-navy pb-20 pt-28 md:pb-28 md:pt-32">
+            <div className="v2-dotgrid absolute inset-0 opacity-30" />
 
-                        <div className="space-y-8">
-                            <div className="flex items-start space-x-4 group">
-                                <div className="p-3 rounded-full bg-muted/50 group-hover:bg-primary/5 transition-colors duration-300">
-                                    <MapPin className="w-5 h-5 text-foreground/70" />
-                                </div>
-                                <div className="space-y-1">
-                                    <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Office</h3>
-                                    <p className="font-light text-foreground/80 leading-relaxed">
-                                        P NO. A-27, BAHUBALI NAGAR, JAIPUR<br />
-                                        Mansarovar, Jaipur - 302020<br />
-                                        Rajasthan, India
-                                    </p>
-                                </div>
-                            </div>
+            <div className="relative mx-auto max-w-6xl px-5 md:px-8">
+                <div className="text-center">
+                    <span className="mono-label inline-flex items-center gap-2.5 rounded-full border border-v2-gold/40 bg-v2-gold/10 px-4 py-2 text-[11.5px] font-semibold text-v2-gold">
+                        <span aria-hidden className="h-2 w-2 rounded-full bg-v2-gold" />
+                        Support
+                    </span>
 
-                            <div className="flex items-start space-x-4 group">
-                                <div className="p-3 rounded-full bg-muted/50 group-hover:bg-primary/5 transition-colors duration-300">
-                                    <Phone className="w-5 h-5 text-foreground/70" />
-                                </div>
-                                <div className="space-y-1">
-                                    <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Phone</h3>
-                                    <a href="tel:+919929750046" className="font-light text-foreground/80 hover:text-primary transition-colors block">
-                                        +91 99297 50046
-                                    </a>
-                                </div>
-                            </div>
+                    <h1 className="mt-7 font-display text-4xl font-bold leading-[1.1] tracking-tight text-white md:text-5xl">
+                        Get in <span className="text-v2-gold">Touch</span>
+                    </h1>
 
-                            <div className="flex items-start space-x-4 group">
-                                <div className="p-3 rounded-full bg-muted/50 group-hover:bg-primary/5 transition-colors duration-300">
-                                    <Mail className="w-5 h-5 text-foreground/70" />
-                                </div>
-                                <div className="space-y-1">
-                                    <h3 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Email</h3>
-                                    <a href="mailto:support@brokwise.com" className="font-light text-foreground/80 hover:text-primary transition-colors block">
-                                        support@brokwise.com
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                    <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/60">
+                        We&apos;re here to help. Whether you have a question about the platform,
+                        need technical assistance, or just want to say hello.
+                    </p>
+                </div>
+
+                <div className="mt-14 grid items-start gap-6 lg:grid-cols-[1fr_1.15fr] lg:gap-8">
+                    {/* Contact details */}
+                    <div className="flex flex-col gap-4">
+                        <ContactCard icon={MapPin} label="Office">
+                            {FOOTER_CONTACT.address[0]}
+                            <br />
+                            {FOOTER_CONTACT.address[1]}
+                        </ContactCard>
+
+                        <ContactCard icon={Phone} label="Phone">
+                            <a
+                                href={FOOTER_CONTACT.phoneHref}
+                                className="transition-colors hover:text-v2-gold"
+                            >
+                                {FOOTER_CONTACT.phone}
+                            </a>
+                        </ContactCard>
+
+                        <ContactCard icon={Mail} label="Email">
+                            <a
+                                href={`mailto:${FOOTER_CONTACT.email}`}
+                                className="transition-colors hover:text-v2-gold"
+                            >
+                                {FOOTER_CONTACT.email}
+                            </a>
+                        </ContactCard>
+
+                        <Link
+                            href="/#faq"
+                            className="group flex items-center justify-between gap-4 rounded-3xl border border-v2-gold/25 bg-v2-gold/[0.06] p-6 transition-colors hover:border-v2-gold/50 hover:bg-v2-gold/10"
+                        >
+                            <span>
+                                <span className="block font-display text-base font-bold text-white">
+                                    Looking for a quick answer?
+                                </span>
+                                <span className="mt-1.5 block text-sm text-white/60">
+                                    Most questions are already covered in our FAQs.
+                                </span>
+                            </span>
+                            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-v2-gold/40 text-v2-gold transition-colors group-hover:bg-v2-gold group-hover:text-v2-ink">
+                                <ArrowRight className="h-4 w-4" />
+                            </span>
+                        </Link>
                     </div>
 
-                    {/* Right Column: Form */}
-                    <div className="bg-card border border-border/50 rounded-3xl p-8 md:p-10 shadow-sm relative overflow-hidden">
-                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+                    {/* Message form */}
+                    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-v2-navy-2 p-6 md:p-9">
+                        <div
+                            aria-hidden
+                            className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-v2-gold/10 blur-3xl"
+                        />
 
-                        <h2 className="text-2xl font-light mb-8 text-foreground/90 relative z-10">Send us a message</h2>
+                        <h2 className="relative font-display text-2xl font-bold tracking-tight text-white">
+                            Send us a message
+                        </h2>
 
-                        <form onSubmit={handleSubmit} noValidate className="space-y-6 relative z-10">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label htmlFor="name" className="text-sm font-light text-muted-foreground ml-1">Name</label>
+                        <form onSubmit={handleSubmit} noValidate className="relative mt-7 space-y-5">
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                                <Field label="Name" htmlFor="name" error={errorFor("name")}>
                                     <input
                                         type="text"
                                         id="name"
@@ -229,19 +327,13 @@ const Support = () => {
                                         value={formData.name}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        aria-invalid={Boolean((touchedFields.name || hasSubmitted) && fieldErrors.name)}
-                                        className={cn(
-                                            "w-full px-4 py-3 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary/30 transition-all font-light placeholder:text-muted-foreground/50",
-                                            (touchedFields.name || hasSubmitted) && fieldErrors.name && "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/20"
-                                        )}
-                                        placeholder="John Doe"
+                                        aria-invalid={Boolean(errorFor("name"))}
+                                        className={controlClass(Boolean(errorFor("name")))}
+                                        placeholder="Amit Jain"
                                     />
-                                    {(touchedFields.name || hasSubmitted) && fieldErrors.name && (
-                                        <p className="text-xs text-red-500 ml-1">{fieldErrors.name}</p>
-                                    )}
-                                </div>
-                                <div className="space-y-2">
-                                    <label htmlFor="email" className="text-sm font-light text-muted-foreground ml-1">Email</label>
+                                </Field>
+
+                                <Field label="Email" htmlFor="email" error={errorFor("email")}>
                                     <input
                                         type="email"
                                         id="email"
@@ -249,22 +341,19 @@ const Support = () => {
                                         value={formData.email}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        aria-invalid={Boolean((touchedFields.email || hasSubmitted) && fieldErrors.email)}
-                                        className={cn(
-                                            "w-full px-4 py-3 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary/30 transition-all font-light placeholder:text-muted-foreground/50",
-                                            (touchedFields.email || hasSubmitted) && fieldErrors.email && "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/20"
-                                        )}
-                                        placeholder="john@example.com"
+                                        aria-invalid={Boolean(errorFor("email"))}
+                                        className={controlClass(Boolean(errorFor("email")))}
+                                        placeholder="you@email.com"
                                     />
-                                    {(touchedFields.email || hasSubmitted) && fieldErrors.email && (
-                                        <p className="text-xs text-red-500 ml-1">{fieldErrors.email}</p>
-                                    )}
-                                </div>
+                                </Field>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label htmlFor="contactNumber" className="text-sm font-light text-muted-foreground ml-1">Contact Number</label>
+                            <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+                                <Field
+                                    label="Contact Number"
+                                    htmlFor="contactNumber"
+                                    error={errorFor("contactNumber")}
+                                >
                                     <input
                                         type="tel"
                                         id="contactNumber"
@@ -272,19 +361,13 @@ const Support = () => {
                                         value={formData.contactNumber}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        aria-invalid={Boolean((touchedFields.contactNumber || hasSubmitted) && fieldErrors.contactNumber)}
-                                        className={cn(
-                                            "w-full px-4 py-3 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary/30 transition-all font-light placeholder:text-muted-foreground/50",
-                                            (touchedFields.contactNumber || hasSubmitted) && fieldErrors.contactNumber && "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/20"
-                                        )}
-                                        placeholder="+91 00000 00000"
+                                        aria-invalid={Boolean(errorFor("contactNumber"))}
+                                        className={controlClass(Boolean(errorFor("contactNumber")))}
+                                        placeholder="+91 90000 00000"
                                     />
-                                    {(touchedFields.contactNumber || hasSubmitted) && fieldErrors.contactNumber && (
-                                        <p className="text-xs text-red-500 ml-1">{fieldErrors.contactNumber}</p>
-                                    )}
-                                </div>
-                                <div className="space-y-2">
-                                    <label htmlFor="category" className="text-sm font-light text-muted-foreground ml-1">Category</label>
+                                </Field>
+
+                                <Field label="Category" htmlFor="category" error={errorFor("category")}>
                                     <div className="relative">
                                         <select
                                             id="category"
@@ -292,81 +375,75 @@ const Support = () => {
                                             value={formData.category}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            aria-invalid={Boolean((touchedFields.category || hasSubmitted) && fieldErrors.category)}
+                                            aria-invalid={Boolean(errorFor("category"))}
                                             className={cn(
-                                                "w-full px-4 py-3 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary/30 transition-all font-light appearance-none cursor-pointer",
-                                                (touchedFields.category || hasSubmitted) && fieldErrors.category && "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/20"
+                                                controlClass(Boolean(errorFor("category"))),
+                                                "cursor-pointer appearance-none pr-11",
                                             )}
                                         >
-                                            <option value="General Inquiry">General Inquiry</option>
-                                            <option value="Technical Support">Technical Support</option>
-                                            <option value="Billing">Billing</option>
-                                            <option value="Partnership">Partnership</option>
-                                            <option value="Feedback">Feedback</option>
+                                            {CATEGORIES.map((category) => (
+                                                <option
+                                                    key={category}
+                                                    value={category}
+                                                    className="bg-v2-navy-2 text-white"
+                                                >
+                                                    {category}
+                                                </option>
+                                            ))}
                                         </select>
-                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground">
-                                            <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M1 1L5 5L9 1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
-                                        </div>
+                                        <ChevronDown
+                                            aria-hidden
+                                            className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-v2-gold"
+                                        />
                                     </div>
-                                    {(touchedFields.category || hasSubmitted) && fieldErrors.category && (
-                                        <p className="text-xs text-red-500 ml-1">{fieldErrors.category}</p>
-                                    )}
-                                </div>
+                                </Field>
                             </div>
 
-                            <div className="space-y-2">
-                                <label htmlFor="message" className="text-sm font-light text-muted-foreground ml-1">Message</label>
+                            <Field label="Message" htmlFor="message" error={errorFor("message")}>
                                 <textarea
                                     id="message"
                                     name="message"
-                                    rows={4}
+                                    rows={5}
                                     value={formData.message}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    aria-invalid={Boolean((touchedFields.message || hasSubmitted) && fieldErrors.message)}
+                                    aria-invalid={Boolean(errorFor("message"))}
                                     className={cn(
-                                        "w-full px-4 py-3 bg-muted/30 border border-border/50 rounded-xl focus:outline-none focus:ring-1 focus:ring-primary/20 focus:border-primary/30 transition-all font-light placeholder:text-muted-foreground/50 resize-none",
-                                        (touchedFields.message || hasSubmitted) && fieldErrors.message && "border-red-500/60 focus:border-red-500/60 focus:ring-red-500/20"
+                                        controlClass(Boolean(errorFor("message"))),
+                                        "resize-none",
                                     )}
                                     placeholder="How can we help you?"
                                 />
-                                {(touchedFields.message || hasSubmitted) && fieldErrors.message && (
-                                    <p className="text-xs text-red-500 ml-1">{fieldErrors.message}</p>
-                                )}
-                            </div>
+                            </Field>
 
-                            <div className="pt-2">
-                                <button
-                                    type="submit"
-                                    disabled={status === "loading" || status === "success"}
-                                    className={cn(
-                                        "w-full py-3.5 px-6 rounded-xl flex items-center justify-center gap-2 transition-all duration-300 font-light text-sm tracking-wide",
-                                        status === "success"
-                                            ? "bg-green-500/10 text-green-600 cursor-default border border-green-500/20"
-                                            : "bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
-                                    )}
-                                >
-                                    {status === "loading" ? (
-                                        <Loader2 className="w-4 h-4 animate-spin" />
-                                    ) : status === "success" ? (
-                                        <>
-                                            <span>Message Sent</span>
-                                            <CheckCircle2 className="w-4 h-4" />
-                                        </>
-                                    ) : (
-                                        <>
-                                            <span>Send Message</span>
-                                            <ArrowRight className="w-4 h-4" />
-                                        </>
-                                    )}
-                                </button>
-                            </div>
+                            <button
+                                type="submit"
+                                disabled={status === "loading" || status === "success"}
+                                className={cn(
+                                    "inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold transition-all",
+                                    status === "success"
+                                        ? "cursor-default border border-emerald-400/30 bg-emerald-400/15 text-emerald-300"
+                                        : "bg-v2-gold text-v2-ink hover:bg-v2-gold-2 hover:scale-[1.01] active:scale-95 disabled:cursor-wait disabled:opacity-70",
+                                )}
+                            >
+                                {status === "loading" ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : status === "success" ? (
+                                    <>
+                                        <CheckCircle2 className="h-4 w-4" />
+                                        Message Sent
+                                    </>
+                                ) : (
+                                    <>
+                                        Send Message
+                                        <ArrowRight className="h-4 w-4" />
+                                    </>
+                                )}
+                            </button>
 
                             {status === "error" && (
-                                <div className="flex items-center gap-2 text-red-500 text-sm font-light bg-red-500/5 p-3 rounded-lg border border-red-500/10">
-                                    <AlertCircle className="w-4 h-4 flex-shrink-0" />
+                                <div className="flex items-center gap-2.5 rounded-xl border border-red-400/20 bg-red-400/10 p-3.5 text-sm font-medium text-red-300">
+                                    <AlertCircle className="h-4 w-4 shrink-0" />
                                     <p>{errorMessage}</p>
                                 </div>
                             )}

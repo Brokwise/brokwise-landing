@@ -1,5 +1,6 @@
 import Support from "@/components/support";
-import React from "react";
+import Navbar from "@/components/v2/Navbar";
+import Footer from "@/components/v2/Footer";
 
 export const metadata = {
     title: "Support | Brokwise",
@@ -8,9 +9,13 @@ export const metadata = {
 
 const SupportPage = () => {
     return (
-        <main className="min-h-screen bg-background pt-10">
-            <Support />
-        </main>
+        <div className="landing-v2 bg-v2-navy font-sans">
+            <Navbar />
+            <main>
+                <Support />
+            </main>
+            <Footer />
+        </div>
     );
 };
 
