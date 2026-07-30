@@ -32,7 +32,6 @@ import EnquiryPanel from "@/components/directory/EnquiryPanel";
 import BrokerRailCard, { type RailItem } from "@/components/directory/BrokerRailCard";
 import Navbar from "@/components/v2/Navbar";
 import Footer from "@/components/v2/Footer";
-import { REGISTER_URL } from "@/components/v2/content";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brokwise.com";
 
