@@ -20,7 +20,7 @@ function pageHref(
 /** Page numbers to render, with `null` standing in for an ellipsis. */
 function pageList(current: number, total: number): (number | null)[] {
   const pages = new Set([1, total, current - 1, current, current + 1]);
-  const sorted = [...pages].filter((p) => p >= 1 && p <= total).sort((a, b) => a - b);
+  const sorted = Array.from(pages).filter((p) => p >= 1 && p <= total).sort((a, b) => a - b);
 
   const withGaps: (number | null)[] = [];
   let prev = 0;
