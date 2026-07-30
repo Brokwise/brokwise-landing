@@ -17,8 +17,13 @@ export interface ProfileCardData {
   specializations: Specialization[];
   propertyCategories: PropertyCategory[];
   propertyTypes: string[];
+  languages: string[];
   heroImage?: string;
   reraVerified: boolean;
+  /** Public credential - safe to display. */
+  reraNumber?: string;
+  /** Count of the owner's ACTIVE listings. Count only, never which ones. */
+  activeListings: number;
   yearsOfExperience?: number;
   operatingAreas: string[];
   operatingAreaCount: number;

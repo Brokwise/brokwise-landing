@@ -5,13 +5,17 @@ import NavBar from "@/components/navbar";
 
 /**
  * Renders the legacy global navbar on every route except the pages that ship
- * their own self-contained v2 navbar: the new landing page ("/") and the
- * broker directory ("/directory" and its subpages).
+ * their own self-contained v2 navbar: the new landing page ("/"), the broker
+ * directory ("/directory" and its subpages) and support ("/support").
  */
 const SiteNav = () => {
   const pathname = usePathname();
 
-  if (pathname === "/" || pathname.startsWith("/directory")) {
+  if (
+    pathname === "/" ||
+    pathname === "/support" ||
+    pathname.startsWith("/directory")
+  ) {
     return null;
   }
 

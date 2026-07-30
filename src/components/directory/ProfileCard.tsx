@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { MapPin, ShieldCheck, ArrowRight } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import {
   ProfileCardData,
   PROFILE_TYPE_LABEL,
-  SPEC_LABEL,
   CATEGORY_LABEL,
 } from "@/lib/directory/types";
 
@@ -12,79 +11,149 @@ function initials(name: string): string {
   return parts.map((p) => p[0]?.toUpperCase() || "").join("") || "B";
 }
 
+/**
+ * Public directory card.
+ *
+ * The stat strip carries only facts the platform can stand behind - RERA
+ * status, live listing count, service-area count. It deliberately does NOT
+ * show ratings, review counts, online presence or response times: none of
+ * those are tracked, and inventing them would put fabricated social proof on
+ * a real broker's public page.
+ */
 export default function ProfileCard({ p }: { p: ProfileCardData }) {
+  const chips = [
+    ...p.propertyTypes.slice(0, 2),
+    ...(p.propertyTypes.length === 0
+      ? p.propertyCategories.slice(0, 2).map((c) => CATEGORY_LABEL[c])
+      : []),
+  ].filter(Boolean);
+
   return (
-    <Link
-      href={`/directory/${p.slug}`}
-      className="group flex flex-col overflow-hidden rounded-xl border border-line bg-surface shadow-sm transition hover:-translate-y-0.5 hover:border-line-strong hover:shadow-lg"
-    >
-      <div className="flex items-start gap-3.5 p-4">
-        {/* Broker's account profile photo, else initials for a consistent identity. */}
+    <div className="flex flex-col rounded-2xl border border-line bg-surface p-5 shadow-[0_18px_50px_-24px_rgba(0,0,0,0.8)] transition hover:-translate-y-0.5 hover:border-line-strong">
+      {/* Identity */}
+      <div className="flex items-start gap-4">
         {p.avatarImage ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={p.avatarImage}
             alt={p.displayName}
-            className="h-12 w-12 flex-none rounded-full object-cover"
+            className="h-[68px] w-[68px] flex-none rounded-2xl object-cover"
           />
         ) : (
-          <div className="grid h-12 w-12 flex-none place-items-center rounded-full bg-brand-soft text-[15px] font-bold text-brand-ink">
+          <div className="grid h-[68px] w-[68px] flex-none place-items-center rounded-2xl bg-brand-soft text-xl font-bold text-brand-ink">
             {initials(p.displayName)}
           </div>
         )}
 
-        <div className="min-w-0 flex-1">
-          <div className="mono-label text-[10px] font-semibold text-dmark">
+        <div className="min-w-0 flex-1 pt-0.5">
+          {/* Two lines, not truncated: agency names are long and the name is
+              the one thing a visitor must be able to read in full. */}
+          <h3 className="line-clamp-2 font-display text-[20px] font-bold leading-tight tracking-tight text-ink">
+            {p.displayName}
+          </h3>
+          {p.reraNumber ? (
+            <p className="mono-label mt-1 text-[12px] font-semibold text-brand-ink">
+              RERA ID: {p.reraNumber}
+            </p>
+          ) : (
+            <p className="mono-label mt-1 text-[12px] font-semibold text-faint">
+              {PROFILE_TYPE_LABEL[p.profileType]}
+            </p>
+          )}
+          <p className="mt-1.5 text-[12.5px] text-faint">
             {PROFILE_TYPE_LABEL[p.profileType]}
-          </div>
-          <div className="mt-1 flex items-center gap-1.5">
-            <h3 className="truncate font-display text-[17px] font-bold tracking-tight">
-              {p.displayName}
-            </h3>
-            {p.reraVerified && (
-              <ShieldCheck className="h-4 w-4 flex-none text-good" aria-label="RERA verified" />
-            )}
-          </div>
-          <div className="mt-1 flex items-center gap-1.5 text-[12.5px] text-faint">
-            <MapPin className="h-3.5 w-3.5 flex-none" />
-            {[p.city, p.yearsOfExperience ? `${p.yearsOfExperience} yrs` : null]
-              .filter(Boolean)
-              .join(" · ") || "Multiple areas"}
-          </div>
+          </p>
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-1.5 px-4 pb-4">
-        {p.specializations.map((s) => (
-          <span
-            key={s}
-            className="mono-label rounded-md bg-brand-soft px-2 py-1 text-[10.5px] font-medium text-brand-ink"
-          >
-            {SPEC_LABEL[s]}
-          </span>
-        ))}
-        {p.propertyCategories.map((c) => (
-          <span
-            key={c}
-            className="mono-label rounded-md border border-line-strong px-2 py-1 text-[10.5px] font-medium text-dmuted"
-          >
-            {CATEGORY_LABEL[c]}
-          </span>
-        ))}
+      {/* Spec rows */}
+      <dl className="mt-5 space-y-2.5">
+        {typeof p.yearsOfExperience === "number" && p.yearsOfExperience > 0 && (
+          <SpecRow label="Experience" value={`${p.yearsOfExperience}+ Years`} />
+        )}
+        <SpecRow
+          label="Location"
+          value={p.city || p.operatingAreas.slice(0, 2).join(", ") || "Multiple areas"}
+        />
+        {p.languages.length > 0 && (
+          <SpecRow label="Languages" value={p.languages.slice(0, 3).join(", ")} />
+        )}
+      </dl>
+
+      {/* Focus chips */}
+      {chips.length > 0 && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          {chips.map((c) => (
+            <span
+              key={c}
+              className="rounded-lg bg-surface-2 px-2.5 py-1.5 text-[12px] font-medium text-dmuted"
+            >
+              {c}
+            </span>
+          ))}
+        </div>
+      )}
+
+      {/* Verifiable stats only */}
+      <div className="mt-4 grid grid-cols-3 divide-x divide-line rounded-xl bg-surface-2 py-3">
+        <Stat
+          value={
+            p.reraVerified ? (
+              <span className="inline-flex items-center gap-1.5 text-good">
+                <ShieldCheck className="h-3.5 w-3.5" /> RERA
+              </span>
+            ) : (
+              <span className="text-faint">Pending</span>
+            )
+          }
+          label={p.reraVerified ? "Verified" : "Verification"}
+        />
+        <Stat value={p.activeListings} label="Listings" />
+        <Stat value={p.operatingAreaCount} label="Areas" />
       </div>
 
-      <div className="mt-auto flex items-center justify-between border-t border-line px-4 py-3">
-        {p.reraVerified ? (
-          <span className="mono-label flex items-center gap-1.5 text-[11px] text-good">
-            <ShieldCheck className="h-3.5 w-3.5" /> RERA verified
-          </span>
-        ) : (
-          <span className="mono-label text-[11px] text-faint">Verified broker</span>
-        )}
-        <span className="flex items-center gap-1.5 text-[13px] font-bold text-brand-ink transition group-hover:gap-2">
-          View profile <ArrowRight className="h-3.5 w-3.5" />
-        </span>
+      {/* Actions. "Contact" routes to the profile, where the enquiry form and
+          its consent copy live - the contact detail is never on the card. */}
+      <div className="mt-5 space-y-2.5">
+        <Link
+          href={`/directory/${p.slug}#enquire`}
+          className="flex h-11 items-center justify-center rounded-full bg-brand text-[14px] font-bold text-on-brand transition hover:bg-brand-strong"
+        >
+          Contact Now
+        </Link>
+        <Link
+          href={`/directory/${p.slug}`}
+          className="flex h-11 items-center justify-center rounded-full border border-line-strong text-[14px] font-semibold text-ink transition hover:border-brand hover:text-brand-ink"
+        >
+          View Profile
+        </Link>
       </div>
-    </Link>
+    </div>
+  );
+}
+
+function SpecRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-baseline justify-between gap-3">
+      <dt className="flex-none text-[13px] text-faint">{label}</dt>
+      <dd className="truncate text-right text-[13px] font-semibold text-ink">
+        {value}
+      </dd>
+    </div>
+  );
+}
+
+function Stat({
+  value,
+  label,
+}: {
+  value: React.ReactNode;
+  label: string;
+}) {
+  return (
+    <div className="px-2 text-center">
+      <div className="text-[14px] font-bold tabular-nums text-ink">{value}</div>
+      <div className="mono-label mt-0.5 text-[9.5px] text-faint">{label}</div>
+    </div>
   );
 }

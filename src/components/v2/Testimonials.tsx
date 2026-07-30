@@ -10,7 +10,7 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="relative overflow-hidden bg-v2-navy pb-20 pt-28 md:pb-28 md:pt-36"
+      className="relative overflow-hidden bg-v2-navy pb-20 pt-16 md:pb-28 md:pt-36"
     >
       <div className="mx-auto max-w-6xl px-5 text-center md:px-8">
         <h2 className="mx-auto max-w-3xl font-display text-3xl font-bold leading-tight tracking-tight text-white md:text-[2.75rem]">

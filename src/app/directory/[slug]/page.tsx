@@ -13,7 +13,6 @@ import ServiceAreaMap from "@/components/directory/ServiceAreaMap";
 import EnquiryModal from "@/components/directory/EnquiryModal";
 import CompanyBrokers from "@/components/directory/CompanyBrokers";
 import { DirectoryHeroShell } from "@/components/directory/DirectoryHero";
-import DirectorySearch from "@/components/directory/DirectorySearch";
 import Navbar from "@/components/v2/Navbar";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brokwise.com";
@@ -89,7 +88,12 @@ export default async function ProfilePage({
           />
         )}
 
-        <div className={`${p.heroImage ? "mt-4" : "mt-6"} flex items-start gap-4`}>
+        <div
+          className={`${
+            p.heroImage ? "mt-4" : "mt-6"
+          } grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_340px] md:items-center md:gap-10`}
+        >
+        <div className="flex items-start gap-4">
           {p.avatarImage ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -107,10 +111,15 @@ export default async function ProfilePage({
               <span className="h-[5px] w-[5px] rounded-full bg-v2-gold" />
               {PROFILE_TYPE_LABEL[p.profileType]}
             </div>
-            <h1 className="mt-1.5 flex flex-wrap items-center gap-2.5 font-display text-[clamp(26px,4vw,40px)] font-bold leading-tight tracking-tight text-white">
+            {/* Inline, not a flex child: as a flex item the badge wrapped onto
+                its own line after a long agency name. */}
+            <h1 className="mt-1.5 font-display text-[clamp(26px,4vw,40px)] font-bold leading-tight tracking-tight text-white">
               {p.displayName}
               {p.reraVerified && (
-                <ShieldCheck className="h-6 w-6 text-emerald-400" aria-label="RERA verified" />
+                <ShieldCheck
+                  className="ml-2.5 inline-block h-6 w-6 -translate-y-0.5 text-emerald-400"
+                  aria-label="RERA verified"
+                />
               )}
             </h1>
             <div className="mono-label mt-2 text-[12px] text-white/55">
@@ -127,7 +136,11 @@ export default async function ProfilePage({
           </div>
         </div>
 
-        <DirectorySearch className="mt-7" />
+          {/* Moved out of the sidebar: the reasons to enquire belong beside the
+              identity, before the visitor scrolls, not after the ask. */}
+          <TrustPanel reraNumber={p.reraVerified ? p.reraNumber : undefined} />
+        </div>
+
       </DirectoryHeroShell>
 
       <div className="mx-auto max-w-[1160px] px-6">
@@ -212,7 +225,11 @@ export default async function ProfilePage({
               </div>
             </div>
 
-            <div className="rounded-xl border border-line bg-surface p-5 shadow-sm">
+            {/* Anchor target for "Contact Now" on the directory listing cards. */}
+            <div
+              id="enquire"
+              className="scroll-mt-28 rounded-xl border border-line bg-surface p-5 shadow-sm"
+            >
               <h3 className="font-display text-[18px] font-bold tracking-tight">Interested in this area?</h3>
               <p className="mt-2 text-[13.5px] text-dmuted">
                 Send {p.displayName} a message about what you&apos;re looking for.
@@ -226,7 +243,6 @@ export default async function ProfilePage({
               </p>
             </div>
 
-            <TrustPanel reraNumber={p.reraVerified ? p.reraNumber : undefined} />
           </aside>
         </div>
       </div>
@@ -265,16 +281,20 @@ function TrustPanel({ reraNumber }: { reraNumber?: string }) {
       body: "Your enquiry reaches the broker instantly in the Brokwise app.",
     },
   ];
+  // Sits on the hero artwork, so it is a translucent glass panel with white
+  // ink rather than the solid --surface card used in the content column.
   return (
-    <div className="rounded-xl border border-line bg-surface p-5 shadow-sm">
-      <div className="mono-label mb-3.5 text-[10.5px] text-faint">Why enquire on Brokwise</div>
-      <ul className="flex flex-col gap-3.5">
+    <div className="rounded-2xl border border-white/12 bg-white/[0.06] p-5 backdrop-blur-md">
+      <div className="mono-label mb-3 text-[10.5px] text-white/50">
+        Why enquire on Brokwise
+      </div>
+      <ul className="flex flex-col gap-3">
         {items.map((it) => (
           <li key={it.title} className="flex gap-3">
-            <it.icon className="mt-0.5 h-4 w-4 flex-none text-good" />
+            <it.icon className="mt-0.5 h-4 w-4 flex-none text-emerald-400" />
             <div>
-              <p className="text-[13.5px] font-semibold text-ink">{it.title}</p>
-              <p className="text-[12.5px] text-dmuted">{it.body}</p>
+              <p className="text-[13.5px] font-semibold text-white">{it.title}</p>
+              <p className="text-[12.5px] leading-snug text-white/65">{it.body}</p>
             </div>
           </li>
         ))}

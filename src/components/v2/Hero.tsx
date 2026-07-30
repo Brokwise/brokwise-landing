@@ -60,7 +60,7 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#040B14]/80 via-transparent to-v2-navy" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-28 pt-32 md:px-8 md:pb-32 md:pt-44">
+      <div className="relative z-10 mx-auto max-w-6xl px-5 pb-12 pt-32 md:px-8 md:pb-32 md:pt-44">
         <div className="max-w-2xl">
           {promo.enabled && (
             <div className="mb-7 inline-flex items-center gap-2.5 rounded-full border border-v2-gold/40 bg-v2-gold/10 px-4 py-2 text-sm font-semibold text-v2-gold">
@@ -139,24 +139,30 @@ export default function Hero() {
 
       </div>
 
-      {/* Stats bar — floats across the hero / next-section boundary */}
-      <div className="absolute inset-x-0 bottom-0 z-20 translate-y-1/2">
-        <div className="mx-auto max-w-6xl px-5 md:px-8">
+      {/*
+        Stats bar - sits in normal flow on small screens (a 2x2 grid is too tall
+        to overlap safely), and only floats across the hero / next-section
+        boundary from md up, where it collapses to a single row.
+      */}
+      <div className="relative z-20 px-5 pb-6 md:absolute md:inset-x-0 md:bottom-0 md:px-0 md:pb-0 md:translate-y-1/2">
+        <div className="mx-auto max-w-6xl md:px-8">
           <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/[0.04] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.9)] backdrop-blur-md md:grid-cols-4">
             {STATS.map((s) => (
               <div
                 key={s.label}
-                className="flex items-center gap-3.5 bg-v2-navy-2/80 px-6 py-6"
+                className="flex flex-col items-center gap-2.5 bg-v2-navy-2/80 px-4 py-5 text-center lg:flex-row lg:gap-3.5 lg:px-6 lg:py-6 lg:text-left"
               >
-                <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/[0.06]">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/[0.06] lg:h-12 lg:w-12">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={s.icon} alt="" className="h-6 w-6" />
+                  <img src={s.icon} alt="" className="h-5 w-5 lg:h-6 lg:w-6" />
                 </span>
-                <span className="flex flex-col">
-                  <span className="font-display text-2xl font-bold text-v2-gold md:text-3xl">
+                <span className="flex min-w-0 flex-col">
+                  <span className="font-display text-xl font-bold leading-tight text-v2-gold sm:text-2xl lg:text-3xl">
                     {s.value}
                   </span>
-                  <span className="text-sm text-white/60">{s.label}</span>
+                  <span className="text-xs leading-snug text-white/60 sm:text-sm">
+                    {s.label}
+                  </span>
                 </span>
               </div>
             ))}

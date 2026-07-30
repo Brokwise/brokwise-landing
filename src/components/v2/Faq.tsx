@@ -29,8 +29,8 @@ export default function Faq() {
             <span className="text-v2-gold">Q</span>uestions
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-base text-white/60">
-            Everything you need to know about Brokwise, credits, subscriptions, and
-            more.
+            Everything you need to know about Brokwise, verification,
+            subscriptions, and more.
           </p>
         </div>
 

@@ -16,17 +16,39 @@ import { APP_URL } from "./content";
 
 type PlanType = "monthly" | "quarterly";
 
+const PLAN_TYPES: PlanType[] = ["monthly", "quarterly"];
+
+const PLAN_LABELS: Record<PlanType, string> = {
+  monthly: "Monthly",
+  quarterly: "3-Month",
+};
+
+const PLAN_SUBTITLES: Record<PlanType, string> = {
+  monthly: "Structured monthly access for consistent professional deal flow.",
+  quarterly: "Extended premium access for sustained market expansion.",
+};
+
+/** Savings the quarterly plans represent against paying month to month. */
+const QUARTERLY_DISCOUNTS: Record<string, number> = {
+  Basic: 12.5,
+  Essential: 14,
+  Pro: 23.5,
+};
+
 export default function Pricing() {
-  const planType: PlanType = "monthly";
+  const [planType, setPlanType] = useState<PlanType>("monthly");
   const [pricing, setPricing] = useState<PricingData>(pricingDataFallback);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const run = async () => {
+      const base = process.env.NEXT_PUBLIC_API_BASE_URL;
+      if (!base) {
+        setLoading(false);
+        return;
+      }
       try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/tier-config`,
-        );
+        const res = await fetch(`${base}/admin/tier-config`);
         const json: TierConfigResponse = await res.json();
         if (json.success) setPricing(transformTierConfig(json.data));
       } catch {
@@ -62,6 +84,34 @@ export default function Pricing() {
           <p className="mx-auto mt-5 max-w-2xl text-base text-v2-ink/60">
             Start with 25 free credits and pay only when you need more. No hidden fees.
           </p>
+
+          <div className="mt-8 flex flex-col items-center gap-4">
+            <div
+              role="group"
+              aria-label="Billing period"
+              className="inline-flex gap-1 rounded-full border border-v2-ink/10 bg-v2-paper-2 p-1"
+            >
+              {PLAN_TYPES.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setPlanType(type)}
+                  aria-pressed={planType === type}
+                  className={cn(
+                    "rounded-full px-5 py-2 text-sm font-semibold transition-colors md:px-7",
+                    planType === type
+                      ? "bg-v2-gold text-v2-ink shadow-sm"
+                      : "text-v2-ink/55 hover:text-v2-ink",
+                  )}
+                >
+                  {PLAN_LABELS[type]}
+                </button>
+              ))}
+            </div>
+            <p className="text-sm font-medium text-v2-gold-2">
+              {PLAN_SUBTITLES[planType]}
+            </p>
+          </div>
         </div>
 
         {loading ? (
@@ -70,9 +120,19 @@ export default function Pricing() {
           </div>
         ) : (
           <div className="mt-14 grid gap-6 md:grid-cols-3 md:items-start">
-            {pricing[planType].map((plan) => (
+            {pricing[planType].map((plan) => {
+              const discountPct =
+                planType === "quarterly"
+                  ? (QUARTERLY_DISCOUNTS[plan.name] ?? null)
+                  : null;
+              const originalPrice =
+                discountPct !== null
+                  ? Math.round(plan.price / (1 - discountPct / 100))
+                  : null;
+
+              return (
               <div
-                key={plan.buttonId}
+                key={`${plan.buttonId}-${planType}`}
                 className={cn(
                   "relative flex flex-col overflow-hidden rounded-3xl border bg-v2-paper-2 p-8",
                   plan.popular
@@ -89,6 +149,18 @@ export default function Pricing() {
                 <h3 className="text-sm font-semibold uppercase tracking-wide text-v2-ink/50">
                   {plan.name}
                 </h3>
+
+                {discountPct !== null && originalPrice !== null && (
+                  <div className="mt-3 flex items-center gap-2">
+                    <span className="text-sm text-v2-ink/40 line-through">
+                      ₹{originalPrice.toLocaleString()}
+                    </span>
+                    <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-700">
+                      {discountPct}% OFF
+                    </span>
+                  </div>
+                )}
+
                 <div className="mt-3 flex items-baseline gap-1">
                   <span className="font-display text-4xl font-bold text-v2-ink">
                     ₹{plan.price.toLocaleString()}
@@ -123,7 +195,8 @@ export default function Pricing() {
                   {plan.buttonText}
                 </button>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>

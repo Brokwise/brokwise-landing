@@ -6,8 +6,9 @@ import Footer from "@/components/footer";
 const LayoutFooter = () => {
   const pathname = usePathname();
 
-  // "/" (new landing) and "/old" (legacy landing) each render their own footer.
-  if (pathname === "/" || pathname === "/old") {
+  // "/" (new landing), "/old" (legacy landing) and "/support" each render their
+  // own footer.
+  if (pathname === "/" || pathname === "/old" || pathname === "/support") {
     return null;
   }
 

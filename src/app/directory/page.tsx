@@ -34,27 +34,47 @@ export default async function ListingPage({
       <Navbar />
       <main className="directory-scope min-h-screen bg-paper text-ink">
         <DirectoryHero
-          title="Find a verified broker who knows your neighbourhood."
+          title="Find a Verified Broker who knows your Neighbourhood."
           subtitle="Browse trusted property brokers, agencies and channel partners by city, area and specialisation. See the kind of inventory they work with - then send an enquiry. Their contact stays private until they reach out to you."
-          defaultQuery={params.q ?? ""}
         />
 
-        <Filters cities={CITIES} />
+        <div className="-mt-4 pb-2">
+          <Filters cities={CITIES} />
+        </div>
 
-        <div id="directory-results" className="mx-auto max-w-[1160px] px-6 scroll-mt-24">
-          <div className="flex items-baseline justify-between py-6">
-            <div className="mono-label text-[13px] text-dmuted">
-              <b className="text-ink">{total}</b> profiles in your area
+        <div
+          id="directory-results"
+          className="mx-auto max-w-[1160px] scroll-mt-24 px-6 pb-24 pt-12"
+        >
+          <div className="flex flex-wrap items-end justify-between gap-4">
+            <div>
+              <h2 className="font-display text-[38px] font-bold leading-tight tracking-tight text-brand-ink">
+                Verified Partners
+              </h2>
+              <p className="mt-1.5 text-[14.5px] text-dmuted">
+                {total > 0
+                  ? `${total} ${total === 1 ? "profile" : "profiles"} - RERA-verified first, then most recently updated.`
+                  : "RERA-verified first, then most recently updated."}
+              </p>
             </div>
-            <div className="mono-label text-[13px] text-faint">sorted by relevance</div>
+            <div className="mono-label flex items-center gap-2.5 text-[11px] text-faint">
+              <span>Sort by:</span>
+              <span className="font-semibold text-ink">Relevance</span>
+              {params.city && (
+                <>
+                  <span aria-hidden className="text-line-strong">|</span>
+                  <span className="font-semibold text-ink">{params.city}</span>
+                </>
+              )}
+            </div>
           </div>
 
           {profiles.length === 0 ? (
-            <div className="py-16 text-center text-dmuted">
+            <div className="mt-10 rounded-2xl border border-line bg-surface py-20 text-center text-dmuted">
               No profiles match those filters yet. Try widening your search.
             </div>
           ) : (
-            <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-5 pb-16">
+            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {profiles.map((p) => (
                 <ProfileCard key={p.slug} p={p} />
               ))}

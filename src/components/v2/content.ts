@@ -216,59 +216,220 @@ export const FEATURES: Feature[] = [
 
 export const FAQ_CATEGORIES = [
   "General",
-  "Credit & Payment",
+  "Registration & Verification",
+  "Listings & Enquiries",
+  "Privacy & Security",
   "Subscription",
-  "Property",
-  "Enquiries",
+  "Broker Directory",
+  "Support & Other Info",
 ] as const;
 
 export type FaqCategory = (typeof FAQ_CATEGORIES)[number];
 
 export type FaqItem = { question: string; answer: string; category: FaqCategory };
 
-/** Curated landing FAQ — real answers grounded in the product. */
+/** Curated landing FAQ - real answers grounded in the product. */
 export const FAQS: FaqItem[] = [
   {
     category: "General",
-    question: "Is Brokwise open to the public, or only brokers?",
+    question: "What is Brokwise?",
     answer:
-      "Brokwise is a closed, private network for real estate professionals. There are no public leads and no anonymous browsers — only KYC-verified brokers get in.",
+      "Brokwise is a private B2B platform for real estate brokers, agencies, and firms. It helps verified brokers work together by sharing listings, posting enquiries, and finding co-broker opportunities across India.",
   },
   {
     category: "General",
-    question: "How do you keep the network genuine?",
+    question: "Who can join Brokwise?",
     answer:
-      "Every broker completes KYC to join, and we re-validate members every 15 days. Listings are validated too, so you don't waste time on fake, expired, or duplicate inventory.",
+      "Only genuine real estate brokers, brokerage firms, and agencies can register. Buyers, sellers, tenants, and the general public cannot access the marketplace.",
   },
   {
-    category: "Credit & Payment",
-    question: "What do I get for free?",
+    category: "General",
+    question: "Why should I use Brokwise?",
     answer:
-      "New members get 25 free credits on signup to post requirements, send proposals, and connect with verified brokers — at zero cost.",
+      "Brokwise helps you grow beyond your personal network. You can connect with verified brokers, get more listings and enquiries, and find better collaboration opportunities.",
   },
   {
-    category: "Credit & Payment",
-    question: "What are credits and how do they work?",
+    category: "General",
+    question: "Is Brokwise available across India?",
+    answer: "Yes. Brokers from any city in India can join Brokwise.",
+  },
+  {
+    category: "General",
+    question: "Is it suitable for individual brokers and agencies?",
     answer:
-      "Credits are the in-app currency for premium actions such as requesting contact details, boosting a proposal, or posting extra requirements. You can top up anytime from Menu → Credits.",
+      "Yes. It is useful for independent brokers, agencies, and brokerage firms.",
+  },
+  {
+    category: "Registration & Verification",
+    question: "Why is Aadhaar verification needed?",
+    answer:
+      "Aadhaar verification helps make sure only genuine brokers join the platform.",
+  },
+  {
+    category: "Registration & Verification",
+    question: "Is my Aadhaar information safe?",
+    answer:
+      "Yes. Your verification is handled securely through authorised verification partners.",
+  },
+  {
+    category: "Registration & Verification",
+    question: "How long does account approval take?",
+    answer:
+      "Most applications are reviewed quickly after verification is completed.",
+  },
+  {
+    category: "Registration & Verification",
+    question: "What if verification fails?",
+    answer: "You can try again or contact support for help.",
+  },
+  {
+    category: "Registration & Verification",
+    question: "Can I register my brokerage firm?",
+    answer: "Yes. You can register your brokerage firm on Brokwise.",
+  },
+  {
+    category: "Listings & Enquiries",
+    question: "What is a Property Listing?",
+    answer:
+      "A property listing is a property for sale or rent that you share with verified brokers.",
+  },
+  {
+    category: "Listings & Enquiries",
+    question: "What is an Enquiry?",
+    answer:
+      "An enquiry is a broker's property requirement posted on the marketplace.",
+  },
+  {
+    category: "Listings & Enquiries",
+    question: "Can I post unlimited listings?",
+    answer: "Posting limits depend on your subscription plan.",
+  },
+  {
+    category: "Listings & Enquiries",
+    question: "Can I edit my listings?",
+    answer: "Yes. You can update your listings anytime.",
+  },
+  {
+    category: "Listings & Enquiries",
+    question: "Why is there a 15-day reminder?",
+    answer: "The reminder helps keep listings accurate and up to date.",
+  },
+  {
+    category: "Listings & Enquiries",
+    question: "What happens if I do not confirm availability?",
+    answer: "The listing becomes inactive until you activate it again.",
+  },
+  {
+    category: "Privacy & Security",
+    question: "Will everyone see my phone number?",
+    answer:
+      "No. Your contact details stay private until you approve sharing them.",
+  },
+  {
+    category: "Privacy & Security",
+    question: "How does the Proposal System work?",
+    answer:
+      "Interested brokers send proposals first, and you decide whether you want to connect.",
+  },
+  {
+    category: "Privacy & Security",
+    question: "Why are contact details not public?",
+    answer:
+      "This helps reduce spam and gives you more control over who contacts you.",
+  },
+  {
+    category: "Privacy & Security",
+    question: "Can I report suspicious users?",
+    answer: "Yes. You can report any user that looks suspicious.",
   },
   {
     category: "Subscription",
-    question: "Can I cancel anytime?",
+    question: "Is there a free trial?",
     answer:
-      "Yes. Plans are flexible with no hidden fees — you can cancel anytime and keep access until the end of your current period.",
+      "Eligible new members receive a limited-time 3-month Early Bird subscription.",
   },
   {
-    category: "Property",
-    question: "How do you keep property listings fresh and genuine?",
+    category: "Subscription",
+    question: "What happens when my subscription expires?",
     answer:
-      "Every listing is validated, and we re-check inventory every 15 days. Expired or duplicate properties are removed, so you only ever see active, genuine inventory.",
+      "Your listings, enquiries, and directory profile become inactive until you renew.",
   },
   {
-    category: "Enquiries",
-    question: "Will my contact details be shared automatically?",
+    category: "Subscription",
+    question: "Will I lose my data?",
+    answer: "No. Your data is preserved.",
+  },
+  {
+    category: "Subscription",
+    question: "Can I upgrade later?",
+    answer: "Yes. You can upgrade your plan later.",
+  },
+  {
+    category: "Subscription",
+    question: "Which payment methods are accepted?",
+    answer: "Secure online payment options are available during checkout.",
+  },
+  {
+    category: "Broker Directory",
+    question: "What is the Broker Directory?",
+    answer: "The Broker Directory is a public profile directory for subscribers.",
+  },
+  {
+    category: "Broker Directory",
+    question: "Is publishing mandatory?",
+    answer: "No. Publishing your profile is optional.",
+  },
+  {
+    category: "Broker Directory",
+    question: "Will my profile disappear after expiry?",
+    answer: "Yes. It will stay inactive until renewal.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "How can I get help?",
+    answer: "You can contact support by phone, WhatsApp, or email.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "Why join now?",
     answer:
-      "No. Your number is never shared automatically. Contact is shared only after your approval, so you stay in control of every connection.",
+      "Joining early helps you start building your network and lets you make use of the limited-time Early Bird offer.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "Is there a mobile app?",
+    answer: "Right now, Brokwise is available on the web platform.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "Can customers post requirements?",
+    answer: "No. Only verified brokers can post requirements.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "Can I collaborate across states?",
+    answer: "Yes. You can collaborate with brokers across India.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "How is it different from WhatsApp groups?",
+    answer:
+      "Brokwise gives you a structured marketplace with search, proposals, and verification, instead of scattered chat messages.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "Does Brokwise charge brokerage?",
+    answer: "No. Brokwise does not charge brokerage.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "How do I know a broker is genuine?",
+    answer: "All members complete Aadhaar-based verification.",
+  },
+  {
+    category: "Support & Other Info",
+    question: "Can I invite other brokers?",
+    answer: "Yes. You can invite other brokers to join Brokwise.",
   },
 ];
 

@@ -215,26 +215,27 @@
 }
 
 /* ---- Broker directory (/directory) scoped palette ---- */
-/* Light "paper" content theme matching the v2 landing page: navy ink on a
-   light-gray surface with the gold brand accent. The directory hero band is
-   navy (built inline), the listing/profile content is light. */
+/* Dark navy content theme matching the v2 landing shell: white ink on deep
+   navy surfaces with the gold brand accent. The hero band and the listing /
+   profile content share one continuous dark background. */
 .directory-scope {
-  --paper: 240 6% 92%;        /* #E9E9EA  page background */
-  --surface: 0 0% 100%;       /* white    cards */
-  --surface-2: 240 10% 97%;   /* #F6F6F7  subtle panels */
-  --ink: 211 49% 8%;          /* #0B1420  navy text */
-  --dmuted: 213 16% 40%;      /* muted navy-gray */
-  --faint: 213 12% 54%;       /* faint navy-gray */
-  --line: 220 13% 87%;        /* light border */
-  --line-strong: 220 13% 80%; /* stronger border */
-  --brand: 38 74% 65%;        /* #E8B662  gold */
-  --brand-strong: 37 65% 57%; /* #D9A24B  gold hover */
-  --brand-ink: 34 60% 40%;    /* readable gold-brown for accent text on light */
-  --brand-soft: 40 72% 91%;   /* pale gold chip background */
-  --on-brand: 211 49% 8%;     /* navy text on gold buttons */
-  --dmark: 37 62% 50%;        /* accent mark */
-  --good: 157 45% 37%;        /* emerald for verified, on light */
-  --good-soft: 158 44% 91%;   /* pale emerald */
+  /* Dark navy + gold, matching the v2 landing shell. */
+  --paper: 213 52% 6%;         /* #070f19  page background */
+  --surface: 213 38% 11%;      /* #111d27  cards */
+  --surface-2: 213 40% 9%;     /* #0c1520  inset panels / stat strips */
+  --ink: 0 0% 100%;            /* white text */
+  --dmuted: 213 18% 72%;       /* body copy on dark */
+  --faint: 213 14% 55%;        /* labels, secondary */
+  --line: 213 25% 20%;         /* card border */
+  --line-strong: 213 24% 28%;  /* stronger border / control border */
+  --brand: 38 74% 65%;         /* #E8B662  gold */
+  --brand-strong: 40 82% 72%;  /* lighter gold hover on dark */
+  --brand-ink: 38 80% 70%;     /* gold accent TEXT, readable on dark */
+  --brand-soft: 38 45% 16%;    /* dark gold chip background */
+  --on-brand: 213 52% 8%;      /* navy text on gold buttons */
+  --dmark: 38 74% 65%;         /* accent mark */
+  --good: 158 64% 52%;         /* emerald, readable on dark */
+  --good-soft: 158 40% 14%;    /* deep emerald chip background */
 }
 /* Eyebrow labels: match the v2 landing (Public Sans caps), not a mono face. */
 .mono-label {

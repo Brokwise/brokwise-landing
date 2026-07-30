@@ -1,36 +1,65 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import mapboxgl from "mapbox-gl";
+import "mapbox-gl/dist/mapbox-gl.css";
 import type { AreaSummary } from "@/lib/directory/types";
 
 const AMBER = "#FCB542";
+const TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
-declare global {
-  interface Window {
-    // Google Maps JS types are not installed; treat as unknown-shaped.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    google?: any;
-    __bwMapsLoading?: Promise<void>;
+/** Used only when a profile has no geocoded areas at all. */
+const FALLBACK_CENTER: [number, number] = [75.7873, 26.9124]; // Jaipur
+
+/**
+ * A closed GeoJSON ring approximating a circle of `radiusKm` around `center`.
+ *
+ * Mapbox's native circle layer sizes in screen pixels, which would keep a
+ * "2 km area" the same size at every zoom - visually a lie. A real polygon
+ * scales with the map, so the area always reads as the same ground distance.
+ */
+function circleRing(
+  center: [number, number],
+  radiusKm: number,
+  steps = 72
+): [number, number][] {
+  const [lng, lat] = center;
+  const kmPerDegLat = 110.574;
+  const kmPerDegLng = 111.32 * Math.cos((lat * Math.PI) / 180);
+  const ring: [number, number][] = [];
+  for (let i = 0; i <= steps; i += 1) {
+    const theta = (i / steps) * 2 * Math.PI;
+    ring.push([
+      lng + (radiusKm / kmPerDegLng) * Math.cos(theta),
+      lat + (radiusKm / kmPerDegLat) * Math.sin(theta),
+    ]);
   }
+  return ring;
 }
 
-function loadGoogleMaps(apiKey: string): Promise<void> {
-  if (typeof window === "undefined") return Promise.reject();
-  if (window.google?.maps) return Promise.resolve();
-  if (window.__bwMapsLoading) return window.__bwMapsLoading;
-  window.__bwMapsLoading = new Promise<void>((resolve, reject) => {
-    const s = document.createElement("script");
-    s.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}`;
-    s.async = true;
-    s.defer = true;
-    s.onload = () => resolve();
-    s.onerror = () => reject(new Error("Google Maps failed to load"));
-    document.head.appendChild(s);
-  });
-  return window.__bwMapsLoading;
+type Ring = { label: string; ring: [number, number][] };
+
+function toRings(areas: AreaSummary[]): Ring[] {
+  return areas
+    .filter((a) => Array.isArray(a.center))
+    .map((a) => ({
+      label: a.label,
+      ring: circleRing(a.center as [number, number], a.radiusKm || 2),
+    }));
 }
 
-/** SVG fallback: approximate circles projected into a normalized box. No pins. */
+function toGeoJson(rings: Ring[]) {
+  return {
+    type: "FeatureCollection" as const,
+    features: rings.map((r) => ({
+      type: "Feature" as const,
+      properties: { label: r.label },
+      geometry: { type: "Polygon" as const, coordinates: [r.ring] },
+    })),
+  };
+}
+
+/** SVG stand-in used when there is no token or the map fails to load. */
 function FallbackMap({ areas }: { areas: AreaSummary[] }) {
   const pts = areas
     .map((a) => a.center)
@@ -38,7 +67,6 @@ function FallbackMap({ areas }: { areas: AreaSummary[] }) {
 
   const project = (i: number, c?: [number, number]): [number, number] => {
     if (!c || pts.length < 2) {
-      // Deterministic scatter when coords are missing/degenerate.
       const cols = Math.ceil(Math.sqrt(areas.length || 1));
       const x = 20 + ((i % cols) / Math.max(1, cols - 1 || 1)) * 60;
       const y = 22 + (Math.floor(i / cols) / Math.max(1, cols)) * 40;
@@ -56,7 +84,12 @@ function FallbackMap({ areas }: { areas: AreaSummary[] }) {
   };
 
   return (
-    <svg viewBox="0 0 100 72" className="h-full w-full" role="img" aria-label="Approximate service areas">
+    <svg
+      viewBox="0 0 100 72"
+      className="h-full w-full"
+      role="img"
+      aria-label="Approximate service areas"
+    >
       <defs>
         <pattern id="g" width="8" height="8" patternUnits="userSpaceOnUse">
           <path d="M8 0H0V8" fill="none" stroke="hsl(var(--line))" strokeWidth="0.5" />
@@ -81,60 +114,129 @@ function FallbackMap({ areas }: { areas: AreaSummary[] }) {
   );
 }
 
+/**
+ * Mapbox view of a profile's approximate service areas.
+ *
+ * Renders obfuscated circles only - never a pinpoint marker. The circles come
+ * from the centroid of the owner's active listings per city, so a marker would
+ * imply precision the data does not have and would leak property locations.
+ */
 export default function ServiceAreaMap({ areas }: { areas: AreaSummary[] }) {
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
   const ref = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<mapboxgl.Map | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
-    if (!apiKey || !ref.current) return;
-    let cancelled = false;
-    const centers = areas.filter((a) => Array.isArray(a.center));
+    if (!TOKEN || !ref.current || mapRef.current) return;
 
-    loadGoogleMaps(apiKey)
-      .then(() => {
-        if (cancelled || !ref.current || !window.google?.maps) return;
-        const g = window.google.maps;
-        const map = new g.Map(ref.current, {
-          zoom: 11,
-          center: centers[0]?.center
-            ? { lat: centers[0].center![1], lng: centers[0].center![0] }
-            : { lat: 26.9124, lng: 75.7873 }, // Jaipur fallback center
-          disableDefaultUI: true,
-          zoomControl: true,
-          styles: [{ featureType: "poi", stylers: [{ visibility: "off" }] }],
-        });
-        const bounds = new g.LatLngBounds();
-        for (const a of centers) {
-          const center = { lat: a.center![1], lng: a.center![0] };
-          // Approximate service-area circle - never a pinpoint marker.
-          const circle = new g.Circle({
-            map,
-            center,
-            radius: (a.radiusKm || 2) * 1000,
-            fillColor: AMBER,
-            fillOpacity: 0.18,
-            strokeColor: AMBER,
-            strokeOpacity: 0.9,
-            strokeWeight: 1.5,
-          });
-          bounds.union(circle.getBounds());
-        }
-        if (centers.length) map.fitBounds(bounds, 40);
-      })
-      .catch(() => !cancelled && setFailed(true));
+    const rings = toRings(areas);
+    const data = toGeoJson(rings);
+
+    let map: mapboxgl.Map;
+    try {
+      mapboxgl.accessToken = TOKEN;
+      map = new mapboxgl.Map({
+        container: ref.current,
+        style: "mapbox://styles/mapbox/dark-v11",
+        center:
+          (areas.find((a) => Array.isArray(a.center))?.center as
+            | [number, number]
+            | undefined) ?? FALLBACK_CENTER,
+        zoom: 10,
+        // A service-area map is for orientation, not navigation.
+        dragRotate: false,
+        pitchWithRotate: false,
+      });
+    } catch {
+      setFailed(true);
+      return;
+    }
+    mapRef.current = map;
+
+    map.addControl(
+      new mapboxgl.NavigationControl({ showCompass: false }),
+      "top-right"
+    );
+
+    // On failure, tear the map down before swapping in the fallback. React
+    // unmounts the container but this effect's cleanup does not re-run, so
+    // without an explicit remove() the instance is orphaned in a detached
+    // node and keeps requesting tiles.
+    map.on("error", () => {
+      if (mapRef.current) {
+        mapRef.current.remove();
+        mapRef.current = null;
+      }
+      setFailed(true);
+    });
+
+    map.on("load", () => {
+      if (!rings.length) return;
+
+      map.addSource("service-areas", { type: "geojson", data });
+      map.addLayer({
+        id: "service-areas-fill",
+        type: "fill",
+        source: "service-areas",
+        paint: { "fill-color": AMBER, "fill-opacity": 0.18 },
+      });
+      map.addLayer({
+        id: "service-areas-outline",
+        type: "line",
+        source: "service-areas",
+        paint: {
+          "line-color": AMBER,
+          "line-width": 1.5,
+          // Dashed, so it reads as approximate rather than a hard boundary.
+          "line-dasharray": [2, 1.8],
+        },
+      });
+      map.addLayer({
+        id: "service-areas-label",
+        type: "symbol",
+        source: "service-areas",
+        layout: {
+          "text-field": ["get", "label"],
+          "text-size": 11,
+          "text-letter-spacing": 0.08,
+          "text-transform": "uppercase",
+        },
+        paint: {
+          "text-color": "#ffffff",
+          "text-halo-color": "rgba(0,0,0,0.75)",
+          "text-halo-width": 1.2,
+        },
+      });
+
+      // Frame every area.
+      const bounds = new mapboxgl.LngLatBounds();
+      for (const r of rings) {
+        for (const c of r.ring) bounds.extend(c);
+      }
+      if (!bounds.isEmpty()) {
+        map.fitBounds(bounds, { padding: 44, duration: 0, maxZoom: 13 });
+      }
+    });
 
     return () => {
-      cancelled = true;
+      mapRef.current?.remove();
+      mapRef.current = null;
     };
-  }, [apiKey, areas]);
+  }, [areas]);
 
-  if (!apiKey || failed) {
+  if (!TOKEN || failed) {
     return (
       <div className="h-[260px] w-full bg-surface-2">
         <FallbackMap areas={areas} />
       </div>
     );
   }
-  return <div ref={ref} className="h-[260px] w-full bg-surface-2" aria-label="Map of service areas" />;
+
+  return (
+    <div
+      ref={ref}
+      className="h-[260px] w-full bg-surface-2"
+      aria-label="Map of approximate service areas"
+    />
+  );
 }

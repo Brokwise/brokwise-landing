@@ -1,4 +1,8 @@
-import type { ProfileDetail, ProfileListResponse } from "./types";
+import type {
+  ProfileCardData,
+  ProfileDetail,
+  ProfileListResponse,
+} from "./types";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
@@ -7,6 +11,25 @@ const API_BASE =
 async function unwrap<T>(res: Response): Promise<T> {
   const json = await res.json();
   return (json?.data ?? json) as T;
+}
+
+/**
+ * Fill in array/count fields a response might omit. A deployed API can lag the
+ * frontend (or a cached response can predate a field being added), and this is
+ * a public page - it must degrade, never throw.
+ */
+function normalizeCard(p: ProfileCardData): ProfileCardData {
+  return {
+    ...p,
+    specializations: p.specializations ?? [],
+    propertyCategories: p.propertyCategories ?? [],
+    propertyTypes: p.propertyTypes ?? [],
+    languages: p.languages ?? [],
+    operatingAreas: p.operatingAreas ?? [],
+    operatingAreaCount: p.operatingAreaCount ?? 0,
+    activeListings: p.activeListings ?? 0,
+    reraVerified: !!p.reraVerified,
+  };
 }
 
 export interface ListParams {
@@ -33,7 +56,8 @@ export async function fetchProfiles(
       next: { revalidate: 60 },
     });
     if (!res.ok) return empty;
-    return unwrap<ProfileListResponse>(res);
+    const data = await unwrap<ProfileListResponse>(res);
+    return { ...data, profiles: (data.profiles ?? []).map(normalizeCard) };
   } catch {
     // API unreachable - render the shell + empty state rather than a 500.
     return empty;
