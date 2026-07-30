@@ -14,11 +14,14 @@ export default function EnquiryModal({
   profile,
   broker,
   renderTrigger,
+  initialMessage,
 }: {
   profile: ProfileDetail;
   /** When set, the enquiry targets this specific broker under a channel partner. */
   broker?: { brokerId: string; name: string; categories?: PropertyCategory[] };
   renderTrigger?: (open: () => void) => React.ReactNode;
+  /** Pre-fills the message field - e.g. from the inline enquiry card. */
+  initialMessage?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [done, setDone] = useState(false);
@@ -114,7 +117,7 @@ export default function EnquiryModal({
               role="dialog"
               aria-modal="true"
             >
-          <div className="max-h-[calc(100vh-40px)] w-full max-w-[440px] overflow-y-auto rounded-2xl border border-line bg-surface shadow-2xl">
+          <div className="max-h-[calc(100vh-40px)] w-full max-w-[528px] overflow-y-auto rounded-2xl border border-line bg-surface shadow-2xl">
             {done ? (
               <div className="px-7 py-9 text-center">
                 <div className="mx-auto mb-3.5 grid h-13 w-13 place-items-center rounded-full bg-good-soft p-3 text-good">
@@ -135,7 +138,7 @@ export default function EnquiryModal({
               </div>
             ) : (
               <form onSubmit={onSubmit}>
-                <div className="flex items-start justify-between px-5 pt-5">
+                <div className="flex items-start justify-between px-5 pt-4">
                   <div>
                     <h3 className="text-[19px] font-extrabold tracking-tight">Send an enquiry</h3>
                     <div className="mt-0.5 text-[13px] text-dmuted">
@@ -152,9 +155,9 @@ export default function EnquiryModal({
                   </button>
                 </div>
 
-                <div className="flex flex-col gap-3 px-5 pb-5 pt-4">
+                <div className="flex flex-col gap-2.5 px-5 pb-4 pt-3">
                   <div>
-                    <label className="mb-1.5 block text-[12.5px] font-semibold text-dmuted">
+                    <label className="mb-1 block text-[12.5px] font-semibold text-dmuted">
                       I&apos;m looking for <span className="font-normal text-faint">(select all that apply)</span>
                     </label>
                     <div className="flex flex-wrap gap-1.5">
@@ -174,7 +177,7 @@ export default function EnquiryModal({
 
                   {areaNames.length > 0 && (
                     <div>
-                      <label className="mb-1.5 block text-[12.5px] font-semibold text-dmuted">
+                      <label className="mb-1 block text-[12.5px] font-semibold text-dmuted">
                         Preferred areas <span className="font-normal text-faint">(select one or more)</span>
                       </label>
                       <div className="flex flex-wrap gap-1.5">
@@ -193,32 +196,35 @@ export default function EnquiryModal({
                     </div>
                   )}
 
-                  <Field label="Your name">
-                    <input name="name" required placeholder="e.g. Ankit Verma" className={inputCls} />
-                  </Field>
-                  <Field label="Phone number">
-                    <input name="phone" required type="tel" placeholder="+91 90000 00000" className={inputCls} />
-                  </Field>
+                  <div className="grid grid-cols-2 gap-2.5">
+                    <Field label="Your name">
+                      <input name="name" required placeholder="e.g. Ankit Verma" className={inputCls} />
+                    </Field>
+                    <Field label="Phone number">
+                      <input name="phone" required type="tel" placeholder="+91 90000 00000" className={inputCls} />
+                    </Field>
+                  </div>
                   <Field label="Email" optional>
                     <input name="email" type="email" placeholder="you@email.com" className={inputCls} />
                   </Field>
                   <Field label="Anything specific?" optional>
-                    <textarea name="message" rows={2} placeholder="Budget, timeline, requirements..." className={inputCls} />
+                    <textarea name="message" rows={2} defaultValue={initialMessage} placeholder="Budget, timeline, requirements..." className={inputCls} />
                   </Field>
 
-                  <label className="flex cursor-pointer items-center gap-2.5 text-[13.5px]">
-                    <input
-                      type="checkbox"
-                      checked={callback}
-                      onChange={(e) => setCallback(e.target.checked)}
-                      className="h-4 w-4 accent-brand"
-                    />
-                    Please request a call back
-                  </label>
-
-                  <div className="flex items-center gap-2.5 rounded-lg border border-line bg-surface-2 px-3 py-2.5 text-[12.5px] text-dmuted">
-                    <ShieldCheck className="h-4 w-4 text-good" />
-                    Protected by verification
+                  <div className="flex items-center justify-between gap-3">
+                    <label className="flex cursor-pointer items-center gap-2 text-[13.5px]">
+                      <input
+                        type="checkbox"
+                        checked={callback}
+                        onChange={(e) => setCallback(e.target.checked)}
+                        className="h-4 w-4 accent-brand"
+                      />
+                      Request a call back
+                    </label>
+                    <div className="flex items-center gap-1.5 text-[12.5px] text-dmuted">
+                      <ShieldCheck className="h-4 w-4 flex-none text-good" />
+                      Protected by verification
+                    </div>
                   </div>
 
                   {error && <p className="text-[13px] font-medium text-red-600">{error}</p>}
@@ -226,7 +232,7 @@ export default function EnquiryModal({
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="rounded-lg bg-brand py-3 text-[15px] font-bold text-on-brand transition hover:bg-brand-strong disabled:opacity-60"
+                    className="rounded-lg bg-brand py-2.5 text-[15px] font-bold text-on-brand transition hover:bg-brand-strong disabled:opacity-60"
                   >
                     {submitting ? "Sending..." : "Send enquiry"}
                   </button>

@@ -438,8 +438,8 @@ export const FOOTER_CONTACT = {
     "P NO. A-27, Bahubali Nagar, Jaipur",
     "Mansarovar, Jaipur - 302020, Rajasthan, India",
   ],
-  phone: "+91 99297 50046",
-  phoneHref: "tel:+919929750046",
+  phone: "+91 92160 88522",
+  phoneHref: "tel:+919216088522",
   email: "support@brokwise.com",
   instagram: "https://www.instagram.com/brokwise/",
 } as const;

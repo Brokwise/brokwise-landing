@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { ShieldCheck, MapPin, Mail } from "lucide-react";
+import Link from "next/link";
+import { ArrowLeft, ShieldCheck, MapPin, Mail } from "lucide-react";
 
 /**
  * Shared navy background band for directory hero sections.
@@ -34,9 +35,17 @@ export function DirectoryHeroShell({
       </div>
       <div
         className={`relative z-10 mx-auto max-w-[1160px] px-6 ${
-          compact ? "pt-28 pb-10 md:pt-32 md:pb-12" : "pt-28 pb-10 md:pt-32 md:pb-14"
+          compact ? "pt-8 pb-10 md:pt-10 md:pb-12" : "pt-8 pb-10 md:pt-10 md:pb-14"
         }`}
       >
+        <div className="mb-6">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-white/60 transition-colors hover:text-brand-ink"
+          >
+            <ArrowLeft className="h-4 w-4" /> Back
+          </Link>
+        </div>
         {children}
       </div>
     </section>

@@ -9,6 +9,7 @@ import Network from "@/components/v2/Network";
 import Pricing from "@/components/v2/Pricing";
 import Faq from "@/components/v2/Faq";
 import Footer from "@/components/v2/Footer";
+import FindBrokerWidget from "@/components/v2/FindBrokerWidget";
 import MetaPixelPageEvents from "@/components/meta-pixel-page-events";
 import { DEFAULT_PROMO, PromoBanner } from "@/components/hero";
 
@@ -60,6 +61,7 @@ export default async function Home() {
         <Faq />
       </main>
       <Footer />
+      <FindBrokerWidget />
     </div>
   );
 }

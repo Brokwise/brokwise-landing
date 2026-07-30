@@ -1,19 +1,38 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ShieldCheck, Lock, EyeOff, Send, Languages } from "lucide-react";
-import { fetchProfile } from "@/lib/directory/api";
+import {
+  ArrowLeft,
+  ShieldCheck,
+  MapPin,
+  Boxes,
+  Layers,
+  Languages,
+  Home,
+  Building2,
+  Factory,
+  Tractor,
+  Hotel,
+  Warehouse,
+} from "lucide-react";
+import { fetchProfile, fetchProfiles } from "@/lib/directory/api";
 import {
   PROFILE_TYPE_LABEL,
   SPEC_LABEL,
   CATEGORY_LABEL,
+  type AreaSummary,
+  type PropertyCategory,
+  type ProfileDetail,
 } from "@/lib/directory/types";
-import AreaCard from "@/components/directory/AreaCard";
+import { bhkBand, priceBand } from "@/lib/directory/format";
 import ServiceAreaMap from "@/components/directory/ServiceAreaMap";
-import EnquiryModal from "@/components/directory/EnquiryModal";
-import CompanyBrokers from "@/components/directory/CompanyBrokers";
-import { DirectoryHeroShell } from "@/components/directory/DirectoryHero";
+import HeroActions from "@/components/directory/HeroActions";
+import EnquiryPanel from "@/components/directory/EnquiryPanel";
+import BrokerRailCard, { type RailItem } from "@/components/directory/BrokerRailCard";
 import Navbar from "@/components/v2/Navbar";
+import Footer from "@/components/v2/Footer";
+import { REGISTER_URL } from "@/components/v2/content";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brokwise.com";
 
@@ -41,6 +60,15 @@ export async function generateMetadata({
   };
 }
 
+const CATEGORY_ICON: Record<PropertyCategory, typeof Home> = {
+  RESIDENTIAL: Home,
+  COMMERCIAL: Building2,
+  INDUSTRIAL: Factory,
+  AGRICULTURAL: Tractor,
+  RESORT: Hotel,
+  FARM_HOUSE: Warehouse,
+};
+
 export default async function ProfilePage({
   params,
 }: {
@@ -49,8 +77,43 @@ export default async function ProfilePage({
   const p = await fetchProfile(params.slug);
   if (!p) notFound();
 
-  // Channel partners (companies) show a broker grid instead of service areas.
   const isCompany = p.profileType !== "BROKER";
+  const totalActive = p.areas.reduce((s, a) => s + (a.summary?.totalCount || 0), 0);
+  const maxAreaCount = Math.max(0, ...p.areas.map((a) => a.summary?.totalCount || 0));
+  const firstName = displayCase(p.displayName).split(" ")[0] || p.displayName;
+
+  // Verifiable facts only for the hero strip - always four, filling from the
+  // strongest facts the profile actually carries.
+  const heroStats: { label: string; value: string; live?: boolean }[] = [
+    p.yearsOfExperience
+      ? { label: "Experience", value: `${p.yearsOfExperience} Years` }
+      : { label: "Service Areas", value: String(p.areas.length) },
+    {
+      label: "Specialization",
+      value: p.specializations.map((s) => SPEC_LABEL[s]).join(" · ") ||
+        (p.propertyCategories[0] ? CATEGORY_LABEL[p.propertyCategories[0]] : "-"),
+    },
+    p.reraNumber
+      ? { label: "RERA ID", value: p.reraNumber }
+      : { label: "Active Listings", value: String(totalActive) },
+    { label: "Availability", value: "Active", live: true },
+  ];
+
+  const aboutStats = [
+    { icon: Boxes, value: totalActive, label: "Active Listings", show: true },
+    { icon: MapPin, value: p.areas.length, label: "Service Areas", show: p.areas.length > 0 },
+    { icon: Layers, value: p.propertyCategories.length, label: "Categories", show: p.propertyCategories.length > 0 },
+    { icon: Languages, value: p.languages.length, label: "Languages", show: p.languages.length > 0 },
+    {
+      icon: ShieldCheck,
+      value: p.reraVerified ? "RERA" : "Pending",
+      label: p.reraVerified ? "Verified" : "Verification",
+      show: true,
+      good: p.reraVerified,
+    },
+  ].filter((s) => s.show);
+
+  const rail = await buildRail(p, isCompany);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -62,193 +125,337 @@ export default async function ProfilePage({
   };
 
   return (
-    <div className="landing-v2">
+    <div className="landing-v2 bg-v2-navy font-sans">
       <Navbar />
-      <main className="directory-scope min-h-screen bg-paper text-ink">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <main className="directory-scope">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
 
-      <DirectoryHeroShell compact>
-        <Link
-          href="/directory"
-          className="inline-flex items-center gap-2 text-[13.5px] font-semibold text-white/70 transition-colors hover:text-v2-gold"
-        >
-          <ArrowLeft className="h-4 w-4" /> All profiles
-        </Link>
-
-        {p.heroImage && (
-          // Cover banner (separate from the broker's profile photo).
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={p.heroImage}
-            alt=""
-            className="mt-6 h-40 w-full rounded-2xl object-cover ring-1 ring-white/10"
-          />
-        )}
-
-        <div
-          className={`${
-            p.heroImage ? "mt-4" : "mt-6"
-          } grid items-start gap-8 md:grid-cols-[minmax(0,1fr)_340px] md:items-center md:gap-10`}
-        >
-        <div className="flex items-start gap-4">
-          {p.avatarImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={p.avatarImage}
-              alt={p.displayName}
-              className="h-16 w-16 flex-none rounded-full object-cover ring-2 ring-white/15"
-            />
-          ) : (
-            <div className="grid h-16 w-16 flex-none place-items-center rounded-full bg-white/10 text-xl font-bold text-white ring-1 ring-white/15">
-              {profileInitials(p.displayName)}
-            </div>
-          )}
-          <div className="min-w-0">
-            <div className="mono-label flex items-center gap-1.5 text-[10px] font-semibold text-v2-gold">
-              <span className="h-[5px] w-[5px] rounded-full bg-v2-gold" />
-              {PROFILE_TYPE_LABEL[p.profileType]}
-            </div>
-            {/* Inline, not a flex child: as a flex item the badge wrapped onto
-                its own line after a long agency name. */}
-            <h1 className="mt-1.5 font-display text-[clamp(26px,4vw,40px)] font-bold leading-tight tracking-tight text-white">
-              {p.displayName}
-              {p.reraVerified && (
-                <ShieldCheck
-                  className="ml-2.5 inline-block h-6 w-6 -translate-y-0.5 text-emerald-400"
-                  aria-label="RERA verified"
-                />
-              )}
-            </h1>
-            <div className="mono-label mt-2 text-[12px] text-white/55">
-              {[p.city, p.yearsOfExperience ? `${p.yearsOfExperience} yrs experience` : null]
-                .filter(Boolean)
-                .join("  ·  ")}
-            </div>
-            {p.languages.length > 0 && (
-              <div className="mt-2 flex items-center gap-1.5 text-[13px] text-white/70">
-                <Languages className="h-3.5 w-3.5 flex-none text-dmark" />
-                Speaks {p.languages.join(", ")}
-              </div>
-            )}
-          </div>
-        </div>
-
-          {/* Moved out of the sidebar: the reasons to enquire belong beside the
-              identity, before the visitor scrolls, not after the ask. */}
-          <TrustPanel reraNumber={p.reraVerified ? p.reraNumber : undefined} />
-        </div>
-
-      </DirectoryHeroShell>
-
-      <div className="mx-auto max-w-[1160px] px-6">
-        <div className="border-b border-line py-7">
-          {p.about && (
-            <p className="max-w-[64ch] text-[15.5px] leading-relaxed text-dmuted">
-              {p.about}
-            </p>
-          )}
-          <div className={`flex flex-wrap gap-1.5 ${p.about ? "mt-5" : ""}`}>
-            {p.reraVerified && (
-              <span className="mono-label inline-flex items-center gap-1.5 rounded-md bg-good-soft px-2.5 py-1 text-[11px] font-medium text-good">
-                <ShieldCheck className="h-3.5 w-3.5" /> RERA {p.reraNumber || "verified"}
-              </span>
-            )}
-            {p.specializations.map((s) => (
-              <span
-                key={s}
-                className="mono-label rounded-md bg-brand-soft px-2.5 py-1 text-[11px] font-medium text-brand-ink"
-              >
-                {SPEC_LABEL[s]}
-              </span>
-            ))}
-            {p.propertyCategories.map((c) => (
-              <span
-                key={c}
-                className="mono-label rounded-md border border-line-strong px-2.5 py-1 text-[11px] font-medium text-dmuted"
-              >
-                {CATEGORY_LABEL[c]}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 items-start gap-10 py-8 md:grid-cols-[1fr_380px]">
-          <div>
-            {isCompany ? (
-              <>
-                <div className="mono-label text-[11.5px] font-semibold text-brand-ink">
-                  Our brokers
-                </div>
-                <p className="mt-2 text-[13px] text-dmuted">
-                  Reach the right specialist directly - enquiries go to the broker and
-                  are shared with {p.displayName}.
-                </p>
-                <CompanyBrokers profile={p} />
-              </>
-            ) : (
-              <>
-                <div className="mono-label text-[11.5px] font-semibold text-brand-ink">
-                  Where they operate
-                </div>
-                <div className="mt-3 flex items-start gap-2.5 rounded-lg border border-dashed border-line-strong bg-surface-2 px-3.5 py-3 text-[13px] text-dmuted">
-                  <Lock className="mt-0.5 h-4 w-4 flex-none text-dmark" />
-                  Exact properties and addresses are confidential. The figures below are
-                  anonymised summaries of active inventory in each area - never individual
-                  listings.
-                </div>
-
-                {p.areas.length === 0 ? (
-                  <p className="mt-4 text-[14px] text-dmuted">
-                    No active listings to map service areas yet. Send an enquiry and
-                    they&apos;ll get in touch.
-                  </p>
-                ) : (
-                  <div className="mt-4 flex flex-col gap-3.5">
-                    {p.areas.map((a) => (
-                      <AreaCard key={a.label} area={a} />
-                    ))}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-
-          <aside className="flex flex-col gap-4 md:sticky md:top-[92px]">
-            <div className="overflow-hidden rounded-xl border border-line bg-surface shadow-sm">
-              <ServiceAreaMap areas={p.areas} />
-              <div className="flex items-center gap-2 border-t border-line px-4 py-3 text-[12px] text-dmuted">
-                <span className="inline-block h-3.5 w-5 flex-none rounded border-[1.5px] border-dashed border-brand bg-brand/20" />
-                Approximate service areas - circles, not exact locations.
-              </div>
-            </div>
-
-            {/* Anchor target for "Contact Now" on the directory listing cards. */}
-            <div
-              id="enquire"
-              className="scroll-mt-28 rounded-xl border border-line bg-surface p-5 shadow-sm"
+        {/* ── Hero band ─────────────────────────────────────────────── */}
+        <section className="bg-v2-navy px-5 pt-24 pb-6 md:px-8 md:pt-28">
+          <div className="mx-auto max-w-[1160px]">
+            <Link
+              href="/directory"
+              className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-white/60 transition-colors hover:text-v2-gold"
             >
-              <h3 className="font-display text-[18px] font-bold tracking-tight">Interested in this area?</h3>
-              <p className="mt-2 text-[13.5px] text-dmuted">
-                Send {p.displayName} a message about what you&apos;re looking for.
-                They&apos;ll get it instantly in the Brokwise app and reach out to you.
-              </p>
-              <EnquiryModal profile={p} />
-              <p className="mt-3.5 flex items-start gap-2 text-[12px] text-faint">
-                <Lock className="mt-0.5 h-3.5 w-3.5 flex-none text-good" />
-                We never share their phone or email. Your enquiry is delivered privately,
-                inside their app.
-              </p>
+              <ArrowLeft className="h-4 w-4" /> Back
+            </Link>
+
+            <div className="relative mt-4 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-v2-navy-3 to-v2-navy-2">
+              <div className="absolute inset-0">
+                <Image
+                  src="/hero-new.png"
+                  alt=""
+                  fill
+                  priority
+                  quality={80}
+                  className="object-cover object-[78%_45%] opacity-40"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-v2-navy-3 via-v2-navy-3/90 to-v2-navy-3/30" />
+              </div>
+
+              <div className="relative grid gap-8 p-7 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-10 md:p-9">
+                <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center">
+                  {p.avatarImage ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={p.avatarImage}
+                      alt={p.displayName}
+                      className="h-28 w-28 flex-none rounded-full object-cover ring-4 ring-white/15"
+                    />
+                  ) : (
+                    <div className="grid h-28 w-28 flex-none place-items-center rounded-full bg-white/10 text-3xl font-bold text-white ring-4 ring-white/15">
+                      {profileInitials(p.displayName)}
+                    </div>
+                  )}
+
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="mono-label inline-flex items-center rounded-full border border-v2-gold/60 px-3 py-1 text-[10.5px] font-semibold text-v2-gold">
+                        {PROFILE_TYPE_LABEL[p.profileType]}
+                      </span>
+                      {p.reraVerified && (
+                        <span className="mono-label inline-flex items-center gap-1.5 rounded-full bg-emerald-400/15 px-3 py-1 text-[10.5px] font-semibold text-emerald-300">
+                          <ShieldCheck className="h-3.5 w-3.5" /> RERA Verified
+                        </span>
+                      )}
+                    </div>
+
+                    <h1 className="mt-3 font-display text-[clamp(28px,4vw,42px)] font-bold leading-tight tracking-tight text-white">
+                      {displayCase(p.displayName)}
+                    </h1>
+
+                    <p className="mt-2 flex flex-wrap items-center gap-x-1.5 text-[13.5px] text-white/65">
+                      {p.city && (
+                        <span className="inline-flex items-center gap-1 font-semibold text-white/80">
+                          <MapPin className="h-4 w-4 text-v2-gold" /> {p.city}
+                        </span>
+                      )}
+                      {p.city && p.propertyCategories.length > 0 && <span className="text-white/30">•</span>}
+                      {p.propertyCategories.length > 0 && (
+                        <span>
+                          Specializing in{" "}
+                          {p.propertyCategories.slice(0, 2).map((c) => CATEGORY_LABEL[c]).join(" & ")}{" "}
+                          Properties
+                        </span>
+                      )}
+                    </p>
+
+                    <div className="mt-6 grid max-w-xl grid-cols-2 gap-x-8 gap-y-4 sm:grid-cols-4">
+                      {heroStats.map((s) => (
+                        <div key={s.label}>
+                          <div className="mono-label text-[10px] font-semibold text-white/40">
+                            {s.label}
+                          </div>
+                          <div className="mt-1 flex items-center gap-1.5 text-[14px] font-semibold text-white">
+                            {s.live && (
+                              <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 shadow-[0_0_0_3px_rgba(52,211,153,0.25)]" />
+                            )}
+                            <span className="truncate">{s.value}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <HeroActions profile={p} />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── About band (light) ───────────────────────────────────── */}
+        <section className="bg-v2-paper px-5 py-14 md:px-8 md:py-16">
+          <div className="mx-auto grid max-w-[1160px] items-stretch gap-8 lg:grid-cols-[minmax(0,1fr)_400px]">
+            <div className="flex h-full flex-col rounded-2xl border border-black/[0.06] bg-white p-7 shadow-[0_18px_50px_-32px_rgba(11,21,34,0.4)] md:p-9">
+              <h2 className="font-display text-[26px] font-bold tracking-tight text-v2-ink md:text-[30px]">
+                About {firstName}
+              </h2>
+              {p.about && (
+                <p className="mt-4 max-w-[64ch] text-[15px] leading-relaxed text-v2-ink/70">
+                  {p.about}
+                </p>
+              )}
+
+              <div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+                {aboutStats.map((s) => (
+                  <div
+                    key={s.label}
+                    className="rounded-xl border border-black/[0.06] bg-[#F5F5F6] px-3 py-4 text-center"
+                  >
+                    <s.icon
+                      className={`mx-auto h-5 w-5 ${s.good ? "text-emerald-600" : "text-v2-ink/50"}`}
+                    />
+                    <div
+                      className={`mt-2 text-[18px] font-bold tabular-nums ${s.good ? "text-emerald-600" : "text-v2-ink"}`}
+                    >
+                      {s.value}
+                    </div>
+                    <div className="mono-label mt-0.5 text-[9.5px] text-v2-ink/50">
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-          </aside>
-        </div>
-      </div>
+            <EnquiryPanel profile={p} />
+          </div>
+        </section>
+
+        {/* ── Where they operate (dark) ────────────────────────────── */}
+        <section className="bg-v2-navy px-5 py-14 md:px-8 md:py-16">
+          <div className="mx-auto grid max-w-[1160px] items-start gap-6 lg:grid-cols-[minmax(0,340px)_minmax(0,1fr)_minmax(0,280px)]">
+            {/* Areas */}
+            <div>
+              <div className="mono-label text-[11px] font-semibold text-v2-gold">
+                Where they operate
+              </div>
+              {p.areas.length === 0 ? (
+                <p className="mt-3 text-[13.5px] text-white/55">
+                  No mapped service areas yet - send an enquiry and they&apos;ll get in touch.
+                </p>
+              ) : (
+                <div className="mt-4 flex flex-col gap-3.5">
+                  {p.areas.map((a) => (
+                    <OperateAreaCard
+                      key={a.label}
+                      area={a}
+                      major={(a.summary?.totalCount || 0) >= maxAreaCount && maxAreaCount > 0}
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Map */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-v2-navy-2">
+              <ServiceAreaMap areas={p.areas} />
+              <div className="pointer-events-none absolute left-3 top-3 rounded-md bg-black/45 px-2.5 py-1 backdrop-blur-sm">
+                <span className="mono-label text-[9.5px] font-semibold text-white/70">
+                  Service coverage map
+                </span>
+              </div>
+              {p.city && (
+                <div className="pointer-events-none absolute bottom-3 left-1/2 -translate-x-1/2 rounded-full bg-black/60 px-3 py-1 backdrop-blur-sm">
+                  <span className="mono-label text-[10px] font-semibold text-white">
+                    {p.city}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {/* Expertise */}
+            <div>
+              <div className="mono-label text-[11px] font-semibold text-v2-gold">
+                Expertise
+              </div>
+              <div className="mt-4 flex flex-col gap-2.5">
+                {p.propertyCategories.map((c) => {
+                  const Icon = CATEGORY_ICON[c];
+                  return (
+                    <div
+                      key={c}
+                      className="flex items-center gap-3 rounded-xl border border-white/10 bg-v2-navy-3 px-3.5 py-3"
+                    >
+                      <Icon className="h-4 w-4 flex-none text-v2-gold" />
+                      <span className="text-[13.5px] font-medium text-white">
+                        {CATEGORY_LABEL[c]}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+              {p.specializations.length > 0 && (
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {p.specializations.map((s) => (
+                    <span
+                      key={s}
+                      className="mono-label rounded-full border border-white/15 px-2.5 py-1 text-[10.5px] font-medium text-white/70"
+                    >
+                      {SPEC_LABEL[s]}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
+
+
+        {/* ── Recommended / our brokers (light) ────────────────────── */}
+        {rail.items.length > 0 && (
+          <section className="bg-v2-paper px-5 py-14 md:px-8 md:py-16">
+            <div className="mx-auto max-w-[1160px]">
+              <h2 className="font-display text-[26px] font-bold tracking-tight text-v2-ink md:text-[30px]">
+                {rail.title}
+              </h2>
+              <div className="mt-7 flex snap-x gap-5 overflow-x-auto pb-4 [scrollbar-width:thin]">
+                {rail.items.map((item, i) => (
+                  <div key={i} className="snap-start">
+                    <BrokerRailCard item={item} />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
       </main>
+      <Footer />
     </div>
   );
+}
+
+/**
+ * Compact service-area card for the dark band: name + hub weight, live count,
+ * and anonymised configuration / price bands merged across categories.
+ */
+function OperateAreaCard({ area, major }: { area: AreaSummary; major: boolean }) {
+  const cats = area.summary?.categories ?? [];
+  const bhk = mergeRange(cats.map((c) => c.bhkRange));
+  const price = mergeRange(cats.map((c) => c.priceRange));
+  const count = area.summary?.totalCount || 0;
+
+  return (
+    <div className="rounded-2xl border border-white/10 bg-v2-navy-3 p-4">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <div className="font-display text-[17px] font-bold text-white">{area.label}</div>
+          <div className="mono-label mt-0.5 text-[9.5px] font-semibold text-v2-gold">
+            {major ? "Major hub" : "Secondary hub"}
+          </div>
+        </div>
+        <span className="mono-label flex-none rounded-full bg-white/10 px-2.5 py-1 text-[10px] font-medium text-white/80">
+          {count} Active {count === 1 ? "Listing" : "Listings"}
+        </span>
+      </div>
+
+      <dl className="mt-4 space-y-2 border-t border-white/10 pt-3 text-[12.5px]">
+        <div className="flex items-center justify-between gap-3">
+          <dt className="text-white/45">Configuration</dt>
+          <dd className="font-semibold tabular-nums text-white">{bhkBand(bhk) || "-"}</dd>
+        </div>
+        <div className="flex items-center justify-between gap-3">
+          <dt className="text-white/45">Price Range</dt>
+          <dd className="font-semibold tabular-nums text-white">{priceBand(price) || "-"}</dd>
+        </div>
+      </dl>
+    </div>
+  );
+}
+
+function mergeRange(
+  ranges: ({ min: number; max: number } | null)[]
+): { min: number; max: number } | null {
+  const present = ranges.filter((r): r is { min: number; max: number } => !!r);
+  if (present.length === 0) return null;
+  return {
+    min: Math.min(...present.map((r) => r.min)),
+    max: Math.max(...present.map((r) => r.max)),
+  };
+}
+
+/** For a company with brokers, surface those; otherwise recommend other profiles. */
+async function buildRail(
+  p: ProfileDetail,
+  isCompany: boolean
+): Promise<{ title: string; items: RailItem[] }> {
+  if (isCompany && p.brokers && p.brokers.length > 0) {
+    return {
+      title: "Our brokers",
+      items: p.brokers.map((b) => ({
+        name: displayCase(b.fullName),
+        initials: profileInitials(b.fullName),
+        avatar: b.profilePhoto,
+        reraNumber: b.reraNumber,
+        typeLabel: "Individual broker",
+        experience: b.yearsOfExperience,
+        location: b.city,
+      })),
+    };
+  }
+
+  const list = await fetchProfiles({});
+  const others = list.profiles.filter((o) => o.slug !== p.slug).slice(0, 8);
+  return {
+    title: "More recommended brokers",
+    items: others.map((o) => ({
+      name: displayCase(o.displayName),
+      href: `/directory/${o.slug}`,
+      initials: profileInitials(o.displayName),
+      avatar: o.avatarImage,
+      reraNumber: o.reraNumber,
+      typeLabel: PROFILE_TYPE_LABEL[o.profileType],
+      experience: o.yearsOfExperience,
+      location: o.city || o.operatingAreas.slice(0, 1).join(""),
+      listings: o.activeListings,
+      areas: o.operatingAreaCount,
+    })),
+  };
 }
 
 function profileInitials(name: string): string {
@@ -256,49 +463,10 @@ function profileInitials(name: string): string {
   return parts.map((p) => p[0]?.toUpperCase() || "").join("") || "B";
 }
 
-function TrustPanel({ reraNumber }: { reraNumber?: string }) {
-  const items = [
-    {
-      icon: ShieldCheck,
-      title: "RERA-verified broker",
-      body: reraNumber
-        ? `Registration ${reraNumber}, verified by Brokwise.`
-        : "Verified by Brokwise before listing.",
-    },
-    {
-      icon: Lock,
-      title: "Your data stays yours",
-      body: "We never share your details without your permission.",
-    },
-    {
-      icon: EyeOff,
-      title: "Their contact stays private",
-      body: "You only see the broker's number once they respond to you.",
-    },
-    {
-      icon: Send,
-      title: "Delivered in-app",
-      body: "Your enquiry reaches the broker instantly in the Brokwise app.",
-    },
-  ];
-  // Sits on the hero artwork, so it is a translucent glass panel with white
-  // ink rather than the solid --surface card used in the content column.
-  return (
-    <div className="rounded-2xl border border-white/12 bg-white/[0.06] p-5 backdrop-blur-md">
-      <div className="mono-label mb-3 text-[10.5px] text-white/50">
-        Why enquire on Brokwise
-      </div>
-      <ul className="flex flex-col gap-3">
-        {items.map((it) => (
-          <li key={it.title} className="flex gap-3">
-            <it.icon className="mt-0.5 h-4 w-4 flex-none text-emerald-400" />
-            <div>
-              <p className="text-[13.5px] font-semibold text-white">{it.title}</p>
-              <p className="text-[12.5px] leading-snug text-white/65">{it.body}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+/** Render ALL-CAPS source names in normal title case; leave mixed-case as-is. */
+function displayCase(s: string): string {
+  if (s === s.toUpperCase()) {
+    return s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  return s;
 }

@@ -352,6 +352,25 @@
   --good: 158 64% 52%;         /* emerald, readable on dark */
   --good-soft: 158 40% 14%;    /* deep emerald chip background */
 }
+
+/* Light-theme override for the /directory results grid only (heading, cards,
+   empty state, pagination). Nests inside .directory-scope so it re-defines
+   the same tokens every downstream component already reads - the hero,
+   filters bar and profile/company pages outside this wrapper stay dark. */
+.directory-results-light {
+  --paper: 210 17% 98%;         /* #f6f8f9  section background */
+  --surface: 0 0% 100%;         /* white cards */
+  --surface-2: 210 20% 95%;     /* light inset panels / stat strips */
+  --ink: 222 47% 11%;           /* near-black text */
+  --dmuted: 215 16% 40%;        /* body copy on light */
+  --faint: 215 14% 46%;         /* labels, secondary */
+  --line: 214 20% 89%;          /* card border */
+  --line-strong: 214 20% 80%;   /* stronger border / control border */
+  --brand-ink: 32 55% 38%;      /* gold accent TEXT, readable on white */
+  --brand-soft: 38 70% 93%;     /* pale gold chip background */
+  --good: 158 64% 34%;          /* emerald, readable on white */
+  --good-soft: 158 40% 92%;     /* pale emerald chip background */
+}
 /* Eyebrow labels: match the v2 landing (Public Sans caps), not a mono face. */
 .mono-label {
   font-family: var(--font-public-sans), ui-sans-serif, system-ui, sans-serif;

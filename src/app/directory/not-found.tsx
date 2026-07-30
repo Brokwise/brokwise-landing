@@ -1,11 +1,9 @@
 import Link from "next/link";
 import DirectoryHero from "@/components/directory/DirectoryHero";
-import Navbar from "@/components/v2/Navbar";
 
 export default function NotFound() {
   return (
     <div className="landing-v2">
-      <Navbar />
       <main className="directory-scope min-h-screen bg-paper text-ink">
         <DirectoryHero
           eyebrow="404"

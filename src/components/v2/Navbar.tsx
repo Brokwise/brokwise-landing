@@ -8,12 +8,12 @@ import { metaPixel } from "@/lib/fpixel";
 import { REGISTER_URL } from "./content";
 
 const LINKS = [
+  { name: "Testimonials", href: "/#testimonials" },
   { name: "How It Works", href: "/#how-it-works" },
   { name: "Why Brokwise", href: "/#features" },
   { name: "Pricing", href: "/#pricing" },
-  { name: "Testimonials", href: "/#testimonials" },
-  { name: "Browse Brokers", href: "/directory" },
   { name: "FAQs", href: "/#faq" },
+  { name: "Find a Broker", href: "/directory" },
   { name: "Support", href: "/support" },
 ];
 
