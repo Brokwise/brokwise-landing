@@ -6,6 +6,7 @@ import { ArrowRight, Calendar, Sparkles } from "lucide-react";
 import { getCalApi } from "@calcom/embed-react";
 import { useEffect } from "react";
 import { metaPixel } from "@/lib/fpixel";
+import { useTierConfig } from "@/hooks/useTierConfig";
 
 export type PromoBanner = {
   enabled: boolean;
