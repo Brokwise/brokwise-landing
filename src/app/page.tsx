@@ -10,6 +10,7 @@ import Pricing from "@/components/v2/Pricing";
 import Faq from "@/components/v2/Faq";
 import Footer from "@/components/v2/Footer";
 import FindBrokerWidget from "@/components/v2/FindBrokerWidget";
+import EarlyBirdPopup from "@/components/v2/EarlyBirdPopup";
 import MetaPixelPageEvents from "@/components/meta-pixel-page-events";
 
 export default function Home() {
@@ -30,6 +31,7 @@ export default function Home() {
       </main>
       <Footer />
       <FindBrokerWidget />
+      <EarlyBirdPopup />
     </div>
   );
 }

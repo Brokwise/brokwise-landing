@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { COMPARISON, REGISTER_URL } from "./content";
 
 export default function Comparison() {
@@ -58,17 +59,31 @@ export default function Comparison() {
           </div>
         </div>
 
-        {/* Early-bird pill */}
+        {/* Early-bird pill - matches the hero capsule */}
         <div className="mt-12 flex justify-center">
-          <div className="inline-flex items-center gap-4 rounded-full border border-v2-ink/15 bg-v2-paper-2 py-1.5 pl-6 pr-1.5">
-            <span className="text-sm font-medium text-v2-ink/70">
-              Free Early Bird is On...
-            </span>
+          <div className="group relative inline-flex">
             <Link
               href={REGISTER_URL}
-              className="rounded-full bg-v2-navy px-5 py-2 text-sm font-semibold text-white transition-colors hover:bg-v2-navy-2"
+              className="relative inline-flex items-center gap-3 overflow-hidden rounded-full border border-v2-gold/35 bg-v2-ink/95 py-3.5 pl-7 pr-6 backdrop-blur-md transition-transform hover:scale-[1.02] active:scale-95"
             >
-              Join Now
+              {/* Warm gradient tint inside */}
+              <span className="absolute inset-0 bg-gradient-to-r from-v2-gold/10 via-transparent to-v2-gold/10 pointer-events-none" />
+              {/* Top highlight line */}
+              <span className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-v2-gold/55 to-transparent" />
+
+              {/* Glowing live dot */}
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-v2-gold opacity-70" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-v2-gold" />
+              </span>
+
+              <Sparkles className="h-4 w-4 shrink-0 text-v2-gold/70" aria-hidden />
+
+              <span className="relative whitespace-nowrap text-sm font-semibold tracking-wide text-v2-gold">
+                Free Early Bird is On - Join Now
+              </span>
+
+              <ArrowRight className="relative h-4 w-4 shrink-0 text-v2-gold transition-transform group-hover:translate-x-0.5" aria-hidden />
             </Link>
           </div>
         </div>

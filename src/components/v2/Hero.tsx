@@ -137,6 +137,12 @@ export default function Hero() {
           </div>
         </div>
 
+        {/*
+          Marker at the end of the hero copy. The scroll-triggered Early Bird
+          popup (EarlyBirdPopup) watches this element and opens once it scrolls
+          above the top of the viewport, i.e. the visitor has read past the hero.
+        */}
+        <div id="hero-copy-end" aria-hidden className="h-px w-full" />
       </div>
 
       {/*
