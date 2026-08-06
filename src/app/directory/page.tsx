@@ -2,10 +2,16 @@ import { fetchProfiles, ListParams } from "@/lib/directory/api";
 import Filters from "@/components/directory/Filters";
 import ProfileCard from "@/components/directory/ProfileCard";
 import DirectoryHero from "@/components/directory/DirectoryHero";
+import DirectoryComingSoon from "@/components/directory/DirectoryComingSoon";
 import Pagination from "@/components/directory/Pagination";
 import BrokerSignupCta from "@/components/directory/BrokerSignupCta";
 
 export const dynamic = "force-dynamic";
+
+// Flip to false to open the public directory. While true, the page shows a
+// "coming soon" placeholder and skips fetching profiles entirely, even
+// though broker profiles already exist and are ready behind the scenes.
+const SHOW_COMING_SOON = true;
 
 const CITIES = ["Jaipur", "Bengaluru", "Pune", "Hyderabad"];
 
@@ -18,6 +24,10 @@ export default async function ListingPage({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
+  if (SHOW_COMING_SOON) {
+    return <DirectoryComingSoon />;
+  }
+
   const params: ListParams = {
     q: pick(searchParams.q),
     city: pick(searchParams.city),
