@@ -32,7 +32,7 @@ export const HERO_AVATARS = PEOPLE.slice(0, 6);
 
 export const HERO_BULLETS = [
   "Aadhaar Verified Brokers Only",
-  "15 Days Listing Validation",
+  "30 Days Listing Validation",
   "High-Intent & Active Listings",
   "100% Contact Protection System",
 ] as const;
@@ -184,7 +184,7 @@ export type Feature = { title: string; body: string; icon: string };
 export const FEATURES: Feature[] = [
   {
     icon: "shield-check",
-    title: "Inventory Verified Every 15 Days",
+    title: "Inventory Verified Every 30 Days",
     body: "Keeps the enquiries active and genuine.",
   },
   {
@@ -438,8 +438,8 @@ export const FOOTER_CONTACT = {
     "P NO. A-27, Bahubali Nagar, Jaipur",
     "Mansarovar, Jaipur - 302020, Rajasthan, India",
   ],
-  phone: "+91 92160 88522",
-  phoneHref: "tel:+919216088522",
+  phone: "+91 92160 88525",
+  phoneHref: "tel:+919216088525",
   email: "support@brokwise.com",
   instagram: "https://www.instagram.com/brokwise/",
 } as const;

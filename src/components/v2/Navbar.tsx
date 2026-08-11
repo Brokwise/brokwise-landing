@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { metaPixel } from "@/lib/fpixel";
@@ -46,7 +47,14 @@ const Navbar = () => {
             : "border-white/10 bg-v2-navy/50 backdrop-blur-md",
         )}
       >
-        <Link href="/" className="flex items-center">
+        <Link href="/" className="flex items-center gap-2">
+          <Image
+            src="/logo.webp"
+            alt="Brokwise Logo"
+            width={32}
+            height={32}
+            className="h-8 w-8 rounded-full"
+          />
           <span className="font-display text-xl font-bold tracking-tight text-v2-gold md:text-2xl">
             Brokwise
           </span>
