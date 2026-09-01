@@ -434,10 +434,7 @@ export const FAQS: FaqItem[] = [
 ];
 
 export const FOOTER_CONTACT = {
-  address: [
-    "P NO. A-27, Bahubali Nagar, Jaipur",
-    "Mansarovar, Jaipur - 302020, Rajasthan, India",
-  ],
+  address: ["Jaipur, Rajasthan"],
   phone: "+91 92160 88522",
   phoneHref: "tel:+919216088522",
   email: "support@brokwise.com",

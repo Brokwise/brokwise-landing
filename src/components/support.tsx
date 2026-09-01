@@ -265,9 +265,7 @@ const Support = () => {
                     {/* Contact details */}
                     <div className="flex flex-col gap-4">
                         <ContactCard icon={MapPin} label="Office">
-                            {FOOTER_CONTACT.address[0]}
-                            <br />
-                            {FOOTER_CONTACT.address[1]}
+                            {FOOTER_CONTACT.address.join(", ")}
                         </ContactCard>
 
                         <ContactCard icon={Phone} label="Phone">

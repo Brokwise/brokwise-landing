@@ -39,9 +39,7 @@ export default function Footer() {
 
             <p className="text-sm font-semibold text-white">Office</p>
             <address className="mt-2 not-italic text-sm leading-relaxed text-white/50">
-              {FOOTER_CONTACT.address[0]}
-              <br />
-              {FOOTER_CONTACT.address[1]}
+              {FOOTER_CONTACT.address.join(", ")}
             </address>
 
             <p className="mt-6 text-sm font-semibold text-white">Get In Touch</p>
