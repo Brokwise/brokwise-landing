@@ -69,7 +69,7 @@ const Footer = () => {
                                     </p>
                                     <div className="flex flex-col gap-1">
                                         <a
-                                            href="tel:+919929750046"
+                                            href="tel:+9192160 88522"
                                             className="hover:text-[#fcb542] transition-colors"
                                         >
                                             +91 99297 50046

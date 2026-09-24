@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { APP_URL, FOOTER_CONTACT } from "./content";
 
 export default function Footer() {
@@ -8,7 +9,16 @@ export default function Footer() {
         <div className="grid gap-12 md:grid-cols-12">
           {/* Brand */}
           <div className="md:col-span-5">
-            <p className="font-display text-3xl font-bold text-v2-gold">Brokwise</p>
+            <div className="flex items-center gap-2">
+              <Image
+                src="/logo.webp"
+                alt="Brokwise Logo"
+                width={36}
+                height={36}
+                className="h-9 w-9 rounded-full"
+              />
+              <p className="font-display text-3xl font-bold text-v2-gold">Brokwise</p>
+            </div>
           </div>
 
           {/* Platform */}
@@ -29,9 +39,7 @@ export default function Footer() {
 
             <p className="text-sm font-semibold text-white">Office</p>
             <address className="mt-2 not-italic text-sm leading-relaxed text-white/50">
-              {FOOTER_CONTACT.address[0]}
-              <br />
-              {FOOTER_CONTACT.address[1]}
+              {FOOTER_CONTACT.address.join(", ")}
             </address>
 
             <p className="mt-6 text-sm font-semibold text-white">Get In Touch</p>
