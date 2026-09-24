@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import { fetchProfiles, ListParams } from "@/lib/directory/api";
+import { fetchDirectoryLaunch } from "@/lib/directory/launch";
 import Filters from "@/components/directory/Filters";
 import ProfileCard from "@/components/directory/ProfileCard";
 import DirectoryHero from "@/components/directory/DirectoryHero";
@@ -8,10 +10,13 @@ import BrokerSignupCta from "@/components/directory/BrokerSignupCta";
 
 export const dynamic = "force-dynamic";
 
-// Flip to false to open the public directory. While true, the page shows a
-// "coming soon" placeholder and skips fetching profiles entirely, even
-// though broker profiles already exist and are ready behind the scenes.
-const SHOW_COMING_SOON = true;
+// Until an admin launches the directory (admin Settings > Feature launches),
+// the page shows a coming-soon placeholder and fetches no profiles.
+export async function generateMetadata(): Promise<Metadata> {
+  const launch = await fetchDirectoryLaunch();
+  // Keep the placeholder out of search results; the real listing is indexable.
+  return launch.live ? {} : { robots: { index: false, follow: true } };
+}
 
 const CITIES = ["Jaipur", "Bengaluru", "Pune", "Hyderabad"];
 
@@ -24,8 +29,9 @@ export default async function ListingPage({
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
-  if (SHOW_COMING_SOON) {
-    return <DirectoryComingSoon />;
+  const launch = await fetchDirectoryLaunch();
+  if (!launch.live) {
+    return <DirectoryComingSoon liveAt={launch.liveAt} />;
   }
 
   const params: ListParams = {

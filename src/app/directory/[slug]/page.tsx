@@ -17,6 +17,7 @@ import {
   Warehouse,
 } from "lucide-react";
 import { fetchProfile, fetchProfiles } from "@/lib/directory/api";
+import { fetchDirectoryLaunch } from "@/lib/directory/launch";
 import {
   PROFILE_TYPE_LABEL,
   SPEC_LABEL,
@@ -26,6 +27,7 @@ import {
   type ProfileDetail,
 } from "@/lib/directory/types";
 import { bhkBand, priceBand } from "@/lib/directory/format";
+import DirectoryComingSoon from "@/components/directory/DirectoryComingSoon";
 import ServiceAreaMap from "@/components/directory/ServiceAreaMap";
 import HeroActions from "@/components/directory/HeroActions";
 import EnquiryPanel from "@/components/directory/EnquiryPanel";
@@ -42,6 +44,10 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
+  const launch = await fetchDirectoryLaunch();
+  if (!launch.live) {
+    return { title: "Broker directory - coming soon", robots: { index: false, follow: true } };
+  }
   const p = await fetchProfile(params.slug);
   if (!p) return { title: "Profile not found" };
   const areas = p.areas.map((a) => a.label).join(", ");
@@ -73,6 +79,12 @@ export default async function ProfilePage({
 }: {
   params: { slug: string };
 }) {
+  // A profile link shared before launch lands on the placeholder, not a 404.
+  const launch = await fetchDirectoryLaunch();
+  if (!launch.live) {
+    return <DirectoryComingSoon liveAt={launch.liveAt} />;
+  }
+
   const p = await fetchProfile(params.slug);
   if (!p) notFound();
 
