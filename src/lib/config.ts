@@ -19,6 +19,8 @@ type TierLimits = Record<TierName, {
     PROPERTY_LISTING: number
     ENQUIRY_LISTING: number
     SUBMIT_PROPERTY_ENQUIRY: number
+    /** Free contact requests per month; absent on APIs that predate the allowance. */
+    REQUEST_CONTACT?: number
 }>
 
 type TierPricing = Record<TierName, number>
@@ -29,6 +31,9 @@ export type TierConfigResponse = {
     success: boolean
     data: {
         tierLimits: TierLimits
+        creditsPrice?: {
+            REQUEST_CONTACT?: number
+        }
         pricing: {
             monthlyPricing: TierPricing
             quarterlyPricing: TierPricing
@@ -80,9 +85,26 @@ const PLAN_META: Record<"monthly" | "quarterly", {
     },
 }
 
+/**
+ * The free allowance is spent before credits, so a zero credit price means
+ * every contact request is free whatever the allowance says.
+ */
+function contactRequestFeature(
+    allowance: number | undefined,
+    price: number | undefined,
+    featureSuffix: string,
+): string {
+    const count = allowance ?? 0
+    const cost = price ?? 0
+    if (cost <= 0) return "Unlimited Contact Requests"
+    if (count > 0) return `${count} Free Contact Requests${featureSuffix}`
+    return `Contact Requests at ${cost} Credits each`
+}
+
 function buildFeatures(
     limits: TierLimits[TierName],
     credits: number,
+    contactRequestPrice: number | undefined,
     featureSuffix: string,
     creditsSuffix: string,
 ): string[] {
@@ -90,6 +112,7 @@ function buildFeatures(
         `${limits.PROPERTY_LISTING} Listings${featureSuffix}`,
         `${limits.ENQUIRY_LISTING} Enquiries${featureSuffix}`,
         `${limits.SUBMIT_PROPERTY_ENQUIRY} Proposals${featureSuffix}`,
+        contactRequestFeature(limits.REQUEST_CONTACT, contactRequestPrice, featureSuffix),
         `${credits} Credits${creditsSuffix}`,
     ]
 }
@@ -106,7 +129,13 @@ export function transformTierConfig(data: TierConfigResponse["data"]): PricingDa
             name: TIER_META[tier].displayName,
             price: pricing[tier],
             description: meta.descriptions[tier],
-            features: buildFeatures(limits[tier], credits[tier], meta.featureSuffix, meta.creditsSuffix),
+            features: buildFeatures(
+                limits[tier],
+                credits[tier],
+                data.creditsPrice?.REQUEST_CONTACT,
+                meta.featureSuffix,
+                meta.creditsSuffix,
+            ),
             buttonText: meta.buttonText,
             popular: TIER_META[tier].popular,
             buttonId: `${TIER_META[tier].displayName}-${planType.charAt(0).toUpperCase() + planType.slice(1)}`,
@@ -135,7 +164,7 @@ export const pricingDataFallback: PricingData = {
             name: "Basic",
             price: 3999,
             description: "Monthly subscription",
-            features: ["12 Listings / Month", "12 Enquiries / Month", "16 Proposals / Month", "200 Credits / Month"],
+            features: ["12 Listings / Month", "12 Enquiries / Month", "16 Proposals / Month", "Contact Requests at 20 Credits each", "200 Credits / Month"],
             buttonText: "Subscribe Now",
             popular: false,
             buttonId: "Basic-Monthly",
@@ -144,7 +173,7 @@ export const pricingDataFallback: PricingData = {
             name: "Essential",
             price: 4999,
             description: "Most popular monthly plan",
-            features: ["24 Listings / Month", "24 Enquiries / Month", "32 Proposals / Month", "400 Credits / Month"],
+            features: ["24 Listings / Month", "24 Enquiries / Month", "32 Proposals / Month", "Contact Requests at 20 Credits each", "400 Credits / Month"],
             buttonText: "Subscribe Now",
             popular: true,
             buttonId: "Essential-Monthly",
@@ -153,7 +182,7 @@ export const pricingDataFallback: PricingData = {
             name: "Pro",
             price: 6499,
             description: "Maximum power per month",
-            features: ["40 Listings / Month", "40 Enquiries / Month", "70 Proposals / Month", "1000 Credits / Month"],
+            features: ["40 Listings / Month", "40 Enquiries / Month", "70 Proposals / Month", "Contact Requests at 20 Credits each", "1000 Credits / Month"],
             buttonText: "Subscribe Now",
             popular: false,
             buttonId: "Pro-Monthly",
@@ -164,7 +193,7 @@ export const pricingDataFallback: PricingData = {
             name: "Basic",
             price: 10999,
             description: "3 Month subscription",
-            features: ["12 Listings / Month", "12 Enquiries / Month", "16 Proposals / Month", "600 Credits (Upfront)"],
+            features: ["12 Listings / Month", "12 Enquiries / Month", "16 Proposals / Month", "Contact Requests at 20 Credits each", "600 Credits (Upfront)"],
             buttonText: "Subscribe Quarterly",
             popular: false,
             buttonId: "Basic-Quarterly",
@@ -173,7 +202,7 @@ export const pricingDataFallback: PricingData = {
             name: "Essential",
             price: 13999,
             description: "Best value quarterly plan",
-            features: ["24 Listings / Month", "24 Enquiries / Month", "32 Proposals / Month", "1200 Credits (Upfront)"],
+            features: ["24 Listings / Month", "24 Enquiries / Month", "32 Proposals / Month", "Contact Requests at 20 Credits each", "1200 Credits (Upfront)"],
             buttonText: "Subscribe Quarterly",
             popular: true,
             buttonId: "Essential-Quarterly",
@@ -182,7 +211,7 @@ export const pricingDataFallback: PricingData = {
             name: "Pro",
             price: 17999,
             description: "Maximum power for 3 months",
-            features: ["40 Listings / Month", "40 Enquiries / Month", "70 Proposals / Month", "3000 Credits (Upfront)"],
+            features: ["40 Listings / Month", "40 Enquiries / Month", "70 Proposals / Month", "Contact Requests at 20 Credits each", "3000 Credits (Upfront)"],
             buttonText: "Subscribe Quarterly",
             popular: false,
             buttonId: "Pro-Quarterly",
