@@ -19,7 +19,7 @@ type TierLimits = Record<TierName, {
     PROPERTY_LISTING: number
     ENQUIRY_LISTING: number
     SUBMIT_PROPERTY_ENQUIRY: number
-    /** Free contact requests per month; absent on APIs that predate the allowance. */
+    /** Free contact requests per billing cycle; absent on APIs that predate the allowance. */
     REQUEST_CONTACT?: number
 }>
 
@@ -80,7 +80,8 @@ const PLAN_META: Record<"monthly" | "quarterly", {
             PRO: "Maximum power for 3 months",
         },
         buttonText: "Subscribe Quarterly",
-        featureSuffix: " / Month",
+        // Limits reset once per billing cycle, which is the whole quarter here.
+        featureSuffix: " / Quarter",
         creditsSuffix: " (Upfront)",
     },
 }
@@ -193,7 +194,7 @@ export const pricingDataFallback: PricingData = {
             name: "Basic",
             price: 10999,
             description: "3 Month subscription",
-            features: ["12 Listings / Month", "12 Enquiries / Month", "16 Proposals / Month", "Contact Requests at 20 Credits each", "600 Credits (Upfront)"],
+            features: ["12 Listings / Quarter", "12 Enquiries / Quarter", "16 Proposals / Quarter", "Contact Requests at 20 Credits each", "600 Credits (Upfront)"],
             buttonText: "Subscribe Quarterly",
             popular: false,
             buttonId: "Basic-Quarterly",
@@ -202,7 +203,7 @@ export const pricingDataFallback: PricingData = {
             name: "Essential",
             price: 13999,
             description: "Best value quarterly plan",
-            features: ["24 Listings / Month", "24 Enquiries / Month", "32 Proposals / Month", "Contact Requests at 20 Credits each", "1200 Credits (Upfront)"],
+            features: ["24 Listings / Quarter", "24 Enquiries / Quarter", "32 Proposals / Quarter", "Contact Requests at 20 Credits each", "1200 Credits (Upfront)"],
             buttonText: "Subscribe Quarterly",
             popular: true,
             buttonId: "Essential-Quarterly",
@@ -211,7 +212,7 @@ export const pricingDataFallback: PricingData = {
             name: "Pro",
             price: 17999,
             description: "Maximum power for 3 months",
-            features: ["40 Listings / Month", "40 Enquiries / Month", "70 Proposals / Month", "Contact Requests at 20 Credits each", "3000 Credits (Upfront)"],
+            features: ["40 Listings / Quarter", "40 Enquiries / Quarter", "70 Proposals / Quarter", "Contact Requests at 20 Credits each", "3000 Credits (Upfront)"],
             buttonText: "Subscribe Quarterly",
             popular: false,
             buttonId: "Pro-Quarterly",
