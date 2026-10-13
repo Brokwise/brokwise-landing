@@ -1,74 +1,111 @@
 "use client";
 
 import { sendGTMEvent } from "@next/third-parties/google";
-import React, { useEffect, useState } from "react";
-import { Check, Loader2 } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Check, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { v4 as uuidv4 } from "uuid";
-import {
-  PricingData,
-  TierConfigResponse,
-  pricingDataFallback,
-  transformTierConfig,
-} from "@/lib/config";
+import { PLANS_FALLBACK, PublicPlan, fetchPlans } from "@/lib/plans";
 import { metaPixel } from "@/lib/fpixel";
 import { APP_URL } from "./content";
 
-type PlanType = "monthly" | "quarterly";
+type Term = "quarterly" | "annual";
 
-const PLAN_TYPES: PlanType[] = ["monthly", "quarterly"];
+const TERMS: Term[] = ["quarterly", "annual"];
 
-const PLAN_LABELS: Record<PlanType, string> = {
-  monthly: "Monthly",
-  quarterly: "3-Month",
+const TERM_LABELS: Record<Term, string> = {
+  quarterly: "Quarterly",
+  annual: "Annual",
 };
 
-const PLAN_SUBTITLES: Record<PlanType, string> = {
-  monthly: "Structured monthly access for consistent professional deal flow.",
-  quarterly: "Extended premium access for sustained market expansion.",
+const TERM_SUBTITLES: Record<Term, string> = {
+  quarterly: "Three months of access, renewing every quarter.",
+  annual: "A full year of access at the lowest effective monthly price.",
 };
 
-/** Savings the quarterly plans represent against paying month to month. */
-const QUARTERLY_DISCOUNTS: Record<string, number> = {
-  Basic: 12.5,
-  Essential: 14,
-  Pro: 23.5,
+/** The three cards, by term. Monthly has no longer variant. */
+const CARD_CODES: Record<Term, string[]> = {
+  quarterly: ["MONTHLY", "ESSENTIAL_Q", "PRO_Q"],
+  annual: ["MONTHLY", "ESSENTIAL_ANNUAL", "PRO_ANNUAL"],
 };
+
+const BADGE_LABELS = {
+  most_popular: "Most Popular",
+  best_value: "Best Value",
+} as const;
+
+const inr = new Intl.NumberFormat("en-IN");
+const rupees = (n: number) => `₹${inr.format(n)}`;
+
+function validityLabel(days: number): string {
+  if (days === 365) return "12 months";
+  if (days % 30 === 0) {
+    const months = days / 30;
+    return months === 1 ? "30 days" : `${months} months`;
+  }
+  return `${days} days`;
+}
+
+function planPeriod(plan: PublicPlan): string {
+  if (plan.kind === "one_time") return "one_time";
+  if (plan.validityDays === 365) return "annual";
+  if (plan.validityDays >= 90) return "quarterly";
+  return "monthly";
+}
+
+/** The card's headline saving: the comparison against the next shorter plan. */
+function headlineSaving(plan: PublicPlan, byCode: Map<string, PublicPlan>): string | null {
+  const saving = [...plan.savings].sort((a, b) => a.multiple - b.multiple)[0];
+  if (!saving) return null;
+  const comparedTo = byCode.get(saving.comparedTo)?.name ?? saving.comparedTo;
+  return `Save ${rupees(saving.saving)} (${saving.savingPercent.toFixed(1)}%) vs ${saving.multiple} x ${comparedTo}`;
+}
+
+function features(plan: PublicPlan): { label: string; included: boolean }[] {
+  const { limits, network } = plan;
+  return [
+    { label: `${inr.format(limits.PROPERTY_LISTING)} Listings`, included: true },
+    { label: `${inr.format(limits.ENQUIRY_LISTING)} Enquiries`, included: true },
+    { label: `${inr.format(limits.SUBMIT_PROPERTY_ENQUIRY)} Proposals`, included: true },
+    { label: `${inr.format(limits.REQUEST_CONTACT)} Contact unlocks`, included: true },
+    network.access
+      ? { label: `${inr.format(network.connectionsPerCycle)} Broker Network connections`, included: true }
+      : { label: "Broker Network connections: Not included", included: false },
+    network.access
+      ? { label: `${inr.format(network.contactUnlocksPerCycle)} Network contact unlocks`, included: true }
+      : { label: "Network contact unlocks: Not included", included: false },
+  ];
+}
 
 export default function Pricing() {
-  const [planType, setPlanType] = useState<PlanType>("monthly");
-  const [pricing, setPricing] = useState<PricingData>(pricingDataFallback);
-  const [loading, setLoading] = useState(true);
+  const [term, setTerm] = useState<Term>("quarterly");
+  const [plans, setPlans] = useState<PublicPlan[]>(PLANS_FALLBACK);
 
   useEffect(() => {
-    const run = async () => {
-      const base = process.env.NEXT_PUBLIC_API_BASE_URL;
-      if (!base) {
-        setLoading(false);
-        return;
-      }
-      try {
-        const res = await fetch(`${base}/admin/tier-config`);
-        const json: TierConfigResponse = await res.json();
-        if (json.success) setPricing(transformTierConfig(json.data));
-      } catch {
-        /* fallback already set */
-      } finally {
-        setLoading(false);
-      }
+    let cancelled = false;
+    fetchPlans().then((fetched) => {
+      if (!cancelled && fetched) setPlans(fetched);
+    });
+    return () => {
+      cancelled = true;
     };
-    run();
   }, []);
 
-  const checkout = (buttonId: string, name: string, price: number) => {
+  const byCode = useMemo(() => new Map(plans.map((p) => [p.code, p])), [plans]);
+  const starter = byCode.get("STARTER");
+  const cards = CARD_CODES[term]
+    .map((code) => byCode.get(code))
+    .filter((p): p is PublicPlan => Boolean(p));
+
+  const checkout = (plan: PublicPlan) => {
     const eventId = uuidv4();
     metaPixel.trackWithBrokwiseCustom(
       "InitiateCheckout",
-      { content_name: name, content_ids: [buttonId], currency: "INR", value: price },
+      { content_name: plan.name, content_ids: [plan.code], currency: "INR", value: plan.priceInr },
       "BW_Pricing_PlanCheckout_Click",
-      { plan_period: planType, plan_id: buttonId },
+      { plan_period: planPeriod(plan), plan_id: plan.code },
     );
-    sendGTMEvent({ event: "InitiateCheckout - Landing", plan: buttonId, eventId });
+    sendGTMEvent({ event: "InitiateCheckout - Landing", plan: plan.code, eventId });
     setTimeout(() => {
       window.location.href = APP_URL;
     }, 300);
@@ -76,13 +113,13 @@ export default function Pricing() {
 
   return (
     <section id="pricing" className="bg-v2-paper py-20 md:py-28">
-      <div className="mx-auto max-w-6xl px-5 md:px-8">
+      <div className="mx-auto max-w-6xl px-4 md:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="font-display text-3xl font-bold leading-tight tracking-tight text-v2-ink md:text-5xl">
             Choose Your Plan
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base text-v2-ink/60">
-            Start with 25 free credits and pay only when you need more. No hidden fees.
+            Simple membership plans with clear allowances. All prices are shown before 18% GST.
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-4">
@@ -91,58 +128,46 @@ export default function Pricing() {
               aria-label="Billing period"
               className="inline-flex gap-1 rounded-full border border-v2-ink/10 bg-v2-paper-2 p-1"
             >
-              {PLAN_TYPES.map((type) => (
+              {TERMS.map((t) => (
                 <button
-                  key={type}
+                  key={t}
                   type="button"
-                  onClick={() => setPlanType(type)}
-                  aria-pressed={planType === type}
+                  onClick={() => setTerm(t)}
+                  aria-pressed={term === t}
                   className={cn(
                     "rounded-full px-5 py-2 text-sm font-semibold transition-colors md:px-7",
-                    planType === type
+                    term === t
                       ? "bg-v2-gold text-v2-ink shadow-sm"
                       : "text-v2-ink/55 hover:text-v2-ink",
                   )}
                 >
-                  {PLAN_LABELS[type]}
+                  {TERM_LABELS[t]}
                 </button>
               ))}
             </div>
-            <p className="text-sm font-medium text-v2-gold-2">
-              {PLAN_SUBTITLES[planType]}
-            </p>
+            <p className="text-sm font-medium text-v2-gold-2">{TERM_SUBTITLES[term]}</p>
           </div>
         </div>
 
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <Loader2 className="h-8 w-8 animate-spin text-v2-gold" />
-          </div>
-        ) : (
-          <div className="mt-14 grid gap-6 md:grid-cols-3 md:items-start">
-            {pricing[planType].map((plan) => {
-              const discountPct =
-                planType === "quarterly"
-                  ? (QUARTERLY_DISCOUNTS[plan.name] ?? null)
-                  : null;
-              const originalPrice =
-                discountPct !== null
-                  ? Math.round(plan.price / (1 - discountPct / 100))
-                  : null;
+        <div className="mt-12 grid gap-6 md:grid-cols-3 md:items-start">
+          {cards.map((plan) => {
+            const saving = headlineSaving(plan, byCode);
+            const badge = plan.badge ? BADGE_LABELS[plan.badge] : null;
+            const popular = plan.badge === "most_popular";
 
-              return (
+            return (
               <div
-                key={`${plan.buttonId}-${planType}`}
+                key={plan.code}
                 className={cn(
-                  "relative flex flex-col overflow-hidden rounded-3xl border bg-v2-paper-2 p-8",
-                  plan.popular
+                  "relative flex flex-col overflow-hidden rounded-3xl border bg-v2-paper-2 p-6 md:p-8",
+                  badge
                     ? "border-v2-gold shadow-[0_24px_60px_-30px_rgba(11,21,34,0.4)] md:-mt-3 md:pt-11"
                     : "border-black/5",
                 )}
               >
-                {plan.popular && (
+                {badge && (
                   <span className="absolute right-0 top-0 rounded-bl-2xl bg-v2-gold px-4 py-1.5 text-xs font-bold text-v2-ink">
-                    Most Popular
+                    {badge}
                   </span>
                 )}
 
@@ -150,53 +175,88 @@ export default function Pricing() {
                   {plan.name}
                 </h3>
 
-                {discountPct !== null && originalPrice !== null && (
-                  <div className="mt-3 flex items-center gap-2">
-                    <span className="text-sm text-v2-ink/40 line-through">
-                      ₹{originalPrice.toLocaleString()}
-                    </span>
-                    <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold text-emerald-700">
-                      {discountPct}% OFF
-                    </span>
-                  </div>
-                )}
-
-                <div className="mt-3 flex items-baseline gap-1">
+                <div className="mt-3 flex flex-wrap items-baseline gap-x-2">
                   <span className="font-display text-4xl font-bold text-v2-ink">
-                    ₹{plan.price.toLocaleString()}
+                    {rupees(plan.priceInr)}
                   </span>
                   <span className="text-sm text-v2-ink/50">
-                    {planType === "monthly" ? "/month" : "/3 months"}
+                    + GST / {validityLabel(plan.validityDays)}
                   </span>
                 </div>
-                <p className="mt-1 text-xs text-v2-ink/40">18% GST</p>
-                <p className="mt-3 text-sm text-v2-ink/60">{plan.description}</p>
 
-                <ul className="mt-7 mb-8 flex-1 space-y-3.5">
-                  {plan.features.map((feature, i) => (
-                    <li key={i} className="flex items-start gap-3 text-sm text-v2-ink/75">
+                {plan.effectivePerMonth !== null && plan.validityDays > 30 && (
+                  <p className="mt-1 text-sm font-medium text-v2-ink/70">
+                    Effective {rupees(plan.effectivePerMonth)} / month
+                  </p>
+                )}
+
+                {saving && (
+                  <p className="mt-3 self-start rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
+                    {saving}
+                  </p>
+                )}
+
+                <ul className="mt-6 mb-4 flex-1 space-y-3.5">
+                  {features(plan).map((f) => (
+                    <li key={f.label} className="flex items-start gap-3 text-sm text-v2-ink/75">
                       <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-v2-gold/20 text-v2-gold-2">
                         <Check className="h-2.5 w-2.5" strokeWidth={3} />
                       </span>
-                      {feature}
+                      {f.label}
                     </li>
                   ))}
                 </ul>
+                <p className="mb-6 text-xs text-v2-ink/45">Allowances apply per plan period.</p>
 
                 <button
-                  onClick={() => checkout(plan.buttonId, plan.name, plan.price)}
+                  onClick={() => checkout(plan)}
                   className={cn(
                     "w-full rounded-full py-3 text-sm font-semibold transition-all active:scale-95",
-                    plan.popular
+                    popular
                       ? "bg-v2-gold text-v2-ink hover:bg-v2-gold-2"
                       : "border border-v2-ink/15 text-v2-ink hover:bg-v2-ink hover:text-white",
                   )}
                 >
-                  {plan.buttonText}
+                  Get {plan.name}
                 </button>
               </div>
-              );
-            })}
+            );
+          })}
+        </div>
+
+        {starter && (
+          <div className="mt-8 flex flex-col gap-5 rounded-3xl border border-black/5 bg-v2-paper-2 p-6 md:flex-row md:items-center md:justify-between md:p-8">
+            <div>
+              <h3 className="text-sm font-semibold uppercase tracking-wide text-v2-ink/50">
+                {starter.name} - one-time intro
+              </h3>
+              <div className="mt-2 flex flex-wrap items-baseline gap-x-2">
+                <span className="font-display text-3xl font-bold text-v2-ink">
+                  {rupees(starter.priceInr)}
+                </span>
+                <span className="text-sm text-v2-ink/50">
+                  + GST / {validityLabel(starter.validityDays)}, one-time
+                </span>
+              </div>
+              <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5 text-sm text-v2-ink/70">
+                {features(starter).map((f) => (
+                  <li key={f.label} className="flex items-center gap-1.5">
+                    {f.included ? (
+                      <Check className="h-3.5 w-3.5 shrink-0 text-v2-gold-2" strokeWidth={3} />
+                    ) : (
+                      <X className="h-3.5 w-3.5 shrink-0 text-v2-ink/35" strokeWidth={3} />
+                    )}
+                    <span className={f.included ? undefined : "text-v2-ink/45"}>{f.label}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <button
+              onClick={() => checkout(starter)}
+              className="w-full shrink-0 rounded-full border border-v2-ink/15 px-8 py-3 text-sm font-semibold text-v2-ink transition-all hover:bg-v2-ink hover:text-white active:scale-95 md:w-auto"
+            >
+              Get {starter.name}
+            </button>
           </div>
         )}
       </div>

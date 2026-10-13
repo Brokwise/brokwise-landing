@@ -6,11 +6,10 @@ import Footer from "@/components/footer";
 const LayoutFooter = () => {
   const pathname = usePathname();
 
-  // "/" (new landing), "/old" (legacy landing), "/support" and the public
+  // "/" (landing), "/support" and the public
   // directory profile pages (/directory/[slug]) each render their own footer.
   if (
     pathname === "/" ||
-    pathname === "/old" ||
     pathname === "/support" ||
     pathname.startsWith("/directory/")
   ) {
