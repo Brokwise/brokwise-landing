@@ -35,7 +35,7 @@ export function DirectoryHeroShell({
       </div>
       <div
         className={`relative z-10 mx-auto max-w-[1160px] px-6 ${
-          compact ? "pt-8 pb-10 md:pt-10 md:pb-12" : "pt-8 pb-10 md:pt-10 md:pb-14"
+          compact ? "pt-24 pb-10 md:pt-28 md:pb-12" : "pt-24 pb-10 md:pt-28 md:pb-14"
         }`}
       >
         <div className="mb-6">

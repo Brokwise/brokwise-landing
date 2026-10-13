@@ -20,16 +20,18 @@ export default function PlatformTermsPage() {
     }, []);
 
     return (
-        <div className="min-h-screen pt-10 bg-gradient-to-b from-slate-50 to-white">
-            <header className="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200">
-                <div className="max-w-4xl mx-auto px-4 py-4 flex items-center gap-4">
-                    <Link href="/">
-                        <ArrowLeft className="h-5 w-5" />
+        <div className="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+            {/* Navy band so the fixed v2 navbar sits on the same dark ground as
+                every other page, and the title clears it. */}
+            <header className="bg-v2-navy pt-28 pb-10 md:pt-32 md:pb-12">
+                <div className="max-w-4xl mx-auto px-4">
+                    <Link
+                        href="/"
+                        className="inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-white/60 transition-colors hover:text-v2-gold"
+                    >
+                        <ArrowLeft className="h-4 w-4" /> Back
                     </Link>
-                    <div>
-                        <h1 className="text-xl font-semibold text-slate-900">Platform Terms of Use</h1>
-                        <p className="text-sm text-slate-500">Brokwise Private Limited</p>
-                    </div>
+                    <h1 className="mt-4 font-display text-3xl font-bold tracking-tight text-white md:text-4xl">Platform Terms of Use</h1>
                 </div>
             </header>
 
@@ -42,9 +44,8 @@ export default function PlatformTermsPage() {
                     <article className="legal-content">
                         <ReactMarkdown
                             components={{
-                                h1: ({ children }) => (
-                                    <h1 className="text-3xl font-bold text-slate-900 mb-2">{children}</h1>
-                                ),
+                                // The page header above already shows the document title.
+                                h1: () => null,
                                 h2: ({ children }) => (
                                     <h2 className="text-2xl font-bold text-slate-900 border-b border-slate-200 pb-3 mb-4 mt-8">{children}</h2>
                                 ),

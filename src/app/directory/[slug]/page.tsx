@@ -30,8 +30,6 @@ import ServiceAreaMap from "@/components/directory/ServiceAreaMap";
 import HeroActions from "@/components/directory/HeroActions";
 import EnquiryPanel from "@/components/directory/EnquiryPanel";
 import BrokerRailCard, { type RailItem } from "@/components/directory/BrokerRailCard";
-import Navbar from "@/components/v2/Navbar";
-import Footer from "@/components/v2/Footer";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brokwise.com";
 
@@ -125,7 +123,6 @@ export default async function ProfilePage({
 
   return (
     <div className="landing-v2 bg-v2-navy font-sans">
-      <Navbar />
       <main className="directory-scope">
         <script
           type="application/ld+json"
@@ -364,7 +361,6 @@ export default async function ProfilePage({
           </section>
         )}
       </main>
-      <Footer />
     </div>
   );
 }
