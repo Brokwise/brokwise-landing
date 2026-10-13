@@ -82,13 +82,11 @@ export default function Pricing() {
   const [plans, setPlans] = useState<PublicPlan[]>(PLANS_FALLBACK);
 
   useEffect(() => {
-    let cancelled = false;
-    fetchPlans().then((fetched) => {
-      if (!cancelled && fetched) setPlans(fetched);
+    const controller = new AbortController();
+    fetchPlans(controller.signal).then((fetched) => {
+      if (!controller.signal.aborted && fetched) setPlans(fetched);
     });
-    return () => {
-      cancelled = true;
-    };
+    return () => controller.abort();
   }, []);
 
   const byCode = useMemo(() => new Map(plans.map((p) => [p.code, p])), [plans]);

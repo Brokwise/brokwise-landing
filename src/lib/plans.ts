@@ -170,18 +170,56 @@ export const PLANS_FALLBACK: PublicPlan[] = CATALOG.map((plan) => ({
   savings: computeSavings(plan.code),
 }))
 
-/** Null when the API is not configured or the response is unusable. */
-export async function fetchPlans(): Promise<PublicPlan[] | null> {
+const FETCH_TIMEOUT_MS = 8000
+
+function isUsablePlan(p: unknown): p is PublicPlan {
+  const plan = p as PublicPlan | null
+  return (
+    !!plan &&
+    typeof plan.code === "string" &&
+    typeof plan.name === "string" &&
+    typeof plan.priceInr === "number" &&
+    typeof plan.validityDays === "number" &&
+    !!plan.limits &&
+    !!plan.network &&
+    typeof plan.order === "number"
+  )
+}
+
+/**
+ * Usable API plans, with the fallback entry standing in for any catalog
+ * code the API left out or sent malformed, so no card disappears.
+ */
+function withFallbackGaps(fetched: unknown[]): PublicPlan[] {
+  const byCode = new Map<string, PublicPlan>()
+  for (const p of fetched) {
+    if (isUsablePlan(p)) byCode.set(p.code, { ...p, savings: Array.isArray(p.savings) ? p.savings : [] })
+  }
+  for (const fallback of PLANS_FALLBACK) {
+    if (!byCode.has(fallback.code)) byCode.set(fallback.code, fallback)
+  }
+  return Array.from(byCode.values()).sort((a, b) => a.order - b.order)
+}
+
+/** Null when the API is not configured, slow, aborted or unusable. */
+export async function fetchPlans(signal?: AbortSignal): Promise<PublicPlan[] | null> {
   const base = process.env.NEXT_PUBLIC_API_BASE_URL
   if (!base) return null
+  const controller = new AbortController()
+  const timer = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS)
+  const onAbort = () => controller.abort()
+  signal?.addEventListener("abort", onAbort)
   try {
-    const res = await fetch(`${base}/plans`)
+    const res = await fetch(`${base}/plans`, { signal: controller.signal })
     if (!res.ok) return null
     const json: PlansResponse = await res.json()
     const plans = json?.success ? json.data?.plans : null
     if (!Array.isArray(plans) || plans.length === 0) return null
-    return [...plans].sort((a, b) => a.order - b.order)
+    return withFallbackGaps(plans)
   } catch {
     return null
+  } finally {
+    clearTimeout(timer)
+    signal?.removeEventListener("abort", onAbort)
   }
 }
