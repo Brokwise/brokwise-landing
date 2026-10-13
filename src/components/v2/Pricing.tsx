@@ -147,19 +147,18 @@ export default function Pricing() {
           </div>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3 md:items-start">
+        <div className="mx-auto mt-12 grid max-w-md gap-6 lg:max-w-none lg:grid-cols-3">
           {cards.map((plan) => {
             const saving = headlineSaving(plan, byCode);
             const badge = plan.badge ? BADGE_LABELS[plan.badge] : null;
-            const popular = plan.badge === "most_popular";
-
+            
             return (
               <div
                 key={plan.code}
                 className={cn(
                   "relative flex flex-col overflow-hidden rounded-3xl border bg-v2-paper-2 p-6 md:p-8",
                   badge
-                    ? "border-v2-gold shadow-[0_24px_60px_-30px_rgba(11,21,34,0.4)] md:-mt-3 md:pt-11"
+                    ? "border-v2-gold shadow-[0_24px_60px_-30px_rgba(11,21,34,0.4)]"
                     : "border-black/5",
                 )}
               >
@@ -182,17 +181,20 @@ export default function Pricing() {
                   </span>
                 </div>
 
-                {plan.effectivePerMonth !== null && plan.validityDays > 30 && (
-                  <p className="mt-1 text-sm font-medium text-v2-ink/70">
-                    Effective {rupees(plan.effectivePerMonth)} / month
-                  </p>
-                )}
+                {/* Reserved so the feature lists line up across the row of cards. */}
+                <div className="lg:min-h-[5.5rem]">
+                  {plan.effectivePerMonth !== null && plan.validityDays > 30 && (
+                    <p className="mt-1 text-sm font-medium text-v2-ink/70">
+                      Effective {rupees(plan.effectivePerMonth)} / month
+                    </p>
+                  )}
 
-                {saving && (
-                  <p className="mt-3 self-start rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
-                    {saving}
-                  </p>
-                )}
+                  {saving && (
+                    <p className="mt-3 inline-block rounded-xl bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-700">
+                      {saving}
+                    </p>
+                  )}
+                </div>
 
                 <ul className="mt-6 mb-4 flex-1 space-y-3.5">
                   {features(plan).map((f) => (
@@ -209,8 +211,8 @@ export default function Pricing() {
                 <button
                   onClick={() => checkout(plan)}
                   className={cn(
-                    "w-full rounded-full py-3 text-sm font-semibold transition-all active:scale-95",
-                    popular
+                    "mt-auto w-full rounded-full py-3 text-sm font-semibold transition-all active:scale-95",
+                    badge
                       ? "bg-v2-gold text-v2-ink hover:bg-v2-gold-2"
                       : "border border-v2-ink/15 text-v2-ink hover:bg-v2-ink hover:text-white",
                   )}
