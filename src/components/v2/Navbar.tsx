@@ -41,7 +41,7 @@ const Navbar = () => {
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4">
       <nav
         className={cn(
-          "pointer-events-auto mt-3 flex w-full max-w-6xl items-center justify-between rounded-full border px-4 py-2.5 transition-all duration-300 md:mt-5 md:px-6",
+          "pointer-events-auto relative z-50 mt-3 flex w-full max-w-6xl items-center justify-between rounded-full border px-4 py-2.5 transition-all duration-300 md:mt-5 md:px-6",
           scrolled
             ? "border-white/10 bg-v2-navy/85 shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)] backdrop-blur-xl"
             : "border-white/10 bg-v2-navy/50 backdrop-blur-md",
@@ -93,7 +93,7 @@ const Navbar = () => {
       {/* Mobile overlay */}
       <div
         className={cn(
-          "pointer-events-auto fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-v2-navy/98 backdrop-blur-xl transition-opacity duration-300 md:hidden",
+          "pointer-events-auto fixed inset-0 z-40 flex flex-col items-center justify-center gap-8 bg-v2-navy/95 backdrop-blur-xl transition-opacity duration-300 lg:hidden",
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >

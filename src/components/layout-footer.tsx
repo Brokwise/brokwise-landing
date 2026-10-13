@@ -1,19 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import Footer from "@/components/footer";
+import Footer from "@/components/v2/Footer";
 
 const LayoutFooter = () => {
   const pathname = usePathname();
 
-  // "/" (new landing), "/old" (legacy landing), "/support" and the public
-  // directory profile pages (/directory/[slug]) each render their own footer.
-  if (
-    pathname === "/" ||
-    pathname === "/old" ||
-    pathname === "/support" ||
-    pathname.startsWith("/directory/")
-  ) {
+  // The legacy landing page ("/old") renders its own legacy footer; every
+  // other route shares the v2 footer.
+  if (pathname === "/old") {
     return null;
   }
 
