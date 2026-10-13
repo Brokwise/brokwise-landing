@@ -187,17 +187,16 @@ function isUsablePlan(p: unknown): p is PublicPlan {
 }
 
 /**
- * Usable API plans, with the fallback entry standing in for any catalog
- * code the API left out or sent malformed, so no card disappears.
+ * The well-formed API plans, sorted. A code the API left out is off sale,
+ * so it is never filled back in; malformed entries are dropped. Null when
+ * nothing usable is left, so the caller keeps the full fallback.
  */
-function withFallbackGaps(fetched: unknown[]): PublicPlan[] {
+function usablePlans(fetched: unknown[]): PublicPlan[] | null {
   const byCode = new Map<string, PublicPlan>()
   for (const p of fetched) {
     if (isUsablePlan(p)) byCode.set(p.code, { ...p, savings: Array.isArray(p.savings) ? p.savings : [] })
   }
-  for (const fallback of PLANS_FALLBACK) {
-    if (!byCode.has(fallback.code)) byCode.set(fallback.code, fallback)
-  }
+  if (byCode.size === 0) return null
   return Array.from(byCode.values()).sort((a, b) => a.order - b.order)
 }
 
@@ -215,7 +214,7 @@ export async function fetchPlans(signal?: AbortSignal): Promise<PublicPlan[] | n
     const json: PlansResponse = await res.json()
     const plans = json?.success ? json.data?.plans : null
     if (!Array.isArray(plans) || plans.length === 0) return null
-    return withFallbackGaps(plans)
+    return usablePlans(plans)
   } catch {
     return null
   } finally {

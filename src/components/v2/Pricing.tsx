@@ -151,7 +151,7 @@ export default function Pricing() {
           {cards.map((plan) => {
             const saving = headlineSaving(plan, byCode);
             const badge = plan.badge ? BADGE_LABELS[plan.badge] : null;
-            
+
             return (
               <div
                 key={plan.code}
