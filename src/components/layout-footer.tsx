@@ -1,22 +1,6 @@
-"use client";
+import Footer from "@/components/v2/Footer";
 
-import { usePathname } from "next/navigation";
-import Footer from "@/components/footer";
-
-const LayoutFooter = () => {
-  const pathname = usePathname();
-
-  // "/" (landing), "/support" and the public
-  // directory profile pages (/directory/[slug]) each render their own footer.
-  if (
-    pathname === "/" ||
-    pathname === "/support" ||
-    pathname.startsWith("/directory/")
-  ) {
-    return null;
-  }
-
-  return <Footer />;
-};
+// Every route shares the v2 footer.
+const LayoutFooter = () => <Footer />;
 
 export default LayoutFooter;

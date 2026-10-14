@@ -1,25 +1,6 @@
-"use client";
+import Navbar from "@/components/v2/Navbar";
 
-import { usePathname } from "next/navigation";
-import NavBar from "@/components/navbar";
-
-/**
- * Renders the legacy global navbar on every route except the pages that ship
- * their own self-contained v2 navbar: the new landing page ("/"), the broker
- * directory ("/directory" and its subpages) and support ("/support").
- */
-const SiteNav = () => {
-  const pathname = usePathname();
-
-  if (
-    pathname === "/" ||
-    pathname === "/support" ||
-    pathname.startsWith("/directory")
-  ) {
-    return null;
-  }
-
-  return <NavBar />;
-};
+/** The global navbar: every route gets the v2 navbar. */
+const SiteNav = () => <Navbar />;
 
 export default SiteNav;
