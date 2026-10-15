@@ -4,7 +4,9 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 /** Builds page N of the given query string params (all other filters kept). */
 function pageHref(
   searchParams: Record<string, string | string[] | undefined>,
-  page: number
+  page: number,
+  basePath: string,
+  anchor: string
 ): string {
   const qs = new URLSearchParams();
   for (const [k, v] of Object.entries(searchParams)) {
@@ -14,7 +16,7 @@ function pageHref(
   }
   if (page > 1) qs.set("page", String(page));
   const query = qs.toString();
-  return `/directory${query ? `?${query}` : ""}#directory-results`;
+  return `${basePath}${query ? `?${query}` : ""}#${anchor}`;
 }
 
 /** Page numbers to render, with `null` standing in for an ellipsis. */
@@ -36,10 +38,14 @@ export default function Pagination({
   page,
   totalPages,
   searchParams,
+  basePath = "/directory",
+  anchor = "directory-results",
 }: {
   page: number;
   totalPages: number;
   searchParams: Record<string, string | string[] | undefined>;
+  basePath?: string;
+  anchor?: string;
 }) {
   if (totalPages <= 1) return null;
 
@@ -51,7 +57,7 @@ export default function Pagination({
       className="mt-10 flex items-center justify-center gap-1.5"
     >
       <PageLink
-        href={pageHref(searchParams, page - 1)}
+        href={pageHref(searchParams, page - 1, basePath, anchor)}
         disabled={page <= 1}
         aria-label="Previous page"
       >
@@ -68,14 +74,14 @@ export default function Pagination({
             &hellip;
           </span>
         ) : (
-          <PageLink key={p} href={pageHref(searchParams, p)} active={p === page}>
+          <PageLink key={p} href={pageHref(searchParams, p, basePath, anchor)} active={p === page}>
             {p}
           </PageLink>
         )
       )}
 
       <PageLink
-        href={pageHref(searchParams, page + 1)}
+        href={pageHref(searchParams, page + 1, basePath, anchor)}
         disabled={page >= totalPages}
         aria-label="Next page"
       >

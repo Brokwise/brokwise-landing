@@ -9,32 +9,46 @@ export interface DirectoryLaunch {
 
 const CLOSED: DirectoryLaunch = { live: false, liveAt: null };
 
+type LaunchFeature = "publicDirectory" | "customerMarketplace";
+
+/**
+ * Every launch switch, read once per request: wrapped in React's cache() so
+ * generateMetadata and the page share one call.
+ */
+const fetchLaunches = cache(async (): Promise<Record<string, unknown> | null> => {
+  try {
+    const res = await fetch(`${apiBase()}/utils/feature-launches`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const json = await res.json();
+    return (json?.data ?? json) ?? null;
+  } catch {
+    return null;
+  }
+});
+
+const fetchLaunch = async (feature: LaunchFeature): Promise<DirectoryLaunch> => {
+  const launches = await fetchLaunches();
+  const launch = launches?.[feature] as
+    | { live?: boolean; state?: string; liveAt?: string | null }
+    | undefined;
+  if (!launch) return CLOSED;
+  return {
+    live: launch.live === true,
+    liveAt: launch.state === "scheduled" ? launch.liveAt ?? null : null,
+  };
+};
+
 /**
  * Whether an admin has launched the public directory. Read on every request,
  * so a scheduled launch opens at its time without a redeploy.
- *
- * Wrapped in React's cache() so generateMetadata and the page share one call
- * per request.
  *
  * Fails closed: if the API cannot say, show the coming-soon page. The profile
  * endpoints refuse to serve until launch anyway, so an open page would only
  * render empty.
  */
-export const fetchDirectoryLaunch = cache(async (): Promise<DirectoryLaunch> => {
-  try {
-    const res = await fetch(`${apiBase()}/utils/feature-launches`, {
-      cache: "no-store",
-    });
-    if (!res.ok) return CLOSED;
-    const json = await res.json();
-    const launch: { live?: boolean; state?: string; liveAt?: string | null } | undefined =
-      (json?.data ?? json)?.publicDirectory;
-    if (!launch) return CLOSED;
-    return {
-      live: launch.live === true,
-      liveAt: launch.state === "scheduled" ? launch.liveAt ?? null : null,
-    };
-  } catch {
-    return CLOSED;
-  }
-});
+export const fetchDirectoryLaunch = () => fetchLaunch("publicDirectory");
+
+/** Public listings at /properties. Fails closed like the directory. */
+export const fetchMarketplaceLaunch = () => fetchLaunch("customerMarketplace");

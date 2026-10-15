@@ -8,12 +8,15 @@ import { cn } from "@/lib/utils";
 import { metaPixel } from "@/lib/fpixel";
 import { REGISTER_URL } from "./content";
 
-const LINKS = [
-  { name: "Testimonials", href: "/#testimonials" },
+// `wide`: shown in the desktop bar only from xl. Eight links do not fit on
+// one line at lg, and Testimonials is the least needed to get around.
+const LINKS: { name: string; href: string; wide?: boolean }[] = [
+  { name: "Testimonials", href: "/#testimonials", wide: true },
   { name: "How It Works", href: "/#how-it-works" },
   { name: "Why Brokwise", href: "/#features" },
   { name: "Pricing", href: "/#pricing" },
   { name: "FAQs", href: "/#faq" },
+  { name: "Properties", href: "/properties" },
   { name: "Find a Broker", href: "/directory" },
   { name: "Support", href: "/support" },
 ];
@@ -65,7 +68,10 @@ const Navbar = () => {
             <Link
               key={l.name}
               href={l.href}
-              className="text-sm font-medium text-white/70 transition-colors hover:text-v2-gold"
+              className={cn(
+                "whitespace-nowrap text-sm font-medium text-white/70 transition-colors hover:text-v2-gold",
+                l.wide && "hidden xl:inline",
+              )}
             >
               {l.name}
             </Link>

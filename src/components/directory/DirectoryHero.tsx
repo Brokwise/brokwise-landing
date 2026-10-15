@@ -52,11 +52,20 @@ export function DirectoryHeroShell({
   );
 }
 
+type Highlight = { icon: typeof ShieldCheck; label: string };
+
+const DIRECTORY_HIGHLIGHTS: Highlight[] = [
+  { icon: ShieldCheck, label: "RERA-verified agencies" },
+  { icon: MapPin, label: "Service areas" },
+  { icon: Mail, label: "Enquiries delivered" },
+];
+
 type Props = {
   title: React.ReactNode;
   subtitle?: string;
   eyebrow?: string;
   compact?: boolean;
+  highlights?: Highlight[];
 };
 
 export default function DirectoryHero({
@@ -64,6 +73,7 @@ export default function DirectoryHero({
   subtitle,
   eyebrow = "Public broker directory",
   compact = false,
+  highlights = DIRECTORY_HIGHLIGHTS,
 }: Props) {
   return (
     <DirectoryHeroShell compact={compact}>
@@ -87,18 +97,12 @@ export default function DirectoryHero({
 
       {!compact && (
         <div className="mt-7 flex flex-wrap gap-x-7 gap-y-3 text-[14px] font-medium text-brand-ink">
-          <span className="flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4" />
-            RERA-verified agencies
-          </span>
-          <span className="flex items-center gap-2">
-            <MapPin className="h-4 w-4" />
-            Service areas
-          </span>
-          <span className="flex items-center gap-2">
-            <Mail className="h-4 w-4" />
-            Enquiries delivered
-          </span>
+          {highlights.map(({ icon: Icon, label }) => (
+            <span key={label} className="flex items-center gap-2">
+              <Icon className="h-4 w-4" />
+              {label}
+            </span>
+          ))}
         </div>
       )}
     </DirectoryHeroShell>
