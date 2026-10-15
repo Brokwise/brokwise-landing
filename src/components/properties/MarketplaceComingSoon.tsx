@@ -33,7 +33,7 @@ export default function MarketplaceComingSoon({ liveAt }: { liveAt: string | nul
             Properties from verified brokers, almost here.
           </h1>
           <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-dmuted">
-            Soon you can browse homes, offices and land listed by RERA-verified brokers, and
+            Soon you can browse homes, offices and land listed by verified brokers, and
             reach them without your number being passed around.{" "}
             {launchDate ? `We open on ${launchDate}.` : "Check back shortly."}
           </p>

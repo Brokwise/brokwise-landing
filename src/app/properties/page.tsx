@@ -43,7 +43,7 @@ export async function generateMetadata({ searchParams }: { searchParams: SearchP
   if (!launch.live) return { title: "Properties - coming soon", robots: { index: false, follow: true } };
   const q = readQuery(searchParams);
   const title = `${heading(q)} from verified brokers | Brokwise`;
-  const description = `Browse ${heading(q).toLowerCase()} listed by RERA-verified brokers on Brokwise. Your number stays private until you choose to share it.`;
+  const description = `Browse ${heading(q).toLowerCase()} listed by verified brokers on Brokwise. Your number stays private until you choose to share it.`;
   // Page 2+ and BHK filters are thin variants of the same page.
   const thin = Boolean(q.page && q.page !== "1") || Boolean(q.bhk);
   return {
@@ -73,7 +73,7 @@ export default async function PropertiesPage({ searchParams }: { searchParams: S
             { icon: EyeOff, label: "Your number stays private" },
           ]}
           title="Properties listed by Verified Brokers."
-          subtitle="Homes, offices, land and more from RERA-verified brokers. Browse freely; sign up to see full details and reach the broker. Your number stays private until you choose to share it."
+          subtitle="Homes, offices, land and more from verified brokers. Browse freely; sign up to see full details and reach the broker. Your number stays private until you choose to share it."
         />
 
         <div className="relative z-10 -mt-4 pb-2">
