@@ -264,8 +264,8 @@ export default async function ListingPage({ params }: Params) {
                       className="mt-0.5 h-4 w-4 flex-none text-brand-ink"
                       aria-hidden
                     />
-                    Your number is shared only with brokers who accept your
-                    request
+                    Your number stays private until you choose to share it
+                    with a broker
                   </li>
                 </ul>
               </div>
