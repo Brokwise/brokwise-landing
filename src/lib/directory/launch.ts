@@ -17,8 +17,11 @@ type LaunchFeature = "publicDirectory" | "customerMarketplace";
  */
 const fetchLaunches = cache(async (): Promise<Record<string, unknown> | null> => {
   try {
+    // Every page reads this for the navbar, so a slow API must not hold the
+    // page up: give up after 3s and fail closed.
     const res = await fetch(`${apiBase()}/utils/feature-launches`, {
       cache: "no-store",
+      signal: AbortSignal.timeout(3000),
     });
     if (!res.ok) return null;
     const json = await res.json();

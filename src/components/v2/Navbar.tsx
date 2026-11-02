@@ -21,7 +21,8 @@ const LINKS: { name: string; href: string; wide?: boolean }[] = [
   { name: "Support", href: "/support" },
 ];
 
-const Navbar = () => {
+const Navbar = ({ showProperties }: { showProperties: boolean }) => {
+  const links = showProperties ? LINKS : LINKS.filter((l) => l.href !== "/properties");
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -64,7 +65,7 @@ const Navbar = () => {
         </Link>
 
         <div className="hidden items-center gap-6 lg:flex xl:gap-8">
-          {LINKS.map((l) => (
+          {links.map((l) => (
             <Link
               key={l.name}
               href={l.href}
@@ -103,7 +104,7 @@ const Navbar = () => {
           open ? "opacity-100" : "pointer-events-none opacity-0",
         )}
       >
-        {LINKS.map((l) => (
+        {links.map((l) => (
           <Link
             key={l.name}
             href={l.href}
