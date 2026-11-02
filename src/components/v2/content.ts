@@ -352,7 +352,7 @@ export const FAQS: FaqItem[] = [
     category: "Subscription",
     question: "What happens when my subscription expires?",
     answer:
-      "Your listings, enquiries, and directory profile become inactive until you renew.",
+      "Your property listings stay visible for 30 days after your plan ends, then go inactive until you renew. Your enquiries and directory profile become inactive when the plan ends.",
   },
   {
     category: "Subscription",
@@ -403,7 +403,8 @@ export const FAQS: FaqItem[] = [
   {
     category: "Support & Other Info",
     question: "Can customers post requirements?",
-    answer: "No. Only verified brokers can post requirements.",
+    answer:
+      "On the broker marketplace, only verified brokers post requirements. Customers use their own Brokwise marketplace, and their requests reach brokers separately in the Customer Requests inbox.",
   },
   {
     category: "Support & Other Info",
