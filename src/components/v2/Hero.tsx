@@ -10,7 +10,7 @@ import { CAL, HERO_BULLETS, REGISTER_URL, STATS } from "./content";
 
 const DEFAULT_PROMO = {
   enabled: true,
-  label: "Claim Your 25 Free Credits with Our Early Bird Offer",
+  label: "Free early bird offer is on",
 };
 
 export default function Hero() {
